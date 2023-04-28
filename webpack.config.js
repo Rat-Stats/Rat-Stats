@@ -6,7 +6,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 // typing
 module.exports = {
-  entry: './client/index.js',   // where our entry point to the program is
+  entry: './Client/index.js',   // where our entry point to the program is
   output: {
     path: path.resolve(__dirname, 'build'),   // setting up directory name 
     filename: 'bundle.js',                    // this is where our bundle will be, inside the build folder
@@ -21,8 +21,8 @@ module.exports = {
           loader: 'babel-loader',               // the loader that transpiles jsx
           options: {
             presets: ['@babel/preset-env', '@babel/preset-react']
-                  // transpiling es6 into es5 and react into readbable js
-                  // presets fire in reverse order
+            // transpiling es6 into es5 and react into readbable js
+            // presets fire in reverse order
           }
         }
       },
