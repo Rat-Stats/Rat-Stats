@@ -6,5 +6,5 @@ export default function Profile() {
       <h1>Profile</h1>
       <button className="border">Click me!</button>
     </div>
-  )
-}
+  );
+};

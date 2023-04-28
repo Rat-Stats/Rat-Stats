@@ -6,5 +6,5 @@ export default function Signup() {
       <h1>Sign up</h1>
       <button className="border">Click me!</button>
     </div>
-  )
-}
+  );
+};
