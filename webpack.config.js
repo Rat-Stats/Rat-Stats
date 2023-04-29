@@ -45,7 +45,7 @@ module.exports = {
     port: 8080,
     historyApiFallback: true,
     proxy: {
-      '/api': 'http://localhost:3000',
+      '/': 'http://localhost:3000',
     },
     hot: true,
   },
@@ -53,8 +53,8 @@ module.exports = {
     new HtmlWebpackPlugin({       // used to create a index file that is connected to our dynamically generated javascript
       template: './index.html'
     }),
-   new MiniCssExtractPlugin({
-    filename: 'styles.css'
-   }),
+    new MiniCssExtractPlugin({
+      filename: 'styles.css'
+    }),
   ]
 }
