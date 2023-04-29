@@ -78,3 +78,7 @@ SET row_security = off;
 -- FROM public.sighting s
 -- INNER JOIN public.users u ON s.users_id = u._id
 -- WHERE u.ssid = '111-11-1111';
+
+-- INSERT INTO public.users ("username", "password", "ssid", "number_sightings", "profile_picture", "favorite_rat", "created_at") 
+-- VALUES 
+-- ('user5', '123', '111-11-1111', 5, 'profile1.jpg', 'Rat A', NOW());
