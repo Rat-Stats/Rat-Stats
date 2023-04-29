@@ -7,6 +7,7 @@ const app = express();
 const PORT = 3000;
 
 // Require in any controllers
+const sqlRouter = require('./routes/sqlRouter.js');
 const oaRouter = require('./routes/oaRouter.js');
 
 // Parse incoming data in request body or cookies
@@ -16,6 +17,8 @@ app.use(cookieParser());
 
 // Routing for oauth endpoint
 app.use('/oauth', oaRouter);
+// Routing for sql endpoint to query all tables
+app.use('/sql', sqlRouter);
 
 // Routes for serving static files in production mode
 /*
@@ -43,6 +46,7 @@ app.use('/oauth', oaRouter);
 //   console.log('Serving index.html');
 //   res.status(200).sendFile(path.join(__dirname, '../build/index.html'));
 // })
+
 
 // Global error handling
 ////// Create default error object
