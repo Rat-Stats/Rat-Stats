@@ -7,23 +7,25 @@ const app = express();
 const PORT = 3000;
 
 // Require in any controllers
-const oAuthRouter = require('./routes/oAuthRouter.js');
+const oaRouter = require('./routes/oaRouter.js');
 
 // Parse JSON and urlencoded in requests; parse cookies
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // “extended” allows for rich objects and arrays to be encoded into the URL-encoded format
 app.use(cookieParser());
 
-// Route for serving index.html at root endpoint
-app.use('/', (req, res) => {
-  res.status(200).sendFile(path.join(__dirname, '../index.html'));
-})
 
 // Routing for local webpack bundles
 app.use('/build', express.static(path.join(__dirname, '../build')));
 
 // Routing for oauth endpoint
-app.use('/oauth', oAuthRouter);
+app.use('/oauth', oaRouter);
+
+// Route for serving index.html at root endpoint
+app.use('/', (req, res) => {
+  console.log('Serving index.html');
+  res.status(200).sendFile(path.join(__dirname, '../build/index.html'));
+})
 
 // Global error handling
 ////// Create default error object
