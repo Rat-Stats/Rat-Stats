@@ -53,7 +53,7 @@ module.exports = {
         for the same endpoints,'/test' being a second example of a child endpoint.
       */
       '/oauth': 'http://localhost:3000', 
-      '/test': 'http://localhost:3000'
+      '/sql': 'http://localhost:3000'
     },
     hot: true,
   },
