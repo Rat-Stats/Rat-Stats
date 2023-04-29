@@ -8,12 +8,6 @@ const center = {
   lng: -73.993474 ,
 }
 
-const MapControl = () => {
-  return (
-    <button className="bg-blue-100">test</button>
-  )
-}
-
 function Homepage() {
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script', 
