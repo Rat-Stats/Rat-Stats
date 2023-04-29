@@ -7,23 +7,42 @@ const app = express();
 const PORT = 3000;
 
 // Require in any controllers
-const oAuthRouter = require('./routes/oAuthRouter.js');
+const oaRouter = require('./routes/oaRouter.js');
 
-// Parse JSON and urlencoded in requests; parse cookies
+// Parse incoming data in request body or cookies
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // “extended” allows for rich objects and arrays to be encoded into the URL-encoded format
 app.use(cookieParser());
 
-// Route for serving index.html at root endpoint
-app.use('/', (req, res) => {
-  res.status(200).sendFile(path.join(__dirname, '../index.html'));
-})
-
-// Routing for local webpack bundles
-app.use('/build', express.static(path.join(__dirname, '../build')));
-
 // Routing for oauth endpoint
-app.use('/oauth', oAuthRouter);
+app.use('/oauth', oaRouter);
+
+// Routes for serving static files in production mode
+/*
+  The following can be toggled off in development mode, since devServer automatically 
+  serves transpiled files from memory for the '/' endpoint. 
+  
+  Catchall static routing for '/' (i.e. 'app.use(express.static(...))') seems to break 
+  React Router routing. Haven't found solution other than hardcoding endpoints for 
+  individual build files. Even with 'historyApiFallback: true' AND hardcoded proxy endpoints 
+  inside 'webpack.config.js', 'app.use(express.static(...))' will try to route requests 
+  for ALL routes, including React Router routes. Express server and React Router endpoints
+  must not overlap, or the former will break the latter.
+*/
+// app.use('/bundle.js', (req, res) => {
+//   console.log('Serving bundle.js');
+//   res.status(200).sendFile(path.join(__dirname, '../build/bundle.js'));
+// })
+
+// app.use('/styles.css', (req, res) => {
+//   console.log('Serving styles.css');
+//   res.status(200).sendFile(path.join(__dirname, '../build/styles.css'));
+// })
+
+// app.use('/', (req, res) => {
+//   console.log('Serving index.html');
+//   res.status(200).sendFile(path.join(__dirname, '../build/index.html'));
+// })
 
 // Global error handling
 ////// Create default error object
