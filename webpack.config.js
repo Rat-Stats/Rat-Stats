@@ -45,7 +45,14 @@ module.exports = {
     port: 8080,
     historyApiFallback: true,
     proxy: {
-      '/': 'http://localhost:3000',
+      // '/': 'http://localhost:3000',
+      /* 
+        Can't use '/' catchall proxying with React Router. Hardcode child endpoints 
+        to proxy for to avoid both React Router and express server trying to route 
+        for the same endpoints,'/test' being a second example of a child endpoint.
+      */
+      '/oauth': 'http://localhost:3000', 
+      '/test': 'http://localhost:3000'
     },
     hot: true,
   },
