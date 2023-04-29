@@ -1,7 +1,9 @@
 import React, { useState, useCallback } from 'react';
 import Counter from './counter/counter.js';
-import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
+import { GoogleMap, useJsApiLoader, InfoWindow } from '@react-google-maps/api';
 import { Avatar } from 'flowbite-react';
+import SightingForm from './SightingForm.jsx';
+
 
 const center = {
   lat: 40.747749,
@@ -15,6 +17,8 @@ function Homepage() {
   })
 
   const [map, setMap] = useState(null);
+  const [info, setInfo] = useState(false);
+  const [infoLocation, setInfoLocation] = useState({lat: 0, lng: 0})
 
   //
   const onLoad = useCallback((map) => {
@@ -32,6 +36,25 @@ function Homepage() {
   }, [])
 
 
+  /**
+   * 
+   * @param {*} e the event info of the mouse click
+   * https://developers.google.com/maps/documentation/javascript/examples/event-click-latlng
+   * Will return different events based on if the user clicked on a random point,
+   * or if they clicked on one of our markers
+   */
+  const handleMouseClick = (e) => {
+    const location = e.latLng.toJSON(); // location of the mouse click
+    setInfo(true);
+    setInfoLocation(location);
+  }
+
+  // will print out info window
+  const infoLoad = infoWindow => {
+    console.log('info window', infoWindow);
+  }
+
+
   return isLoaded ? (
     <div className="flex flex-col justify-center items-center h-screen w-screen p-10 py-3">
       {/*Header */}
@@ -46,15 +69,27 @@ function Homepage() {
         
       </div>
       
-      <div className="container border border-gray-700 shadow h-full w-screen"></div>
+      <div className="container border border-gray-700 shadow h-full w-screen">
+        <div>
+          <SightingForm/>
+        </div>
       {/* <GoogleMap
       mapContainerClassName="h-full w-full"
       center={center}
       zoom={10}
       onLoad={onLoad}
       onUnmount={onUnmount}
-      clickableIcons={false}>
+      clickableIcons={false}
+      onClick={handleMouseClick}>
+        {info && <InfoWindow
+        onLoad={infoLoad}
+        position={infoLocation}>
+          <div>
+            <h1>test</h1>
+          </div>
+        </InfoWindow>}
       </GoogleMap> */}
+      </div>
     </div>
   ):
   <></>
