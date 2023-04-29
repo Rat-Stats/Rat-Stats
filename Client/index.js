@@ -8,6 +8,7 @@ import Login from './Components/Login';
 import Homepage from './Components/Homepage';
 import Signup from './Components/Signup';
 import Profile from './Components/Profile';
+import ErrorPage from './Components/Error';
 
 import store from './store.js';
 import { Provider } from 'react-redux';
@@ -16,6 +17,7 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <Login />,
+    errorElement: <ErrorPage />
   },
   {
     path: '/homepage',
@@ -28,7 +30,7 @@ const router = createBrowserRouter([
   {
     path: '/profile',
     element: <Profile />
-  }
+  },
 ])
 
 const root = createRoot(document.getElementById("root"));
