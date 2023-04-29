@@ -3,8 +3,14 @@ import Counter from './counter/counter.js';
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 
 const center = {
-  lat: -3.745,
-  lng: -38.523,
+  lat: 40.747749,
+  lng: -73.993474 ,
+}
+
+const MapControl = () => {
+  return (
+    <button className="bg-blue-100">test</button>
+  )
 }
 
 function Homepage() {
@@ -21,8 +27,8 @@ function Homepage() {
     console.log('loaded');
     const bounds = new window.google.maps.LatLngBounds(center);
     map.fitBounds(bounds);
-
     setMap(map)
+    //map.controls[google.maps.ControlPosition.TOP_CENTER].push(MapControl());
   }, [])
 
   const onUnmount = useCallback((map) => {
@@ -32,14 +38,27 @@ function Homepage() {
 
 
   return isLoaded ? (
-    <GoogleMap
-    mapContainerClassName="h-screen w-screen"
-    center={center}
-    zoom={10}
-    onLoad={onLoad}
-    onUnmount={onUnmount}>
-
-    </GoogleMap>
+    <div className="flex flex-col justify-center items-center h-screen w-screen p-6">
+      {/*Header */}
+      <div className="flex flex-row w-screen h-1/6 justify-between items-end p-6">
+        <h1 className="text-4xl text-gray-600">Welcome to Rat Stats!</h1>
+        <div>
+          <a href={'/createSighting'} className="border shadow rounded-xl bg-col2 p-2">Create Sighting</a>
+          
+        </div>
+        
+      </div>
+      
+      {/* <div className="container border border-gray-700 shadow h-full w-screen"></div> */}
+      {/* <GoogleMap
+      mapContainerClassName="h-full w-full"
+      center={center}
+      zoom={10}
+      onLoad={onLoad}
+      onUnmount={onUnmount}
+      clickableIcons={false}>
+      </GoogleMap> */}
+    </div>
   ):
   <></>
 }
