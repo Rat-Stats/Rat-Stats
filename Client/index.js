@@ -9,6 +9,9 @@ import Homepage from './Components/Homepage';
 import Signup from './Components/Signup';
 import Profile from './Components/Profile';
 
+import store from './store.js';
+import { Provider } from 'react-redux';
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -30,5 +33,7 @@ const router = createBrowserRouter([
 
 const root = createRoot(document.getElementById("root"));
 root.render(
-  <RouterProvider router={router}/>
+  <Provider store={store}>
+    <RouterProvider router={router}/>
+  </Provider>
 );
