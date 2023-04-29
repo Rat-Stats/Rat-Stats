@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import Counter from './counter/counter.js';
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
+import { Avatar } from 'flowbite-react';
 
 const center = {
   lat: 40.747749,
@@ -38,18 +39,20 @@ function Homepage() {
 
 
   return isLoaded ? (
-    <div className="flex flex-col justify-center items-center h-screen w-screen p-6">
+    <div className="flex flex-col justify-center items-center h-screen w-screen p-10 py-3">
       {/*Header */}
-      <div className="flex flex-row w-screen h-1/6 justify-between items-end p-6">
+      <div className="flex flex-row w-screen h-1/6 justify-between items-end p-8 py-5">
         <h1 className="text-4xl text-gray-600">Welcome to Rat Stats!</h1>
-        <div>
-          <a href={'/createSighting'} className="border shadow rounded-xl bg-col2 p-2">Create Sighting</a>
-          
+        <div className="flex">
+          <a href={'/createSighting'} className="border shadow rounded-xl bg-col2 p-2 self-center">Create Sighting</a>
+          <a href={'/profile'}>
+            <Avatar className="px-10" rounded={true} size="md"/>
+          </a>
         </div>
         
       </div>
       
-      {/* <div className="container border border-gray-700 shadow h-full w-screen"></div> */}
+      <div className="container border border-gray-700 shadow h-full w-screen"></div>
       {/* <GoogleMap
       mapContainerClassName="h-full w-full"
       center={center}
