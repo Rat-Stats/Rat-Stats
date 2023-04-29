@@ -2,6 +2,7 @@ const path = require('path');
 const build = path.resolve(__dirname, 'build');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const Dotenv = require('dotenv-webpack');
 
 
 // typing
@@ -63,5 +64,6 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: 'styles.css'
     }),
+    new Dotenv(),
   ]
 }
