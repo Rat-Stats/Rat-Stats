@@ -8,6 +8,7 @@ const PORT = 3000;
 
 // Require in any controllers
 const oAuthRouter = require('./routes/oAuthRouter.js');
+const sqlRouter = require('./routes/sqlRouter.js');
 
 // Parse JSON and urlencoded in requests; parse cookies
 app.use(express.json());
@@ -24,6 +25,9 @@ app.use('/build', express.static(path.join(__dirname, '../build')));
 
 // Routing for oauth endpoint
 app.use('/oauth', oAuthRouter);
+
+// Routing for sql endpoint to query all tables
+app.use('/sql', sqlRouter);
 
 // Global error handling
 ////// Create default error object
