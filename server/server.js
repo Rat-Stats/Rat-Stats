@@ -4,11 +4,11 @@ const express = require('express');
 const mongoose = require ('mongoose');
 const cookieParser = require('cookie-parser');
 const app = express();
-const PORT = 3000;
 
-// Require in any controllers
 const sqlRouter = require('./routes/sqlRouter.js');
 const oaRouter = require('./routes/oaRouter.js');
+mongoose.connect(process.env.MDB_URI);
+const PORT = 3000;
 
 // Parse incoming data in request body or cookies
 app.use(express.json());
