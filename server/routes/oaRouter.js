@@ -43,7 +43,7 @@ router.use('/isloggedin', oaController.oaCheckSession, (req, res) => {
   // Change endpoints for production build to localhost:3000, find way to use 
   // relative endpoints without overriding React Router
   if (res.locals.activeSession) res.status(200).redirect('http://localhost:8080/homepage');
-  else res.status(200).redirect('http://localhost:8080/login');
+  else res.status(200).redirect('http://localhost:8080/');
 });
 
 module.exports = router;
