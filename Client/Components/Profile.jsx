@@ -13,8 +13,10 @@ export default function Profile() {
   // use effect on load
   useEffect(() => {
     // ADD FETCH REQUEST ONCE GET USER IS IMPLEMENTED
-    
+    function getAllUserSitings(user) {
 
+    }
+    getAllUserSitings(currentState.username)
   },[currentState])
 
   return (

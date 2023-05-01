@@ -79,7 +79,9 @@ function Homepage() {
 
   // use effect to update the user in sightings slice once homepage is reached
   useEffect(() => {
-    
+  // create markerList by fetching all the sightings
+
+
   // const userObj_testing = {
   //   username: 'new',
   //   password: '123',
@@ -111,8 +113,10 @@ function Homepage() {
     // dispatch(UPDATE_USER(userObj_testing.username))
   },[])
 
-  function handleMarkerListClick() {
+  function handleMarkerListClick(e) {
+    console.log(e);
 
+    // when it's clicked on, look in the database for a specific position
   }
 
   const addToMarkerList = (position) => {

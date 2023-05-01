@@ -21,38 +21,7 @@ export default function SightingForm ({username, addToMarkerList, marketListInfo
     e.preventDefault(); // prevents the page from reloading
     
     // Do some database posting
-
-    // const ratResponse = await fetch(`/rat/${ratName}`, {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   }
-    // })
-    // const data = await ratResponse.json();
-    // if (data === null) {
-    //   const sendRatResponse = await fetch('')
-    // }
-
-    //   // try catch block to post sighting
-    // try {
-    //   const sightingResponse = await fetch('/rat',{
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify({
-    //       name: ratName,
-    //       image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Rattus_norvegicus_1.jpg/220px-Rattus_norvegicus_1.jpg',
-    //       description: description,
-    //       alive: true,
-    //     })
-    //   })
-    //   const data2 = await sightingResponse.json();
-    //   console.log(data2);
-    // }
-    // catch {
-    //   console.log('error, failed to post sighting')
-    // }
+    const locationString = JSON.stringify({lat: lat, lng: lng})
 
     addToMarkerList({lat: lat, lng: lng})
 
