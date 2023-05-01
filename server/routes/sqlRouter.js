@@ -19,7 +19,7 @@ router.get('/rat/:name',sqlController.getRat,(req, res) => {
   }
 );
 
-/sql/getallsightings
+
 
 //get sighting info
 router.post('/getallsightings', sqlController.getAllSightings, (req, res) => {

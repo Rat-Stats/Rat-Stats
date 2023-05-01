@@ -149,7 +149,7 @@ function Homepage() {
         <div>
           <SightingForm/>
         </div>
-      </div>
+      </div> */}
       {/** Box holding the google maps stuff */}
       <div className="container border border-gray-700 shadow h-full w-screen">
         <GoogleMap
