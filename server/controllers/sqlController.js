@@ -1,6 +1,6 @@
-console.log('Importing sqlController');
 const db = require('../../server/models/sqlModels.js');
 const sqlController = {};
+
 
 
 //get user profile

@@ -86,7 +86,7 @@ function Homepage() {
         
       </div>
       
-      <div className="container border border-gray-700 shadow h-full w-screen">
+      {/* <div className="container border border-gray-700 shadow h-full w-screen">
         <div>
           <SightingForm/>
         </div>

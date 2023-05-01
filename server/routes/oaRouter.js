@@ -38,7 +38,7 @@ oaController.oaStartSession,
 // Step 9: If user is logged in (always yes if coming from /redirected endpoint), 
 // direct user to their homepage. Otherwise, direct them to login page.
 router.use('/isloggedin', oaController.oaCheckSession, (req, res) => {
-  console.log('Hit oaRouter.js /isloggedin router callback');
+  // console.log('Hit oaRouter.js /isloggedin router callback');
   console.log('Active session: ', res.locals.activeSession);
   // Change endpoints for production build to localhost:3000, find way to use 
   // relative endpoints without overriding React Router
