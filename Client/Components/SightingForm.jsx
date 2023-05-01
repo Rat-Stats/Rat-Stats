@@ -5,7 +5,7 @@ import {
   UPDATE_DESCRIPTION,
 } from '../Slices/sightingSlice';
 
-export default function SightingForm ({username, addToMarkerList}) {
+export default function SightingForm ({username, addToMarkerList, marketListInfo}) {
   const dispatch = useDispatch();
   // this are selectors that we use with redux in order to grab the lattitude
   // and longitude stored in state

@@ -20,7 +20,7 @@ export default function Login() {
 
   const handleLoginClick = () => {
     const username = userState;
-
+    // navigate('/homepage');
     fetch('/user/login/', {
       method: 'POST',
       headers: {
@@ -70,7 +70,7 @@ export default function Login() {
             <a className="border shadow bg-red-500 justify-self-center" href={'/signup'}>Signup</a>
 
             {/* <button className="border shadow bg-green-500 justify-self-center"  onClick={handleLoginClick} >Login</button> */}
-            <a className="border shadow bg-green-500 justify-self-center"  href={'/Homepage'} onClick={handleLoginClick} >Login</a>
+            <button className="border shadow bg-green-500 justify-self-center" onClick={handleLoginClick} >Login</button>
 
             <a className="border shadow bg-green-500 justify-self-center" href={'/oauth/login'}>Login with Tinder</a>
           </div>
