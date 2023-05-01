@@ -103,14 +103,14 @@ function Homepage() {
   //   //   console.log(res);
   //   // })
 
-  //   // populate state object with fetched request
-  //   dispatch(updateUser(userObj_testing.username))
-  //   dispatch(updatePassword(userObj_testing.password))
-  //   dispatch(updateSightings(userObj_testing.number_sightings));
-  //   dispatch(updateFavorite_Rat(userObj_testing.favorite_rat));
-  //   dispatch(updateCreated_At(userObj_testing.created_at));
+    // populate state object with fetched request
+    // dispatch(updateUser(userObj_testing.username))
+    // dispatch(updatePassword(userObj_testing.password))
+    // dispatch(updateSightings(userObj_testing.number_sightings));
+    // dispatch(updateFavorite_Rat(userObj_testing.favorite_rat));
+    // dispatch(updateCreated_At(userObj_testing.created_at));
 
-  //   dispatch(UPDATE_USER(userObj_testing.username))
+    // dispatch(UPDATE_USER(userObj_testing.username))
   },[])
 
   function handleMarkerListClick() {
