@@ -12,15 +12,15 @@ export default function Signup() {
 
     if (password === verifyPassword) {
       fetch('/user/signup/', {
-        method: 'POST',
+        method: "POST",
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ username, password }),
       })
-        .catch(error => {
-          console.error('Error:', error);
-        });
+      .catch(error => {
+        console.error('Error:', error);
+      });
     } 
   };
 
