@@ -12,8 +12,9 @@ import { updateUser, updatePassword } from '../Slices/userSlice';
  */
 export default function Login() {
   const dispatch = useDispatch();
-  const [password, setPassword] = useState('')
+  // const [password, setPassword] = useState('')
   const userState = useSelector((state) => state.user.username);
+  const password = useSelector((state) => state.user.password);
   const navigate = useNavigate();
   // user12
   // pw: password123
@@ -70,7 +71,7 @@ export default function Login() {
             <a className="border shadow bg-red-500 justify-self-center" href={'/signup'}>Signup</a>
 
             {/* <button className="border shadow bg-green-500 justify-self-center"  onClick={handleLoginClick} >Login</button> */}
-            <a className="border shadow bg-green-500 justify-self-center"  href={'/Homepage'} onClick={handleLoginClick} >Login</a>
+            <button className="border shadow bg-green-500 justify-self-center" onClick={handleLoginClick} >Login</button>
 
             <a className="border shadow bg-green-500 justify-self-center" href={'/oauth/login'}>Login with Tinder</a>
           </div>
