@@ -14,6 +14,7 @@ export default function Login() {
 
     fetch('/user/login/', {
       method: 'POST',
+      redirect: 'follow',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -49,7 +50,7 @@ export default function Login() {
           <div className="flex flex-row justify-between p-4">
             <a className="border shadow bg-red-500 justify-self-center" href={'/signup'}>Signup</a>
 
-            <a className="border shadow bg-green-500 justify-self-center"  onClick={handleLoginClick}>Login</a>
+            <button className="border shadow bg-green-500 justify-self-center"  onClick={handleLoginClick}>Login</button>
 
             <a className="border shadow bg-green-500 justify-self-center" href={'/oauth/login'}>Login with Tinder</a>
           </div>
