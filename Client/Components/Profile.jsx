@@ -37,6 +37,7 @@ export default function Profile() {
     getAllUserSitings(currentState.username)
   },[])
 
+  // Populates the sightings when the sighting request completes
   useEffect(() => {
     const temp = [];
     for (let i = 0; i < sightings.length; i++) {
