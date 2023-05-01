@@ -21,7 +21,7 @@ export default function Login() {
 
   const handleLoginClick = () => {
     const username = userState;
-
+    // navigate('/homepage');
     fetch('/user/login/', {
       method: 'POST',
       headers: {
