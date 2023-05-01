@@ -15,7 +15,7 @@ router.post('/signup', userController.createUser,(req,res) => {
 })
 
 //verify user
-router.post('/login',
+router.use('/login',
   userController.verifyUser,
   cookieController.setSSIDCookie,
   (req,res) => {

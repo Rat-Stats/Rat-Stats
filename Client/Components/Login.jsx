@@ -22,6 +22,9 @@ export default function Login() {
 
     fetch('/user/login/', {
       method: 'POST',
+      redirect: 'follow',
+      crossorigin: true,
+      mode: 'no-cors',
       headers: {
         'Content-Type': 'application/json',
       },
