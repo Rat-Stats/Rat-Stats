@@ -1,6 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+// import { updateUser } from '../Slices/userSlice';
 
 export default function Signup() {
+  const dispatch = useDispatch();
+  const [password, setPassword] = useState('');
+  const [verifyPassword, setVerifyPassword] = useState('');
+
+  const handleSignupClick = () => {
+    const username = document.getElementById('Username').value;
+
+    if (password === verifyPassword) {
+      fetch('/user/signup/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    } 
+  };
+
   return (
     <div className="grid bg-blue-200 shadow w-screen h-screen">
           <div className="self-center justify-self-center border shadow bg-blue-500 p-8 rounded-xl w-1/2 h-1/2">
@@ -27,7 +50,7 @@ export default function Signup() {
               {/*re-enter password*/}
               <div>
                 <input type="password" 
-                id="password" 
+                id="verify-password" 
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
                 placeholder="Re-Enter Password" 
                 required/>
