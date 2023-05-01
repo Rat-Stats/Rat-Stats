@@ -44,10 +44,30 @@ sqlController.getRat = (req, res, next) => {
     });
 };
 
-//get sighting info
+//get sighting info for a single location
 sqlController.getSighting = (req, res, next) => {
   const text = "SELECT u.username AS username, s.location AS location, s.time AS time, s.description AS description, r.name AS rat_name, r.image AS rat_image, r.description AS rat_description, r.alive AS rat_alive, r.times_sighted AS times_sighted FROM sighting s JOIN users u ON s.users_id=u._id JOIN rats r ON s.rats_id=r._id WHERE s.location=$1;"
   const values = [req.params.location];
+  console.log('values: ',values)
+  db.query(text, values)
+    .then((data) => {
+      if (data.rows.length === 0) {
+        return res.status(200).json({ message: 'sighting not found' });
+      }
+      console.log('data : ',data.rows[0])
+      res.locals.sighting = data.rows[0];
+      return next();
+    })
+    .catch((err) => {
+      console.log(err);
+      return next(err);
+    });
+};
+
+// get sighting info for single location--req.body version
+sqlController.getSingleSighting = (req, res, next) => {
+  const text = "SELECT u.username AS username, s.location AS location, s.time AS time, s.description AS description, r.name AS rat_name, r.image AS rat_image, r.description AS rat_description, r.alive AS rat_alive, r.times_sighted AS times_sighted FROM sighting s JOIN users u ON s.users_id=u._id JOIN rats r ON s.rats_id=r._id WHERE s.location=$1;"
+  const values = [req.body.location];
   console.log('values: ',values)
   db.query(text, values)
     .then((data) => {
@@ -104,9 +124,72 @@ sqlController.addRat = (req, res, next) => {
 //post: create sighting info
 sqlController.addSighting = (req, res, next) => {
   console.log('entering addSighting')
-  const text = 'INSERT INTO rats ("rats_id", "users_id", "location", "time", "description") VALUES ($1,$2,$3,$4,$5) RETURNING *;';
+  const text = 'INSERT INTO sightings ("rats_id", "users_id", "location", "time", "description") VALUES ($1,$2,$3,$4,$5) RETURNING *;';
 
   const values = [req.body.rats_id, req.body.users_id, req.body.location, 'NOW()', req.body.description];
+
+  db.query(text, values)
+    .then((data) => {
+      console.log("data: ",data.rows)
+      return next();
+    })
+    .catch((err) => {
+      console.log(err);
+      return next(err);
+    });
+};
+
+// Create sighting alt version, checking for existing rat beforehand
+sqlController.addSightingAlt = (req, res, next) => {
+  console.log('entering addSightingAlt')
+  const getRatText = 'SELECT _id FROM rats WHERE name=$1';
+  const getRatValues = [req.body.rat_name];
+  db.query(getRatText, getRatValues)
+  .then((data) => {
+    const rat = data.rows[0];
+    if (rat._id) {
+      // req.body.description,location, rat_name, username
+      const text = 'INSERT INTO sightings ("rats_id", "users_id", "location", "time", "description") VALUES ($1,$2,$3,$4,$5) RETURNING *;';
+      const values = [rat._id, req.body.users_id, req.body.location, 'NOW()', req.body.description];
+
+      db.query(text, values)
+        .then((data) => {
+          console.log("data: ",data.rows)
+          return next();
+        })
+        .catch((err) => {
+          console.log(err);
+          return next(err);
+      });
+    } else {
+      // req.body.description,location, rat_name, username
+      const text = 'INSERT INTO rats ("name", "image", "description", "alive", "times_sighted") VALUES ($1,$2,$3,$4,$5) RETURNING *;';
+      const values = [req.body.rat_name, 'no image', 'A gigantic rat.', true, 1];
+
+      db.query(text, values)
+        .then((data) => {
+          console.log("data: ",data.rows)
+
+          const ISText = 'INSERT INTO sightings ("rats_id", "users_id", "location", "time", "description") VALUES ($1,$2,$3,$4,$5) RETURNING *;';
+          const ISValues = [rat._id, req.body.users_id, req.body.location, 'NOW()', req.body.description];
+
+          db.query(ISText, ISValues)
+            .then((data) => {
+              console.log("data: ",data.rows)
+              return next();
+            })
+            .catch((err) => {
+              console.log(err);
+              return next(err);
+          });         
+        })
+        .catch((err) => {
+          console.log(err);
+          return next(err);
+      });
+    }
+  })
+ 
 
   db.query(text, values)
     .then((data) => {
