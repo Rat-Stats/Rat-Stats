@@ -11,7 +11,7 @@ router.get('/',cookieController.setCookie,(req,res)=> {
 
 //signup
 router.post('/signup', userController.createUser,(req,res) => {
-  res.status(200).redirect('/homepage');
+  res.status(200).redirect('http://localhost:8080/homepage');
 })
 
 //verify user
@@ -20,7 +20,7 @@ router.use('/login',
   cookieController.setSSIDCookie,
   (req,res) => {
   console.log('login')
-  res.status(200).redirect('http://google.com');
+  res.status(200).json(res.locals.user);
 })
 
 module.exports = router;

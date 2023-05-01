@@ -29,7 +29,7 @@ userController.createUser = async (req, res, next) => {
 
 //Verify User
 userController.verifyUser = async (req, res, next) => {
-
+  console.log(req.body)
   try {
     const { username, password } = req.body;
   
