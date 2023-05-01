@@ -5,7 +5,7 @@ require('dotenv').config();
 
 // ID and secret given by GitHub when we registered our app
 const CLIENT_ID = process.env.CLIENT_ID;
-const CLIENT_SILENT = process.env.CLIENT_SILENT;
+const CLIENT_SECRET = process.env.CLIENT_SECRET;
 // A string used to guard against third party attacks
 const STATE = process.env.STATE;
 
