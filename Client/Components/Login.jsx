@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUser } from '../Slices/userSlice';
+import { useNavigate } from 'react-router-dom';
 
 /**
  * 
@@ -13,7 +14,7 @@ export default function Login() {
   const dispatch = useDispatch();
   const [password, setPassword] = useState('')
   const userState = useSelector((state) => state.user.username);
-  
+  const navigate = useNavigate();
   // user12
   // pw: password123
 
@@ -21,18 +22,27 @@ export default function Login() {
     const username = userState;
 
     fetch('/user/login/', {
-      method: 'POST',
-      redirect: 'follow',
-      crossorigin: true,
-      mode: 'no-cors',
+      method: "POST",
+      // redirect:"follow",
+      // crossorigin:true,
+      // mode:"no-cors",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ username, password }),
     })
-      .catch(error => {
-        console.error('Error:', error);
-      });
+    .then((data) => data.json())
+    .then((parsed) => {
+      console.log(parsed);
+      if(parsed.username) {
+        console.log('Found')
+        // redirect here
+        navigate('/homepage');
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    }); 
   };
 
   return (

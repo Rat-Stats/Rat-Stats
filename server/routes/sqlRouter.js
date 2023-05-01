@@ -14,7 +14,7 @@ router.get('/profile/:username',sqlController.getProfile,(req, res) => {
 );
 
 //get rat info
-router.get('/rat/:_id',sqlController.getRat,(req, res) => {
+router.get('/rat/:name',sqlController.getRat,(req, res) => {
   res.status(200).json(res.locals.rat);
   }
 );

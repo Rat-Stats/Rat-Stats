@@ -20,7 +20,7 @@ router.use('/login',
   cookieController.setSSIDCookie,
   (req,res) => {
   console.log('login')
-  res.status(200).redirect('http://localhost:8080/homepage');
+  res.status(200).json(res.locals.user);
 })
 
 module.exports = router;
