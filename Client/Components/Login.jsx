@@ -32,7 +32,7 @@ export default function Login() {
           </div>
           <div className="flex flex-row justify-between p-4">
             <a className="border shadow bg-red-500 justify-self-center" href={'/signup'}>Signup</a>
-            <a className="border shadow bg-green-500 justify-self-center" href={'/homepage'}>Login</a>
+            <a className="border shadow bg-green-500 justify-self-center" href={'/isloggedin'}>Login</a>
             <a className="border shadow bg-green-500 justify-self-center" href={'/oauth/login'}>Login with Tinder</a>
           </div>
         </div>

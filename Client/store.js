@@ -4,7 +4,8 @@ import sightingReducer from './Slices/sightingSlice.js';
 
 export default configureStore({
   reducer: {
-    counter: counterReducer,
+   // user: userReducer,
     sighting: sightingReducer,
+    //user: userReducer,
   }
 })
