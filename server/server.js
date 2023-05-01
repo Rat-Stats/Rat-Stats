@@ -7,7 +7,8 @@ const app = express();
 
 const sqlRouter = require('./routes/sqlRouter.js');
 const oaRouter = require('./routes/oaRouter.js');
-mongoose.connect(process.env.MDB_URI);
+const userRouter = require('./routes/userRouter.js');
+
 const PORT = 3000;
 
 // Parse incoming data in request body or cookies
@@ -17,8 +18,12 @@ app.use(cookieParser());
 
 // Routing for oauth endpoint
 app.use('/oauth', oaRouter);
-// Routing for sql endpoint to query all tables
+
+// Routing for sql endpoint to query users, rats,sighting tables
 app.use('/sql', sqlRouter);
+
+// Routing for user login and register
+app.use('/user', userRouter);
 
 // Routes for serving static files in production mode
 /*
