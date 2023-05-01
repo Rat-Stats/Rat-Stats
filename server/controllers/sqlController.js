@@ -12,7 +12,7 @@ sqlController.getProfile = (req, res, next) => {
   db.query(text, values)
     .then((data) => {
       if (data.rows.length === 0) {
-        return res.status(404).json({ message: 'User not found' });
+        return res.status(404).json({ message: 'Profile not found' });
       }
       console.log('data : ',data.rows[0])
       res.locals.profile = data.rows[0];
@@ -26,16 +26,36 @@ sqlController.getProfile = (req, res, next) => {
 
 //get rats info
 sqlController.getRat = (req, res, next) => {
-  const text = 'SELECT * FROM rats WHERE "_id" = $1';
-  const values = [req.params._id];
+  const text = 'SELECT * FROM rats WHERE "name" = $1';
+  const values = [req.params.name];
   console.log('values: ',values)
   db.query(text, values)
     .then((data) => {
       if (data.rows.length === 0) {
-        return res.status(404).json({ message: 'User not found' });
+        return res.status(200).json({ message: 'Rat not found' });
       }
       console.log('data : ',data.rows[0])
       res.locals.rat = data.rows[0];
+      return next();
+    })
+    .catch((err) => {
+      console.log(err);
+      return next(err);
+    });
+};
+
+//get sighting info
+sqlController.getSighting = (req, res, next) => {
+  const text = "SELECT u.username AS username, s.location AS location, s.time AS time, s.description AS description, r.name AS rat_name, r.image AS rat_image, r.description AS rat_description, r.alive AS rat_alive, r.times_sighted AS times_sighted FROM sighting s JOIN users u ON s.users_id=u._id JOIN rats r ON s.rats_id=r._id WHERE s.location=$1;"
+  const values = [req.params.location];
+  console.log('values: ',values)
+  db.query(text, values)
+    .then((data) => {
+      if (data.rows.length === 0) {
+        return res.status(200).json({ message: 'sighting not found' });
+      }
+      console.log('data : ',data.rows[0])
+      res.locals.sighting = data.rows[0];
       return next();
     })
     .catch((err) => {

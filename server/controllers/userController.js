@@ -6,7 +6,7 @@ const userController = {};
 
 //createUser - create and save a new User into the database.
 userController.createUser = async (req, res, next) => {
-
+  console.log(req.body)
   try {
     const { username, password } = req.body;
     
@@ -17,8 +17,6 @@ userController.createUser = async (req, res, next) => {
     const user = await User.create({ username, password });
     
     res.locals.user = user;
-
-    
 
     return next();
 

@@ -19,13 +19,18 @@ router.get('/rat/:name',sqlController.getRat,(req, res) => {
   }
 );
 
-/sql/getallsightings
+// /sql/getallsightings
+router.get('/sighting/:location',sqlController.getSighting,(req, res) => {
+  res.status(200).json(res.locals.sighting);
+  }
+);
 
 //get sighting info
 router.post('/getallsightings', sqlController.getAllSightings, (req, res) => {
   console.log('Hit /getsightings anon callback, sightings: ', res.locals.sightings);
   res.status(200).json(res.locals.sightings);
 });
+
 
 //create user profile
 router.post('/profile',sqlController.addProfile,(req, res) => {
@@ -38,6 +43,7 @@ router.post('/rat',sqlController.addRat,(req, res) => {
   res.status(200).json('rat added')
   }
 );
+
 //create sighting
 router.post('/sighting',sqlController.addSighting,(req, res) => {
   res.status(200).json('sighting added')
