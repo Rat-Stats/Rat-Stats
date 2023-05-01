@@ -8,6 +8,7 @@ const app = express();
 const sqlRouter = require('./routes/sqlRouter.js');
 const oaRouter = require('./routes/oaRouter.js');
 const userRouter = require('./routes/userRouter.js');
+mongoose.connect(process.env.MDB_URI);
 
 const PORT = 3000;
 
