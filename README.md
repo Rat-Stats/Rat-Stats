@@ -1,4 +1,8 @@
 # Rat-Stats
-This is a test PR.
-rt ststs
-Sherry feature
+This is an app that was made by rats for rats.
+
+Description:
+
+Tech Stack:
+
+Technical Challenges:

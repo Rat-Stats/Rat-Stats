@@ -3,6 +3,7 @@ import { GoogleMap, useJsApiLoader, InfoWindow, Marker } from '@react-google-map
 import { Avatar } from 'flowbite-react';
 import SightingForm from './SightingForm.jsx';
 import  { icon } from 'leaflet'
+import { useNavigate, Link } from 'react-router-dom';
 
 // for redux
 import { useDispatch, useSelector } from 'react-redux';
@@ -25,21 +26,19 @@ const center = {
   lng: -73.993474 ,
 }
 
-const customIcon = icon({
-
-})
-
 function Homepage() {
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script', 
     googleMapsApiKey: process.env.MAPS_API,
   })
-
+  const Navigate = useNavigate();
+  
   const [map, setMap] = useState(null);
   const [info, setInfo] = useState(false);
   const [infoLocation, setInfoLocation] = useState({lat: 0, lng: 0})
 
   const [markerList, setMarkerList] = useState([])
+  const [markerListInfo, setMarkerListInfo] = useState([]) // for testing until backend works
 
   const dispatch = useDispatch();
   const password = useSelector((state) => state.user.password);
@@ -80,27 +79,29 @@ function Homepage() {
 
   // use effect to update the user in sightings slice once homepage is reached
   useEffect(() => {
-    
-  const userObj_testing = {
-    username: 'new',
-    password: '123',
-    number_sightings: 3,
-    favorite_rat: 'fat jody',
-    created_at: '2023-04-30'
-  }
+  // create markerList by fetching all the sightings
 
-    // Fetch the current user from state, 
-    // fetch('/user/login/', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({username, password})
-    // })
-    // .then((res) => res.json())
-    // .then((res)=>{
-    //   console.log(res);
-    // })
+
+  // const userObj_testing = {
+  //   username: 'new',
+  //   password: '123',
+  //   number_sightings: 3,
+  //   favorite_rat: 'fat jody',
+  //   created_at: '2023-04-30'
+  // }
+
+  //   // Fetch the current user from state, 
+  //   // fetch('/user/login/', {
+  //   //   method: 'POST',
+  //   //   headers: {
+  //   //     'Content-Type': 'application/json',
+  //   //   },
+  //   //   body: JSON.stringify({username, password})
+  //   // })
+  //   // .then((res) => res.json())
+  //   // .then((res)=>{
+  //   //   console.log(res);
+  //   // })
 
     // populate state object with fetched request
     // dispatch(updateUser(userObj_testing.username))
@@ -112,9 +113,10 @@ function Homepage() {
     // dispatch(UPDATE_USER(userObj_testing.username))
   },[])
 
-  // will print out info window
-  const infoLoad = infoWindow => {
-    // console.log('info window', infoWindow);
+  function handleMarkerListClick(e) {
+    console.log(e);
+
+    // when it's clicked on, look in the database for a specific position
   }
 
   const addToMarkerList = (position) => {
@@ -125,6 +127,7 @@ function Homepage() {
       {url: 'https://i.ibb.co/TR1B5G5/My-project-2.png',
       scaledSize: new window.google.maps.Size(150, 100)}
     }
+    onClick={handleMarkerListClick}
     ></Marker>
     setMarkerList(current => [...current, newMarker]); // adds a new marker to the list
   }
@@ -136,18 +139,17 @@ function Homepage() {
       <div className="flex flex-row w-screen h-1/6 justify-between items-end p-8 py-5">
         <h1 className="text-4xl text-gray-600">Welcome to Rat Stats!</h1>
         <div className="flex">
-          <a href={'/profile'}>
+          <Link to={'/profile'}>
             <Avatar className="px-10" rounded={true} size="md"/>
-          </a>
+          </Link>
         </div>
-        
       </div>
       
       {/* <div className="container border border-gray-700 shadow h-full w-screen">
         <div>
           <SightingForm/>
         </div>
-      </div>
+      </div> */}
       {/** Box holding the google maps stuff */}
       <div className="container border border-gray-700 shadow h-full w-screen">
         <GoogleMap
@@ -161,10 +163,9 @@ function Homepage() {
           {markerList}
           {info && <InfoWindow
           key={`${infoLocation.lat}-${infoLocation.lng}`} // Add this line
-          onLoad={infoLoad}
           position={infoLocation}>
             <div>
-              <SightingForm username={username} addToMarkerList={addToMarkerList}/>
+              <SightingForm username={username} addToMarkerList={addToMarkerList} marketListInfo={setMarkerListInfo}/>
             </div>
           </InfoWindow>}
         </GoogleMap>
