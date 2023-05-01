@@ -7,11 +7,17 @@ export const userSlice = createSlice({
     number_sightings: 0,
     profile_picture: '',
     favorite_rat: '',
-    created_at: Date.now(),
+    created_at: ''
   }, 
   reducers: {
-    UPDATE_USER: (state, action) => {
-      state.username = action.payload.username
-    }
+    // updates the username
+    updateUser: (state, action) => {
+      //const { username } = action.payload
+      state.username = action.payload;
+    },
   }
 })
+
+export const { updateUser } = userSlice.actions;
+
+export default userSlice.reducer;

@@ -1,5 +1,4 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import Counter from './counter/counter.js';
 import { GoogleMap, useJsApiLoader, InfoWindow } from '@react-google-maps/api';
 import { Avatar } from 'flowbite-react';
 import SightingForm from './SightingForm.jsx';
