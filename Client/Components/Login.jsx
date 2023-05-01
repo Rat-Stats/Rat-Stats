@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 // redux
 import { useDispatch, useSelector } from 'react-redux';
-import { updateUser } from '../Slices/userSlice';
+import { updateUser, updatePassword } from '../Slices/userSlice';
 
 /**
  * 
@@ -24,7 +24,7 @@ export default function Login() {
       method: 'POST',
       redirect: 'follow',
       crossorigin: true,
-      mode: 'no-cors',
+      mode: 'cors',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -44,7 +44,7 @@ export default function Login() {
           <div>
             <input type="text" 
             id="username" 
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
             placeholder="username" 
             onChange={(e) => dispatch(updateUser(e.target.value))}
             required/>
@@ -54,15 +54,16 @@ export default function Login() {
           <div>
             <input type="password" 
             id="password" 
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
             placeholder="Password" 
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => dispatch(updatePassword(e.target.value))}
             required/>
           </div>
           <div className="flex flex-row justify-between p-4">
             <a className="border shadow bg-red-500 justify-self-center" href={'/signup'}>Signup</a>
 
-            <button className="border shadow bg-green-500 justify-self-center"  onClick={handleLoginClick} >Login</button>
+            {/* <button className="border shadow bg-green-500 justify-self-center"  onClick={handleLoginClick} >Login</button> */}
+            <a className="border shadow bg-green-500 justify-self-center"  href={'/Homepage'} onClick={handleLoginClick} >Login</a>
 
             <a className="border shadow bg-green-500 justify-self-center" href={'/oauth/login'}>Login with Tinder</a>
           </div>

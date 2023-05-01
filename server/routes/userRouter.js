@@ -20,7 +20,8 @@ router.use('/login',
   cookieController.setSSIDCookie,
   (req,res) => {
   console.log('login')
-  res.status(200).redirect('http://google.com');
+  res.status(200).send(res.locals.user)
+  // res.status(200).redirect('http://google.com');
 })
 
 module.exports = router;
