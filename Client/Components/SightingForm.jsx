@@ -5,18 +5,54 @@ import {
   UPDATE_DESCRIPTION,
 } from '../Slices/sightingSlice';
 
-export default function SightingForm () {
+export default function SightingForm ({username, addToMarkerList}) {
   const dispatch = useDispatch();
   // this are selectors that we use with redux in order to grab the lattitude
   // and longitude stored in state
   const sightingState = useSelector((state) => state.sighting.location);
-  // const { lat, lng } = sightingState; // extracts them from state
-  let lat = 80.3
-  let lng = 30.3
+  const ratName = useSelector((state) => state.sighting.ratName);
+  const description = useSelector((state) => state.sighting.description);
+  const { lat, lng } = sightingState; // extracts them from state
 
-  function onClick(e) {
+  async function onClick(e) {
     e.preventDefault(); // prevents the page from reloading
-    console.log('Ive been clicked!!'); 
+    
+    // Do some database posting
+
+    // const ratResponse = await fetch(`/rat/${ratName}`, {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   }
+    // })
+    // const data = await ratResponse.json();
+    // if (data === null) {
+    //   const sendRatResponse = await fetch('')
+    // }
+
+    //   // try catch block to post sighting
+    // try {
+    //   const sightingResponse = await fetch('/rat',{
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify({
+    //       name: ratName,
+    //       image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Rattus_norvegicus_1.jpg/220px-Rattus_norvegicus_1.jpg',
+    //       description: description,
+    //       alive: true,
+    //     })
+    //   })
+    //   const data2 = await sightingResponse.json();
+    //   console.log(data2);
+    // }
+    // catch {
+    //   console.log('error, failed to post sighting')
+    // }
+
+    addToMarkerList({lat: lat, lng: lng})
+
   }
 
   return (
