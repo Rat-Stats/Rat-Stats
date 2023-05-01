@@ -19,7 +19,8 @@ router.post('/login',
   userController.verifyUser,
   cookieController.setSSIDCookie,
   (req,res) => {
-  res.status(200).redirect('/homepage');
+  console.log('login')
+  res.status(200).redirect('http://google.com');
 })
 
 module.exports = router;
