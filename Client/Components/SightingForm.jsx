@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   UPDATE_RAT,
   UPDATE_DESCRIPTION,
+  UPDATE_USER
 } from '../Slices/sightingSlice';
 
 export default function SightingForm ({username, addToMarkerList, marketListInfo}) {
@@ -13,6 +14,8 @@ export default function SightingForm ({username, addToMarkerList, marketListInfo
   const ratName = useSelector((state) => state.sighting.ratName);
   const description = useSelector((state) => state.sighting.description);
   const { lat, lng } = sightingState; // extracts them from state
+
+  dispatch(UPDATE_USER(useSelector((state) => state.user.username)));
 
   async function onClick(e) {
     e.preventDefault(); // prevents the page from reloading

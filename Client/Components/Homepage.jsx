@@ -3,6 +3,7 @@ import { GoogleMap, useJsApiLoader, InfoWindow, Marker } from '@react-google-map
 import { Avatar } from 'flowbite-react';
 import SightingForm from './SightingForm.jsx';
 import  { icon } from 'leaflet'
+import { useNavigate, Link } from 'react-router-dom';
 
 // for redux
 import { useDispatch, useSelector } from 'react-redux';
@@ -25,16 +26,13 @@ const center = {
   lng: -73.993474 ,
 }
 
-const customIcon = icon({
-
-})
-
 function Homepage() {
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script', 
     googleMapsApiKey: process.env.MAPS_API,
   })
-
+  const Navigate = useNavigate();
+  
   const [map, setMap] = useState(null);
   const [info, setInfo] = useState(false);
   const [infoLocation, setInfoLocation] = useState({lat: 0, lng: 0})
@@ -137,11 +135,10 @@ function Homepage() {
       <div className="flex flex-row w-screen h-1/6 justify-between items-end p-8 py-5">
         <h1 className="text-4xl text-gray-600">Welcome to Rat Stats!</h1>
         <div className="flex">
-          <a href={'/profile'}>
+          <Link to={'/profile'}>
             <Avatar className="px-10" rounded={true} size="md"/>
-          </a>
+          </Link>
         </div>
-        
       </div>
       
       {/* <div className="container border border-gray-700 shadow h-full w-screen">
@@ -162,7 +159,6 @@ function Homepage() {
           {markerList}
           {info && <InfoWindow
           key={`${infoLocation.lat}-${infoLocation.lng}`} // Add this line
-          onLoad={infoLoad}
           position={infoLocation}>
             <div>
               <SightingForm username={username} addToMarkerList={addToMarkerList} marketListInfo={setMarkerListInfo}/>
