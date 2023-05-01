@@ -20,7 +20,7 @@ export default function SightingForm ({username, addToMarkerList, marketListInfo
   async function onClick(e) {
     e.preventDefault(); // prevents the page from reloading
     
-    // Do some database posting
+    // TODO: Post sighting to database
     const locationString = JSON.stringify({lat: lat, lng: lng})
 
     addToMarkerList({lat: lat, lng: lng})

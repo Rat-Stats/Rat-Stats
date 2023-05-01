@@ -33,13 +33,16 @@ function Homepage() {
   })
   const Navigate = useNavigate();
   
+  // state for the google map
   const [map, setMap] = useState(null);
   const [info, setInfo] = useState(false);
   const [infoLocation, setInfoLocation] = useState({lat: 0, lng: 0})
 
+  // state for the markers to show up after you click
   const [markerList, setMarkerList] = useState([])
   const [markerListInfo, setMarkerListInfo] = useState([]) // for testing until backend works
 
+  // get password and username from redux state
   const dispatch = useDispatch();
   const password = useSelector((state) => state.user.password);
   const username = useSelector((state) => state.user.username);
@@ -79,7 +82,8 @@ function Homepage() {
 
   // use effect to update the user in sightings slice once homepage is reached
   useEffect(() => {
-  // create markerList by fetching all the sightings
+  // TODO: create markerList by fetching all the sightings from the database,
+  // and populating them into marker objects
 
 
   // const userObj_testing = {
@@ -115,7 +119,7 @@ function Homepage() {
 
   function handleMarkerListClick(e) {
     console.log(e);
-
+    // TODO
     // when it's clicked on, look in the database for a specific position
   }
 
@@ -145,6 +149,9 @@ function Homepage() {
         </div>
       </div>
       
+      {/**Uncomment and comment out googlemap stuff in order to run without
+       * getting charged for api access
+       */}
       {/* <div className="container border border-gray-700 shadow h-full w-screen">
         <div>
           <SightingForm/>
