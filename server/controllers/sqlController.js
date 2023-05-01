@@ -5,6 +5,7 @@ const sqlController = {};
 
 //get user profile
 sqlController.getProfile = (req, res, next) => {
+
   const text = 'SELECT * FROM users WHERE "username" = $1';
   const values = [req.params.username];
   console.log('values: ',values)
@@ -122,8 +123,19 @@ sqlController.addSighting = (req, res, next) => {
 
 //delete rat profile
 
+// Get all sightings info
+sqlController.getAllSightings = (req, res, next) => {
+  const username = req.body.username;
+  // const ssid = req.cookies.ssid;
+  const text = "SELECT s.location AS location, s.time AS time, s.description AS description, r.name AS rat_name, r.image AS rat_image, r.description AS rat_description, r.alive AS rat_alive, r.times_sighted AS times_sighted FROM sighting s JOIN users u ON s.users_id=u._id JOIN rats r ON s.rats_id=r._id WHERE u.username=$1;"
 
-
-
+  const values = [username];
+  db.query(text, values)
+  .then((data) => {
+    res.locals.sightings = data;
+    return next();
+  })
+  .catch((err) => next({log: err, message: 'Error retrieving sightings.'}));
+};
 
 module.exports = sqlController;
