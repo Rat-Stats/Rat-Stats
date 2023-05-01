@@ -21,6 +21,7 @@ router.get('/rat/:name',sqlController.getRat,(req, res) => {
 
 //get sighting info
 
+
 //create user profile
 router.post('/profile',sqlController.addProfile,(req, res) => {
   res.status(200).json('profile added')

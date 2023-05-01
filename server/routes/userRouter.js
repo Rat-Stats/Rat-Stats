@@ -10,7 +10,7 @@ router.get('/',cookieController.setCookie,(req,res)=> {
 })
 
 //signup
-router.post('/signup', userController.createUser,(req,res) => {
+router.use('/signup', userController.createUser,(req,res) => {
   res.status(200).redirect('http://localhost:8080/homepage');
 })
 
