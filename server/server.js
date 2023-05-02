@@ -16,6 +16,7 @@ const PORT = 3000;
 // Parse incoming data in request body or cookies
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // “extended” allows for rich objects and arrays to be encoded into the URL-encoded format
+app.use(bodyParser.json({ type: '*/*' }));
 app.use(cookieParser());
 
 // Routing for oauth endpoint
