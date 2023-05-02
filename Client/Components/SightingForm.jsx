@@ -1,30 +1,41 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   UPDATE_RAT,
   UPDATE_DESCRIPTION,
   UPDATE_USER
 } from '../Slices/sightingSlice';
+import axios from 'axios';
 
-export default function SightingForm ({username, addToMarkerList, marketListInfo}) {
+export default function SightingForm({ username, addToMarkerList, marketListInfo }) {
   const dispatch = useDispatch();
-  // this are selectors that we use with redux in order to grab the lattitude
-  // and longitude stored in state
+
   const sightingState = useSelector((state) => state.sighting.location);
   const ratName = useSelector((state) => state.sighting.ratName);
   const description = useSelector((state) => state.sighting.description);
-  const { lat, lng } = sightingState; // extracts them from state
+  const { lat, lng } = sightingState;
 
-  dispatch(UPDATE_USER(useSelector((state) => state.user.username)));
+  useEffect(() => {
+    dispatch(UPDATE_USER(username));
+  }, [dispatch, username]);
 
   async function onClick(e) {
-    e.preventDefault(); // prevents the page from reloading
-    
-    // TODO: Post sighting to database
-    const locationString = JSON.stringify({lat: lat, lng: lng})
+    e.preventDefault();
 
-    addToMarkerList({lat: lat, lng: lng})
+    const sightingData = {
+      ratName,
+      description,
+      location: { lat, lng },
+      time: new Date()
+    };
 
+    addToMarkerList({ lat, lng });
+
+    try {
+      await axios.post('/sql/sighting', sightingData);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (
@@ -41,5 +52,5 @@ export default function SightingForm ({username, addToMarkerList, marketListInfo
         <button className="border shadow text-gray-600" onClick={onClick}>Submit Sighting</button>
       </form>
     </div>
-  )
+  );
 }
