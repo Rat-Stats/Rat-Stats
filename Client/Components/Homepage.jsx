@@ -129,7 +129,7 @@ function Homepage() {
     position={position}
     icon={
       {url: 'https://i.ibb.co/TR1B5G5/My-project-2.png',
-      scaledSize: new window.google.maps.Size(150, 100)}
+      scaledSize: new window.google.maps.Size(200, 100)}
     }
     onClick={handleMarkerListClick}
     ></Marker>
@@ -158,7 +158,7 @@ function Homepage() {
         </div>
       </div> */}
       {/** Box holding the google maps stuff */}
-      <div className="container border border-gray-700 shadow h-full w-screen">
+      <div className="container border 2xl:cursor-autoshadow h-full w-screen">
         <GoogleMap
         mapContainerClassName="h-full w-full"
         center={center}

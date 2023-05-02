@@ -11,12 +11,12 @@ import axios from 'axios';
 export default function SightingForm({ username, addToMarkerList, marketListInfo }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
-  console.log(state);
+
   const sightingState = useSelector((state) => state.sighting);
   const { ratName, description } = sightingState;
   const { lat, lng } = sightingState.location;
 
-  const userId = useSelector((state) => state.userId); // Assuming the user ID is stored in the state under the key "userId"
+  const userId = useSelector((state) => state.username); 
 
   useEffect(() => {
     dispatch(UPDATE_USER(username));
@@ -24,7 +24,6 @@ export default function SightingForm({ username, addToMarkerList, marketListInfo
 
   async function onClick(e) {
     e.preventDefault();
-
     const sightingData = {
       users_id: 1,
       rats_id: 1,
