@@ -127,12 +127,14 @@ sqlController.addRat = (req, res, next) => {
 sqlController.addSighting = async (req, res, next) => {
   console.log('entering addSighting')
   // app.post('/sighting', async (req, res) => {
+  // const rats_id = Math.floor(Math.random() * 100);
+  // const users_id = Math.floor(Math.random() * 100)
   try {
-    const { rat_name, description, location, time } = req.body;
+    const { ratName, description, location, time } = req.body;
 
     // Insert the new sighting into the database
-    const query = 'INSERT INTO public.sighting ( rats_id, users_id,  description, location, time, rat_name) VALUES ($1, $2, $3, $4, $5, $6)';
-    const values = [ 1, 1, description, location, time,  rat_name];
+    const query = 'INSERT INTO public.sighting (users_id, rats_id, rat_name, description, location, time) VALUES ($1, $2, $3, $4, $5, $6)';
+    const values = [ 1, 1, ratName, description, location, time];
     await pool.query(query, values);
 
     res.status(201).json({ message: 'Sighting added successfully' });

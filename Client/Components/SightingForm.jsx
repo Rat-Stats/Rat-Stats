@@ -5,15 +5,18 @@ import {
   UPDATE_DESCRIPTION,
   UPDATE_USER
 } from '../Slices/sightingSlice';
+
 import axios from 'axios';
 
 export default function SightingForm({ username, addToMarkerList, marketListInfo }) {
   const dispatch = useDispatch();
+  const state = useSelector((state) => state);
+  console.log(state);
+  const sightingState = useSelector((state) => state.sighting);
+  const { ratName, description } = sightingState;
+  const { lat, lng } = sightingState.location;
 
-  const sightingState = useSelector((state) => state.sighting.location);
-  const ratName = useSelector((state) => state.sighting.ratName);
-  const description = useSelector((state) => state.sighting.description);
-  const { lat, lng } = sightingState;
+  const userId = useSelector((state) => state.userId); // Assuming the user ID is stored in the state under the key "userId"
 
   useEffect(() => {
     dispatch(UPDATE_USER(username));
@@ -23,10 +26,13 @@ export default function SightingForm({ username, addToMarkerList, marketListInfo
     e.preventDefault();
 
     const sightingData = {
+      users_id: 1,
+      rats_id: 1,
       ratName,
       description,
       location: { lat, lng },
-      time: new Date()
+      time: new Date(),
+
     };
 
     addToMarkerList({ lat, lng });

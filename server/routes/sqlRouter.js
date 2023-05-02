@@ -9,10 +9,19 @@ router.get('/', (req, res) => {
 
 //create sighting
 router.post('/sighting',sqlController.addSighting,(req, res) => {
-  console.log('entering sqlRouter handle post req to /sql/sighting')
+  console.log('entering sqlRouter to handle post req (add new sighting)')
   res.status(200).json('sighting added')
   }
 );
+
+
+//create rats
+router.post('/rat',sqlController.addRat,(req, res) => {
+  console.log('entering sqlRouter to handle post req (add new rat when new sighting happens)')
+  res.status(200).json('rat added')
+  }
+);
+
 
 //get user profile
 router.get('/profile/:username',sqlController.getProfile,(req, res) => {
@@ -51,11 +60,6 @@ router.post('/profile',sqlController.addProfile,(req, res) => {
   }
 );
 
-//create rats
-router.post('/rat',sqlController.addRat,(req, res) => {
-  res.status(200).json('rat added')
-  }
-);
 
 // //create sighting
 // router.post('/addsighting',sqlController.addSightingAlt,(req, res) => {
