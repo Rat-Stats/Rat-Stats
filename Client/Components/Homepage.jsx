@@ -2,24 +2,21 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { GoogleMap, useJsApiLoader, InfoWindow, Marker } from '@react-google-maps/api';
 import { Avatar } from 'flowbite-react';
 import SightingForm from './SightingForm.jsx';
-import  { icon } from 'leaflet'
 import { useNavigate, Link } from 'react-router-dom';
-
-// for redux
 import { useDispatch, useSelector } from 'react-redux';
 import {
     UPDATE_LOCATION,
-    UPDATE_USER,
+    UPDATE_USER
 } from '../Slices/sightingSlice';
 
-import {
-  updateUser,
-  updatePassword,
-  updateSightings,
-  updateProfile_Picture,
-  updateFavorite_Rat,
-  updateCreated_At,
-} from '../Slices/userSlice'
+// import {
+//   updateUser,
+//   updatePassword,
+//   updateSightings,
+//   updateProfile_Picture,
+//   updateFavorite_Rat,
+//   updateCreated_At,
+// } from '../Slices/userSlice'
 
 const center = {
   lat: 40.747749,
@@ -38,7 +35,7 @@ function Homepage() {
   const [info, setInfo] = useState(false);
   const [infoLocation, setInfoLocation] = useState({lat: 0, lng: 0})
 
-  // state for the markers to show up after you click
+  // state for the markers
   const [markerList, setMarkerList] = useState([])
   const [markerListInfo, setMarkerListInfo] = useState([]) // for testing until backend works
 
@@ -158,7 +155,7 @@ function Homepage() {
         </div>
       </div> */}
       {/** Box holding the google maps stuff */}
-      <div className="container border 2xl:cursor-autoshadow h-full w-screen">
+      <div className="container border border-gray-700 shadow h-full w-screen">
         <GoogleMap
         mapContainerClassName="h-full w-full"
         center={center}
