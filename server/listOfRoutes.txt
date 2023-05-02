@@ -24,3 +24,18 @@ post -> /sql/user
  * username
  * }
  res -> the user Object
+
+ #
+ #  Sightings
+ #
+ 
+ # post a sighting
+ post -> /sql/sighting
+ * req  body: {
+    user_name
+    rat_name
+    lat
+    lng
+    description
+ }
+response -> sightingObj

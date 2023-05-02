@@ -3,6 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require ('mongoose');
 const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 const app = express();
 
 const sqlRouter = require('./routes/sqlRouter.js');
