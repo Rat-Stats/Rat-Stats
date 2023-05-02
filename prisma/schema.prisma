@@ -13,12 +13,11 @@ datasource db {
 model User {
   id                Int             @id @default(autoincrement())
   username          String          @unique
-  password          String    
   ssid              String
   number_sightings  Int             @default(0)
   profile_picture   String?
   favorite_rat      String?
-  created_at        DateTime        @default(now())
+  created_at        DateTime?        @default(now())
   sightings         Sighting[]
 }
 

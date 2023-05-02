@@ -8,6 +8,7 @@ const app = express();
 const sqlRouter = require('./routes/sqlRouter.js');
 const oaRouter = require('./routes/oaRouter.js');
 const userRouter = require('./routes/userRouter.js');
+const prismaRouter = require('./routes/prismaRouter.js');
 mongoose.connect(process.env.MDB_URI);
 
 const PORT = 3000;
@@ -20,8 +21,8 @@ app.use(cookieParser());
 // Routing for oauth endpoint
 app.use('/oauth', oaRouter);
 
-// Routing for sql endpoint to query users, rats,sighting tables
-app.use('/sql', sqlRouter);
+// Routing for sql endpoint to query users,rats,sighting tables
+app.use('/sql', prismaRouter);
 
 // Routing for user login and register
 app.use('/user', userRouter);
