@@ -38,4 +38,8 @@ model Sighting {
   userId             Int
   rat                Rat            @relation(fields: [ratId], references: [id])
   ratId              Int
+  lat                Float
+  lng                Float
+  time               DateTime       @default(now())
+  description        String         
 }
