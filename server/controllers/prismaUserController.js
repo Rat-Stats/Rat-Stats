@@ -39,6 +39,66 @@ prismaUserController.addUser = async (req, res, next) => {
     }
     return next(errObj);
   }
+};
+
+/**
+ * Route to get a user from the database
+ * req body: {
+ *  username
+ * }
+ */
+prismaUserController.getUser = async (req, res, next) => {
+  const { username } = req.body;
+  if (!username) {
+    errObj = {
+      message: "error, username not included in body"
+    }
+    return next(errObj);
+  }
+  try {
+    const getUser = await prisma.user.findUnique({
+      where: {
+        username: username
+      }
+    });
+    res.locals.user = getUser;
+    return next();
+  }
+  catch (error) {
+    errObj = {
+      message: "error fetching user from database"
+    }
+  }
+};
+
+/**
+ * Route to delete user from the database
+ *req body: {
+ * username
+ * }
+*/
+prismaUserController.deleteUser = async (req, res, next) => {
+  const { username } = req.body;
+  if (!username) { 
+    errObj = {
+      message: "error, username not included in body"
+    }
+    return next(errObj);
+  }
+  try {
+    const user = await prisma.user.delete({
+      where: {
+        username: username
+      },
+    })
+    res.locals.user = user;
+    return next();
+  }
+  catch (err) {
+    errObj = {
+      message: "error accessing the database"
+    }
+  }
 }
 
 module.exports = prismaUserController;

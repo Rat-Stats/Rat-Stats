@@ -10,3 +10,17 @@ post -> /sql/user
  * created_at             Dont enter  
  * }
  In response: res.locals.user -> the user object
+
+ # get a user from the db
+ get -> /sql/user
+ * req body: {
+    username
+ }
+ res -> the unique user Object
+
+ # delete a user from the db
+ delete -> /sql/user
+ *req body: {
+ * username
+ * }
+ res -> the user Object
