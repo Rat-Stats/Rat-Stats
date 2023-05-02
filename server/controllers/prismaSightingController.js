@@ -68,7 +68,13 @@ prismaSightingController.addSighting = async (req, res, next) => {
 // returns all the sightings
 prismaSightingController.allSightings = async (req, res, next) => {
   try {
-    const allSightings = await prisma.sighting.findMany();
+    const allSightings = await prisma.sighting.findMany({
+      include: {
+        user: true,
+        rat: true
+      }
+    });
+
     res.locals.allSightings = allSightings;
     return next();
   }
@@ -77,6 +83,70 @@ prismaSightingController.allSightings = async (req, res, next) => {
       message: "Error in getting all sightings from db"
     }
     return next(errObj);
+  }
+}
+
+// get all sightings in the db associated with a particular user
+prismaSightingController.findSighting = async (req, res, next) => {
+  const { username } = req.body;
+  if (!username) {
+    const errObj = {
+      message: "Error, missing username in request body"
+    }
+    return next(errObj);
+  }
+  try {
+
+    // find all the sightings where their associated user's username is username
+    const userSightings = await prisma.sighting.findMany({
+      where: {
+        user: {
+          username: username,
+        },
+      },
+      include: {
+        user: true,
+        rat: true
+      }
+    });
+    res.locals.userSightings = userSightings;
+    return next();
+  }
+  catch (err) {
+    console.log(err);
+    const errObj = {  
+      message: "Error finding sightings in database"
+    }
+    return next(errObj);
+  }
+}
+
+// delete a sighting
+prismaSightingController.deleteSighting = async (req, res, next) => {
+  const { id } = req.body;
+  if (!id) {
+    const errObj = {
+      message: "Error, missing id in request body"
+    }
+    return next(errObj);
+  }
+
+  try {
+    // deletes the sighting and then returns it in res locals
+    const deletedSighting = await prisma.sighting.delete({
+      where: {
+        id: id
+      }
+    })
+    res.locals.deletedSighting = deletedSighting;
+    return next();
+  }
+  catch (err) {
+    console.log(err);
+    const errObj ={
+      message: "Error deleting sighting from db"
+    }
+    return next(errObj)
   }
 }
 

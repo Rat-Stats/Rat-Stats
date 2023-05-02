@@ -35,15 +35,21 @@ router.delete('/user', prismaUserController.deleteUser, (req, res) => {
 // creates a sighting in the prisma db
 router.post('/sighting', prismaSightingController.addSighting, (req, res) => {
   res.status(200).json(res.locals.sighting);
-})
+});
 
 // get all the sightings in the db
 router.get('/sighting/all', prismaSightingController.allSightings, (req, res) => {
   res.status(200).json(res.locals.allSightings);
-})
+});
 
 // find a sighting in the prisma db associated with user
-// router.get('/sighting', prismaSightingController.findSighting, (req, res) => {
-//   res.status(200).json(res.locals.sighting);
-// })
+router.get('/sighting', prismaSightingController.findSighting, (req, res) => {
+  res.status(200).json(res.locals.userSightings);
+});
+
+// delete a sighting in prisma
+router.delete('/sighting', prismaSightingController.deleteSighting, (req, res) => {
+  res.status(200).json(res.locals.deletedSighting);
+});
+
 module.exports = router;
