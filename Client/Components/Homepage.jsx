@@ -19,7 +19,7 @@ function Homepage() {
   
   // state for the google map
   const [map, setMap] = useState(null);
-  const [info, setInfo] = useState(false);
+  const [postReqMade, setPostReqMade] = useState(false);
   const [infoLocation, setInfoLocation] = useState({lat: 0, lng: 0})
 
   // state for the markers to show up after you click
@@ -52,13 +52,24 @@ function Homepage() {
    * Will return different events based on if the user clicked on a random point,
    * or if they clicked on one of our markers
    */
-  const handleMouseClick = (e) => {
+  const handleMouseClick = async function (e) {
     const location = e.latLng.toJSON(); // location of the mouse click
-    setInfo(true);
+    setPostReqMade(true);
     setInfoLocation(location);
-
-    // update this information in redux
     dispatch(updateLocation(location));
+    console.log('CLICKLLLED: ', location);
+
+    try {
+      const response = await fetch('/sql', {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(location)
+        }).then(data => data.json());
+    } catch (error) {
+          console.log(error)
+    }
   }
 
 
@@ -111,7 +122,7 @@ function Homepage() {
         clickableIcons={false}
         onClick={handleMouseClick}>
           {markerList}
-          {info && <InfoWindow
+          {postReqMade && <InfoWindow
           key={`${infoLocation.lat}-${infoLocation.lng}`} // Add this line
           position={infoLocation}>
             <div>
