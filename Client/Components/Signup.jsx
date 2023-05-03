@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
-// import { useDispatch } from 'react-redux';
-// import { updateUser } from '../Slices/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateUser, updatePassword, updateSsid } from '../Slices/userSlice';
+import { useNavigate } from 'react-router-dom';
 
 export default function Signup() {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [password, setPassword] = useState('');
   const [verifyPassword, setVerifyPassword] = useState('');
 
   const handleSignupClick = () => {
-    const username = document.getElementById('Username').value;
+    const username = useSelector((state) => state.user.userName)
+    const password = useSelector((state) => state.user.password)
 
     if (password === verifyPassword) {
       fetch('/user/signup/', {
@@ -18,6 +21,14 @@ export default function Signup() {
         },
         body: JSON.stringify({ username, password }),
       })
+      .then(
+        data => data.json()
+      )
+      .then( data => {
+        dispatch(updateSsid(data._id))
+        navigate('/homepage')
+      }
+      )
       .catch(error => {
         console.error('Error:', error);
       });
@@ -34,6 +45,7 @@ export default function Signup() {
               <div>
                 <input type="text" 
                 id="Username" 
+                onChange={(e) => {dispatch(updateUser(e.target.value))}}
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
                 placeholder="Username" 
                 required/>
@@ -43,7 +55,7 @@ export default function Signup() {
               <div>
                 <input type="password" 
                 id="password" 
-                onChange={(e) => {setVerifyPassword(e.target.value)}}
+                onChange={(e) => {dispatch(updatePassword(e.target.value))}}
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
                 placeholder="Password" 
                 required/>
@@ -58,7 +70,8 @@ export default function Signup() {
                 required/>
               </div>
               <div className="flex flex-row justify-center p-4">
-                <a className="border shadow bg-green-500 justify-self-center" href={'/homepage'} onClick={handleSignupClick}>Create Account</a>
+                
+                <button className="border shadow bg-green-500 justify-self-center" onClick={handleSignupClick}>Create Account</button>
               </div>
             </div>
           </div>

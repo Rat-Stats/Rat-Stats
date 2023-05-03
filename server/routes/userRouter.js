@@ -17,7 +17,7 @@ router.get('/',cookieController.setCookie,(req,res)=> {
 
 //signup
 router.use('/signup', userController.createUser,(req,res) => {
-  res.status(200).redirect('http://localhost:8080/homepage');
+  res.status(200).json(res.locals.user);
 })
 
 //verify user
@@ -25,8 +25,8 @@ router.use('/login',
   userController.verifyUser,
   cookieController.setSSIDCookie,
   (req,res) => {
-  console.log('login')
-  res.status(200).json(res.locals.user);
-})
+    console.log('login')
+    res.status(200).json(res.locals.user);
+  })
 
 module.exports = router;

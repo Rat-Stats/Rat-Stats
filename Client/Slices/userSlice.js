@@ -5,6 +5,7 @@ export const userSlice = createSlice({
   initialState: {
     username: '',
     password: '',
+    ssid: '',
     number_sightings: 0,
     profile_picture: '',
     favorite_rat: '',
@@ -31,9 +32,12 @@ export const userSlice = createSlice({
     updateCreated_At: (state, action) => {
       state.created_at = action.payload;
     },
+    updateSsid: (state, action) => {
+      state.ssid = action.payload;
+    }
   }
 })
 
-export const { updateUser, updatePassword, updateSightings, updateProfile_Picture, updateFavorite_Rat, updateCreated_At } = userSlice.actions;
+export const { updateUser, updatePassword, updateSightings, updateProfile_Picture, updateFavorite_Rat, updateCreated_At, updateSsid } = userSlice.actions;
 
 export default userSlice.reducer;
