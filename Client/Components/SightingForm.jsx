@@ -6,7 +6,7 @@ import {
   UPDATE_USER
 } from '../Slices/sightingSlice';
 
-import axios from 'axios';
+// import axios from 'axios';
 
 export default function SightingForm({ username, addToMarkerList}) {
   const dispatch = useDispatch();
@@ -15,8 +15,10 @@ export default function SightingForm({ username, addToMarkerList}) {
   const sightingState = useSelector((state) => state.sighting);
   const { ratName, description } = sightingState;
   const { lat, lng } = sightingState.location;
+  // const { userId } = sightingState.userName
 
-  const userId = useSelector((state) => state.user.username); 
+  const userId = useSelector((state) => state.user.username);
+
 
   useEffect(() => {
     dispatch(UPDATE_USER(username));
@@ -25,28 +27,24 @@ export default function SightingForm({ username, addToMarkerList}) {
   async function onClick(e) {
     e.preventDefault();
     const sightingData = {
-      rat_name: ratName,
-      description: description,
       user_name: userId,
+      rat_name: ratName,
       lat: lat,
       lng: lng,
+      description: description,
     };
+    console.log('sightingData: ',sightingData)
 
     addToMarkerList({ lat, lng });
 
     try {
-      console.log(sightingData);
-      const addSighting = await fetch('/sql/sighting', {
+      const temp = await fetch('/sql/sighting', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(sightingData)
-      })
-      const data = await addSighting.json();
-      console.log(data);
-
-
+        body: JSON.stringify(sightingData),
+      });
     } catch (error) {
       console.error(error);
     }
