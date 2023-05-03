@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { updateUser, updatePassword } from '../Slices/userSlice';
+import { updateUser, updatePassword, updateSsid } from '../Slices/userSlice';
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -21,6 +21,7 @@ export default function Login() {
     .then((data) => data.json())
     .then((parsed) => {
       console.log(parsed);
+      dispatch(updateSsid(parsed._id))
       if(parsed.username) {
         console.log('Found')
         navigate('/homepage');
