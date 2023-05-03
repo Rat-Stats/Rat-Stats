@@ -141,6 +141,12 @@ function Homepage() {
           <Marker
             key={sighting.id}
             position={{ lat: sighting.lat, lng: sighting.lng }}
+            icon={
+              {
+                url: 'https://i.ibb.co/TR1B5G5/My-project-2.png',
+                scaledSize: new window.google.maps.Size(200, 100)
+              }
+            }
             onClick={() => handleMarkerListClick(sighting.id)}
           />
         ));
