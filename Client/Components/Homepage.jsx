@@ -101,7 +101,8 @@ function Homepage() {
             console.log('error creating user in db')
           }
         }
-        // dispatch(updateSightings(data.number_sightings))
+        console.log(data);
+        dispatch(updateSightings(data.number_sightings))
         dispatch(updateProfile_Picture(data.profile_picture))
         dispatch(updateFavorite_Rat(data.favorite_rat))
         dispatch(updateCreated_At(data.created_At));

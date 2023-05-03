@@ -23,6 +23,11 @@ router.get('/user', prismaUserController.getUser, (req, res) => {
   res.status(200).json(res.locals.user);
 })
 
+// updates a user in the db
+router.patch('/user', prismaUserController.updateUser, (req, res) => {
+  res.status(200).json(res.locals.user);
+})
+
 // deletes a user from the prisma database given the username
 router.delete('/user', prismaUserController.deleteUser, (req, res) => {
   res.status(200).json(res.locals.user);

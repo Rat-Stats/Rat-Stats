@@ -47,11 +47,9 @@ get /sql/sighting/all
   response -> sightingObj w/ ratName and username information
 
 # get all user sightings
-get /sql/sighting
-  req body: {
-    username
-  }
-  response -> sightingObj
+get /sql/sighting?username=username
+  req body: {}
+  response -> [sightingObj]
 
 # delete a particular sighting
 # if this doesn't make sense / work we can do lat/lng
