@@ -3,7 +3,7 @@ const sqlController = {};
 
 
 sqlController.addNewRat = (req, res, next) => {
-	const text = `INSERT INTO public.rat (username, latitude, longitude, time) VALUES($1, $2, $3)`
+	const text = `INSERT INTO public.rat (latitude, longitude, time) VALUES($1, $2, $3)`
 
 	const values = [
 		req.body.longitude,
