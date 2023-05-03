@@ -23,8 +23,12 @@ function Homepage() {
   const [infoLocation, setInfoLocation] = useState({lat: 0, lng: 0})
 
   // state for the markers to show up after you click
-  const [markerList, setMarkerList] = useState([])
-  const [markerListInfo, setMarkerListInfo] = useState([]) // for testing until backend works
+  const [markerList, setMarkerList] = useState([
+    [40.741, -73.99563563563456],
+    [40.739, -73.97452654653465],
+    [40.73, -73.92562463563564],
+    [40.742, -73.93456563565346],
+  ])
 
   // get password and username from redux state
   const dispatch = useDispatch();
@@ -38,6 +42,14 @@ function Homepage() {
     map.fitBounds(bounds);
     setMap(map)
     //map.controls[google.maps.ControlPosition.TOP_CENTER].push(MapControl());
+
+
+    // use GET request to populate screen with rats
+
+
+
+
+
   }, [])
 
   // functionality when map dismounts. Unique to maps api
@@ -65,33 +77,47 @@ function Homepage() {
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify(location)
+        body: JSON.stringify({location: location}),
         }).then(data => data.json());
     } catch (error) {
           console.log(error)
     }
   }
 
-
-  // use effect to update the user in sightings slice once homepage is reached
-  useEffect(() => {
-  // TODO: create markerList by fetching all the sightings from the database,
-  // and populating them into marker object
-  },[])
-
   const addToMarkerList = (position) => {
     const newMarker = <Marker 
-    key={markerList.length} 
+    key={JSON.stringify(position)} 
     position={position}
     icon={
       {url: 'https://i.ibb.co/TR1B5G5/My-project-2.png',
       scaledSize: new window.google.maps.Size(150, 100)}
     }
-    onClick={handleMarkerListClick}
+    // onClick={handleMarkerListClick}
     ></Marker>
     setMarkerList(current => [...current, newMarker]); // adds a new marker to the list
   }
 
+  // use effect to update the user in sightings slice once homepage is reached
+  useEffect(() => {
+
+    for (let i = 0; i < markerList.length; i++) {
+    const newMarker = <Marker 
+    key={JSON.stringify(markerList[i])} 
+    draggable={true}
+    position={{lat: markerList[i][0], lng: markerList[i][1]}}
+
+    // add drag and drop functionality to rats
+    // drag resets location
+    // double-click deletes it
+
+    ></Marker>
+    setMarkerList(current => [...current, newMarker]); // adds a new marker to the list
+    console.log('markerList', markerList)
+  };
+
+  // TODO: create markerList by fetching all the sightings from the database,
+  // and populating them into marker object
+},[])
 
   return isLoaded ? (
     <div className="flex flex-col justify-center items-center h-screen w-screen p-10 py-3">
