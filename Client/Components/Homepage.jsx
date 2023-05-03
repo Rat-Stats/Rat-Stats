@@ -129,6 +129,7 @@ function Homepage() {
           }
         );
         const data = await getUser.json();
+        console.log(data);
         if (data === null) {
           // create user
           try {
@@ -149,12 +150,13 @@ function Homepage() {
             console.log('error creating user in db');
           }
         }
-        console.log(data);
-        dispatch(updateSightings(data.number_sightings));
-        dispatch(updateProfile_Picture(data.profile_picture));
-        dispatch(updateFavorite_Rat(data.favorite_rat));
-        dispatch(updateCreated_At(data.created_At));
-      } catch (err) {
+        console.log(data.created_At);
+        dispatch(updateSightings(data.number_sightings))
+        dispatch(updateProfile_Picture(data.profile_picture))
+        dispatch(updateFavorite_Rat(data.favorite_rat))
+        dispatch(updateCreated_At(data.created_at));
+      }
+      catch (err) {
         console.log(err);
         console.log('error fetching user from db');
       }
@@ -189,10 +191,12 @@ function Homepage() {
           <Marker
             key={sighting.id}
             position={{ lat: sighting.lat, lng: sighting.lng }}
-            icon={{
-              url: 'https://i.ibb.co/TR1B5G5/My-project-2.png',
-              // scaledSize: new window.google.maps.Size(100, 100)
-            }}
+            icon={
+              {
+                url: 'https://i.ibb.co/TR1B5G5/My-project-2.png',
+                scaledSize: new window.google.maps.Size(80, 48)
+              }
+            }
             onClick={() => handleMarkerListClick(sighting.id)}
           />
         ));
@@ -219,12 +223,27 @@ function Homepage() {
         console.error('Error fetching sightings:', error);
       });
   }, []);
+  
+function handleMarkerListClick(e) {
+  console.log(e);
+  // TODO
+  // when it's clicked on, look in the database for a specific position
+}
 
-  function handleMarkerListClick(e) {
-    console.log(e);
-    // TODO
-    // when it's clicked on, look in the database for a specific position
-  }
+const addToMarkerList = (position) => {
+  const newMarker = <Marker
+    key={JSON.stringify(position)}
+    position={position}
+    icon={
+      {
+        url: 'https://i.ibb.co/TR1B5G5/My-project-2.png',
+        scaledSize: new window.google.maps.Size(80, 48)
+      }
+    }
+    onClick={handleMarkerListClick}
+  ></Marker>
+  setMarkerList(current => [...current, newMarker]); // adds a new marker to the list
+}
 
   const addToMarkerList = (position) => {
     const newMarker = (
