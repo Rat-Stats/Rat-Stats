@@ -11,7 +11,6 @@ userController.createUser = async (req, res, next) => {
     const { username, password } = req.body;
     
     if(!username || !password) {
-      console.log('missing password')
       throw new Error('Please provide a username and password');
     }
 
