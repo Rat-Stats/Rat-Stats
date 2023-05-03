@@ -7,19 +7,7 @@ import { useNavigate, Link } from 'react-router-dom';
 
 // for redux
 import { useDispatch, useSelector } from 'react-redux';
-import {
-    UPDATE_LOCATION,
-    UPDATE_USER,
-} from '../Slices/sightingSlice';
-
-import {
-  updateUser,
-  updatePassword,
-  updateSightings,
-  updateProfile_Picture,
-  updateFavorite_Rat,
-  updateCreated_At,
-} from '../Slices/userSlice'
+import { updateLocation } from '../Slices/sightingSlice';
 
 const center = {
   lat: 40.747749,
@@ -50,7 +38,6 @@ function Homepage() {
   // Functionality when map loads. Unique to maps api
   const onLoad = useCallback((map) => {
     // get and load map instance
-    console.log('loaded');
     const bounds = new window.google.maps.LatLngBounds(center);
     map.fitBounds(bounds);
     setMap(map)
@@ -59,7 +46,6 @@ function Homepage() {
 
   // functionality when map dismounts. Unique to maps api
   const onUnmount = useCallback((map) => {
-    console.log('unMounted');
     setMap(null);
   }, [])
 
@@ -76,52 +62,15 @@ function Homepage() {
     setInfoLocation(location);
 
     // update this information in redux
-    dispatch(UPDATE_LOCATION(location));
+    dispatch(updateLocation(location));
   }
 
 
   // use effect to update the user in sightings slice once homepage is reached
   useEffect(() => {
   // TODO: create markerList by fetching all the sightings from the database,
-  // and populating them into marker objects
-
-
-  // const userObj_testing = {
-  //   username: 'new',
-  //   password: '123',
-  //   number_sightings: 3,
-  //   favorite_rat: 'fat jody',
-  //   created_at: '2023-04-30'
-  // }
-
-  //   // Fetch the current user from state, 
-  //   // fetch('/user/login/', {
-  //   //   method: 'POST',
-  //   //   headers: {
-  //   //     'Content-Type': 'application/json',
-  //   //   },
-  //   //   body: JSON.stringify({username, password})
-  //   // })
-  //   // .then((res) => res.json())
-  //   // .then((res)=>{
-  //   //   console.log(res);
-  //   // })
-
-    // populate state object with fetched request
-    // dispatch(updateUser(userObj_testing.username))
-    // dispatch(updatePassword(userObj_testing.password))
-    // dispatch(updateSightings(userObj_testing.number_sightings));
-    // dispatch(updateFavorite_Rat(userObj_testing.favorite_rat));
-    // dispatch(updateCreated_At(userObj_testing.created_at));
-
-    // dispatch(UPDATE_USER(userObj_testing.username))
+  // and populating them into marker object
   },[])
-
-  function handleMarkerListClick(e) {
-    console.log(e);
-    // TODO
-    // when it's clicked on, look in the database for a specific position
-  }
 
   const addToMarkerList = (position) => {
     const newMarker = <Marker 
@@ -172,7 +121,7 @@ function Homepage() {
           key={`${infoLocation.lat}-${infoLocation.lng}`} // Add this line
           position={infoLocation}>
             <div>
-              <SightingForm username={username} addToMarkerList={addToMarkerList} marketListInfo={setMarkerListInfo}/>
+              <SightingForm addToMarkerList={addToMarkerList}/>
             </div>
           </InfoWindow>}
         </GoogleMap>

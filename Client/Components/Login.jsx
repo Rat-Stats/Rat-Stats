@@ -31,9 +31,7 @@ export default function Login() {
     })
     .then((data) => data.json())
     .then((parsed) => {
-      console.log(parsed);
       if(parsed.username) {
-        console.log('Found')
         // redirect here
         navigate('/homepage');
       }

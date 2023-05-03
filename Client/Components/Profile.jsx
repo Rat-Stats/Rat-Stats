@@ -16,7 +16,6 @@ export default function Profile() {
   // use effect on load
   useEffect(() => {
     // ADD FETCH REQUEST ONCE GET USER IS IMPLEMENTED
-    console.log('ran');
     async function getAllUserSitings(user) {
       try{
         const response = await fetch('/sql/getallsightings',
@@ -43,14 +42,11 @@ export default function Profile() {
     for (let i = 0; i < sightings.length; i++) {
       temp.push(
         <div className="border shadow w-full flex flex-col">
-          <p>Rat Name: {sightings[i].rat_name}</p>
           <p>Location: {sightings[i].location}</p>
-          <p>Description: {sightings[i].rat_description}</p>
         </div>
       )
     }
     setSightingsComponents(temp);
-    console.log(sightingsComponents);
   },[sightings])
 
   return (
