@@ -4,10 +4,7 @@ import { Avatar } from 'flowbite-react';
 import SightingForm from './SightingForm.jsx';
 import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  UPDATE_LOCATION,
-  UPDATE_USER
-} from '../Slices/sightingSlice';
+import { UPDATE_LOCATION, UPDATE_USER } from '../Slices/sightingSlice';
 
 import {
   updateUser,
@@ -141,12 +138,33 @@ function Homepage() {
           <Marker
             key={sighting.id}
             position={{ lat: sighting.lat, lng: sighting.lng }}
+            icon={
+              {
+                url: 'https://i.ibb.co/TR1B5G5/My-project-2.png',
+                // scaledSize: new window.google.maps.Size(100, 100)
+              }
+            }
             onClick={() => handleMarkerListClick(sighting.id)}
           />
         ));
 
         //update marker list state with the created markers
-        setMarkerList(markers);
+        // setMarkerList(markers);
+        setMarkerList(
+          data.map((sighting) => (
+            <Marker
+              key={sighting.id}
+              position={{ lat: sighting.lat, lng: sighting.lng }}
+              icon={{
+                url: 'https://i.ibb.co/TR1B5G5/My-project-2.png',
+                anchor: new window.google.maps.Point(16, 16), 
+                origin: new window.google.maps.Point(0, 0),
+                scaledSize: new window.google.maps.Size(80, 48), 
+              }}
+              onClick={() => handleMarkerListClick(sighting.id)}
+            />
+          ))
+        );
       })
       .catch((error) => {
         console.error('Error fetching sightings:', error);
@@ -200,7 +218,7 @@ return isLoaded ? (
       <GoogleMap
         mapContainerClassName="h-full w-full"
         center={center}
-        zoom={10}
+        zoom={5}
         onLoad={onLoad}
         onUnmount={onUnmount}
         clickableIcons={false}
