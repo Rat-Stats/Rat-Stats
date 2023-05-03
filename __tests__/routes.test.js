@@ -1,6 +1,7 @@
 const app = require('../server/server')
 const request = require('supertest')(app);
 const expect = require('chai').expect;
+const chai = require('chai');
 const assert = require('assert');
 const express = require('express');
 const User = require('../server/models/userModels')
@@ -68,20 +69,28 @@ describe('testing user routes', () => {
       .type('application/json')
       .expect('set-cookie',/HttpOnly/);
     })
-    it('successfully signing into site creates a cookie with ssid name', async () => {
+    it('successfully signing up for site creates a cookie with ssid name', async () => {
       const response = await request
         .post('/user/signup')
         .type('application/json')
         .send({username: 'user1', password: 'any'})
         .expect('set-cookie',/ssid=/);
     });
-    it('sucessfully signing into site creates a cookie name ssid with httpOnly on', async () => {
+    it('successfully signing up for site creates a cookie name ssid with httpOnly on', async () => {
       const response = await request
-      .post('/user/signup')
-      .send({username: 'user1', password: 'any'})
-      .type('application/json')
-      .expect('set-cookie',/HttpOnly/);
+        .post('/user/signup')
+        .send({username: 'user1', password: 'any'})
+        .type('application/json')
+        .expect('set-cookie',/HttpOnly/);
+    });
+    it('ssid code of cookie is equal to the id the user', async () => {
+      //this is where the cookie ssid is stored in: response.header["set-cookie"][0]
+      //JSON.parse(response.text)._id allow us to get id
+      const response = await request
+        .post('/user/login')
+        .type('application/json')
+        .send({username: 'user1', password: 'any'})
+      expect(response.header["set-cookie"][0]).to.include((JSON.parse(response.text)._id));
     })
-
   })
 });
