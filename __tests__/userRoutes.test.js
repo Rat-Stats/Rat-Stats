@@ -12,6 +12,7 @@ const User = require('../server/models/userModels')
 // all fetch request are async so we need to use await astnc
 
 describe('testing user routes', () => {
+  
   describe('creating account for new users (signup)', () => {
     it("POST request to correct /user/signup route with proper body creates user in the database", async () => {
       const response = await request
@@ -83,7 +84,7 @@ describe('testing user routes', () => {
         .type('application/json')
         .expect('set-cookie',/HttpOnly/);
     });
-    it('ssid code of cookie is equal to the id the user', async () => {
+    it('ssid code of cookie is equal to the id of the user', async () => {
       //this is where the cookie ssid is stored in: response.header["set-cookie"][0]
       //JSON.parse(response.text)._id allow us to get id
       const response = await request
@@ -93,4 +94,6 @@ describe('testing user routes', () => {
       expect(response.header["set-cookie"][0]).to.include((JSON.parse(response.text)._id));
     })
   })
+
+
 });
