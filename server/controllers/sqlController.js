@@ -1,14 +1,14 @@
 const db = require('../../server/models/sqlModels.js');
 const sqlController = {};
 
-sqlController.addNewRat = (req, res, next) => {
+sqlController.addNewRat = async (req, res, next) => {
 	const text = `INSERT INTO public.rat (latitude, longitude, time) VALUES($1, $2, $3)`;
 
 	const values = [req.body.location.lat, req.body.location.lng, 'NOW()'];
 
 	// console.log(req.body.location);
 
-	db.query(text, values)
+	await db.query(text, values)
 		.then((data) => {
 			// console.log('data: ', data.rows);
 			res.locals.newRat = data.rows;
@@ -19,9 +19,9 @@ sqlController.addNewRat = (req, res, next) => {
 			return next(err);
 		});
 };
-sqlController.getAllRats = (req, res, next) => {
+sqlController.getAllRats = async (req, res, next) => {
 	const text = 'SELECT longitude, latitude FROM public.rat';
-	db.query(text)
+	await db.query(text)
 		.then((data) => {
 			const resArr = [];
 
