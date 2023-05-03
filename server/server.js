@@ -12,9 +12,6 @@ const userRouter = require('./routes/userRouter.js');
 const prismaRouter = require('./routes/prismaRouter.js');
 mongoose.connect(process.env.MDB_URI);
 const PG_URI = "postgres://btfrbjza:NjO66Fz-C5GHsPIWsodm5Z6dd7GtPV7n@lallah.db.elephantsql.com/btfrbjza"
-const pool = new Pool({
-  connectionString: PG_URI,
-});
 
 const PORT = 3000;
 
