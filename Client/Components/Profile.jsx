@@ -8,9 +8,15 @@ export default function Profile() {
   const [sightings, setSightings] = useState([]);
   const [sightingsComponents, setSightingsComponents] = useState([]);
 
+  // changes if the profile has a profile photo, if they do, then it doesn't show input field
+  const [displayImage, setDisplayImage] = useState(true);
+  const [displayUrl, setDisplayUrl] = useState('')
+  const [displayFavorite, setDisplayFavorite] = useState(true);
+
   useEffect(() => {
     async function getAllUserSitings(username) {
       try {
+        // username="user1"
         const response = await fetch('/sql/sighting?' + new URLSearchParams({
           username: username
         }));
@@ -24,9 +30,8 @@ export default function Profile() {
   }, []);
 
   useEffect(() => {
-    console.log(sightings);
     const temp = sightings.map((sighting, index) => (
-      <div key={index} className="border shadow w-full flex flex-col justify-center">
+      <div key={index} className="border shadow w-full flex flex-col items-center">
         <p>Rat Name: {sighting.rat.name}</p>
         <div className ="flex flex-row justify-between px-10">
         <p>Lat: {sighting.lat.toFixed(2)}</p><p>Lng: {sighting.lng.toFixed(2)}</p>
@@ -39,10 +44,34 @@ export default function Profile() {
     setSightingsComponents(temp);
   }, [sightings]);
 
+  // async function handleSubmit() {
+  //   const update = await fetch('/user', {
+  //     method: 'PATCH',
+  //     headers: {
+  //       'Content-Type': 'application/json'
+  //     },
+  //     body: JSON.stringify({profile_picture: displayUrl})
+  //   })
+  //   const data = await update.json();
+  //   console.log(data);
+
+  //   setDisplayImage(false);
+  // }
+
   return (
-    <div className="flex flex-col p-8 bg-blue-100 shadow justify-evenly py-20 items-center h-screen w-screen">
+    
+    <div className="flex flex-col p-8 bg-blue-100 shadow  py-20 items-center h-screen w-screen">
       <h1 className="text-5xl text-gray-600">Profile</h1>
       <Avatar img={currentState.profile_picture} className="p-5" rounded={true} size="xl"/>
+      {displayImage &&(
+        <div className="flex flex-row"> 
+          <input className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          placeHolder="Enter profile url" 
+          onChange ={(e) => setDisplayUrl(e.target.value)}
+          ></input>
+          <button className="border bg-gray-200 shadow rounded-l" >Submit</button>
+        </div>
+      )}
       <h1 className="text-2xl text-gray-600">Username: {currentState.username}</h1>
       <h1 className="text-2xl text-gray-600">Favorite Rat: {currentState.favorite_rat}</h1>
       <h1 className="text-2xl text-gray-600">Number of Sightings: {currentState.number_sightings}</h1>
