@@ -6,11 +6,12 @@ const userController = {};
 
 //createUser - create and save a new User into the database.
 userController.createUser = async (req, res, next) => {
-  console.log(req.body)
+  // console.log(req.body)
   try {
     const { username, password } = req.body;
     
     if(!username || !password) {
+      console.log('missing password')
       throw new Error('Please provide a username and password');
     }
 
