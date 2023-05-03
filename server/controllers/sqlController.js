@@ -19,9 +19,10 @@ sqlController.addNewRat = async (req, res, next) => {
 			return next(err);
 		});
 };
-sqlController.getAllRats = async (req, res, next) => {
+
+sqlController.getAllRats = (req, res, next) => {
 	const text = 'SELECT longitude, latitude FROM public.rat';
-	await db.query(text)
+	db.query(text)
 		.then((data) => {
 			const resArr = [];
 
