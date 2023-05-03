@@ -141,6 +141,12 @@ function Homepage() {
           <Marker
             key={sighting.id}
             position={{ lat: sighting.lat, lng: sighting.lng }}
+            icon={
+              {
+                url: 'https://i.ibb.co/TR1B5G5/My-project-2.png',
+                scaledSize: new window.google.maps.Size(200, 100)
+              }
+            }
             onClick={() => handleMarkerListClick(sighting.id)}
           />
         ));
@@ -153,37 +159,6 @@ function Homepage() {
       });
   }, []);
 
-  // const userObj_testing = {
-  //   username: 'new',
-  //   password: '123',
-  //   number_sightings: 3,
-  //   favorite_rat: 'fat jody',
-  //   created_at: '2023-04-30'
-  // }
-
-  //   // Fetch the current user from state, 
-  //   // fetch('/user/login/', {
-  //   //   method: 'POST',
-  //   //   headers: {
-  //   //     'Content-Type': 'application/json',
-  //   //   },
-  //   //   body: JSON.stringify({username, password})
-  //   // })
-  //   // .then((res) => res.json())
-  //   // .then((res)=>{
-  //   //   console.log(res);
-  //   // })
-
-  // populate state object with fetched request
-  // dispatch(updateUser(userObj_testing.username))
-  // dispatch(updatePassword(userObj_testing.password))
-  // dispatch(updateSightings(userObj_testing.number_sightings));
-  // dispatch(updateFavorite_Rat(userObj_testing.favorite_rat));
-  // dispatch(updateCreated_At(userObj_testing.created_at));
-
-  // dispatch(UPDATE_USER(userObj_testing.username))
-
-
 function handleMarkerListClick(e) {
   console.log(e);
   // TODO
@@ -192,7 +167,7 @@ function handleMarkerListClick(e) {
 
 const addToMarkerList = (position) => {
   const newMarker = <Marker
-    key={markerList.length}
+    key={JSON.stringify(position)}
     position={position}
     icon={
       {
@@ -240,14 +215,14 @@ return isLoaded ? (
         {info && <InfoWindow
           key={`${infoLocation.lat}-${infoLocation.lng}`} // Add this line
           position={infoLocation}>
-          <div>
-            <SightingForm username={username} addToMarkerList={addToMarkerList} marketListInfo={setMarkerListInfo} />
-          </div>
-        </InfoWindow>}
-      </GoogleMap>
+            <div>
+              <SightingForm username={username} addToMarkerList={addToMarkerList}/>
+            </div>
+          </InfoWindow>}
+        </GoogleMap>
+      </div>
     </div>
-  </div>
-) :
+  ):
   <></>
 }
 
