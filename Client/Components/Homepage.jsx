@@ -12,9 +12,6 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { UPDATE_LOCATION, UPDATE_USER } from '../Slices/sightingSlice';
 
-// //for fetch requests
-// import { getRatSightingQuery } from '../ratApi.js';
-
 import {
   updateUser,
   updatePassword,
@@ -52,6 +49,7 @@ function Homepage() {
   const dispatch = useDispatch();
   const password = useSelector((state) => state.user.password);
   const username = useSelector((state) => state.user.username);
+  const ssid = useSelector((state) => state.user.ssid);
 
   /**
    * Google Maps onload and onunmount functions
@@ -141,7 +139,7 @@ function Homepage() {
               },
               body: JSON.stringify({
                 username: username,
-                ssid: '1', // authentication purposes, unsure how it works
+                ssid: ssid, // authentication purposes, unsure how it works
               }),
             });
             // add create user info to redux
@@ -151,6 +149,7 @@ function Homepage() {
             console.log('error creating user in db');
           }
         }
+        console.log(data);
         dispatch(updateSightings(data.number_sightings));
         dispatch(updateProfile_Picture(data.profile_picture));
         dispatch(updateFavorite_Rat(data.favorite_rat));
@@ -192,14 +191,29 @@ function Homepage() {
             position={{ lat: sighting.lat, lng: sighting.lng }}
             icon={{
               url: 'https://i.ibb.co/TR1B5G5/My-project-2.png',
-              scaledSize: new window.google.maps.Size(200, 100),
+              // scaledSize: new window.google.maps.Size(100, 100)
             }}
             onClick={() => handleMarkerListClick(sighting.id)}
           />
         ));
 
         //update marker list state with the created markers
-        setMarkerList(markers);
+        // setMarkerList(markers);
+        setMarkerList(
+          data.map((sighting) => (
+            <Marker
+              key={sighting.id}
+              position={{ lat: sighting.lat, lng: sighting.lng }}
+              icon={{
+                url: 'https://i.ibb.co/TR1B5G5/My-project-2.png',
+                anchor: new window.google.maps.Point(16, 16),
+                origin: new window.google.maps.Point(0, 0),
+                scaledSize: new window.google.maps.Size(80, 48),
+              }}
+              onClick={() => handleMarkerListClick(sighting.id)}
+            />
+          ))
+        );
       })
       .catch((error) => {
         console.error('Error fetching sightings:', error);
@@ -252,14 +266,13 @@ function Homepage() {
         <GoogleMap
           mapContainerClassName="h-full w-full"
           center={center}
-          zoom={10}
+          zoom={5}
           onLoad={onLoad}
           onUnmount={onUnmount}
           clickableIcons={false}
           onClick={handleMouseClick}
         >
           {markerList}
-          {rat311List}
           {info && (
             <InfoWindow
               key={`${infoLocation.lat}-${infoLocation.lng}`} // Add this line

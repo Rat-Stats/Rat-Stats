@@ -20,7 +20,7 @@ prismaUserController.addUser = async (req, res, next) => {
   // check if the required information is therer
   if (!username || !ssid) {
     errObj = {
-      message: "error, username or ssid not included in body",
+      message: 'error, username or ssid not included in body',
     }
     return next(errObj);
   }
@@ -28,14 +28,14 @@ prismaUserController.addUser = async (req, res, next) => {
     const createUser = await prisma.user.create({
       data: req.body
     })
-    res.locals.posted = "success"
+    res.locals.posted = 'success'
     res.locals.user = createUser;
     return next();
   }
   catch (err) {
     console.log(err);
     errObj = {
-      message: "error encountered posting user to database"
+      message: 'error encountered posting user to database'
     }
     return next(errObj);
   }
@@ -51,7 +51,7 @@ prismaUserController.getUser = async (req, res, next) => {
   const { username } = req.query;
   if (!username) {
     errObj = {
-      message: "error, username not included in body"
+      message: 'error, username not included in body'
     }
     return next(errObj);
   }
@@ -61,13 +61,25 @@ prismaUserController.getUser = async (req, res, next) => {
         username: username
       }
     });
-    res.locals.user = getUser;
+
+    const countSightings = await prisma.sighting.count({
+      where: {
+        userId: getUser.id
+      }
+    })
+
+    const userWithSightings = {
+      ...getUser,
+      number_sightings: countSightings,
+    }
+
+    res.locals.user = userWithSightings;
     return next();
   }
   catch (error) {
     console.log(error);
     errObj = {
-      message: "error fetching user from database"
+      message: 'error fetching user from database'
     }
     return next(errObj);
   }
@@ -83,7 +95,7 @@ prismaUserController.deleteUser = async (req, res, next) => {
   const { username } = req.body;
   if (!username) { 
     errObj = {
-      message: "error, username not included in body"
+      message: 'error, username not included in body'
     }
     return next(errObj);
   }
@@ -98,8 +110,38 @@ prismaUserController.deleteUser = async (req, res, next) => {
   }
   catch (err) {
     errObj = {
-      message: "error accessing the database"
+      message: 'error accessing the database'
     }
+  }
+}
+
+/**
+ * Route to update user info
+ */
+prismaUserController.updateUser = async (req, res, next) => {
+  
+  const { username, number_sightings, profile_picture, favorite_rat } = req.body;
+  console.log('here');
+  try {
+    const updateUser = await prisma.user.update({
+      where: {
+        username: username,
+      },
+      data: {
+        number_sightings: number_sightings,
+        profile_picture: profile_picture,
+        favorite_rat: favorite_rat,
+      }
+    })
+    res.locals.user = updateUser;
+    return next();
+  }
+  catch (err) {
+    console.log(err);
+    const errObj = {
+      message: "Error encountered updating user in db"
+    }
+    return next(err);
   }
 }
 
