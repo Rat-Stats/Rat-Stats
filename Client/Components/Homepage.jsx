@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { UPDATE_LOCATION, UPDATE_USER } from '../Slices/sightingSlice';
 
 //for fetch requests
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 // import {
 //   updateUser,
