@@ -16,7 +16,7 @@ export default function Profile() {
   useEffect(() => {
     async function getAllUserSitings(username) {
       try {
-        // username="user1"
+        username="user1"
         const response = await fetch('/sql/sighting?' + new URLSearchParams({
           username: username
         }));
@@ -44,19 +44,19 @@ export default function Profile() {
     setSightingsComponents(temp);
   }, [sightings]);
 
-  // async function handleSubmit() {
-  //   const update = await fetch('/user', {
-  //     method: 'PATCH',
-  //     headers: {
-  //       'Content-Type': 'application/json'
-  //     },
-  //     body: JSON.stringify({profile_picture: displayUrl})
-  //   })
-  //   const data = await update.json();
-  //   console.log(data);
+  async function handleSubmit() {
+    const update = await fetch('/user', {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({profile_picture: displayUrl})
+    })
+    const data = await update.json();
+    console.log(data);
 
-  //   setDisplayImage(false);
-  // }
+    setDisplayImage(false);
+  }
 
   return (
     
@@ -66,7 +66,7 @@ export default function Profile() {
       {displayImage &&(
         <div className="flex flex-row"> 
           <input className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeHolder="Enter profile url" 
+          placeholder="Enter profile picture url" 
           onChange ={(e) => setDisplayUrl(e.target.value)}
           ></input>
           <button className="border bg-gray-200 shadow rounded-l" >Submit</button>
