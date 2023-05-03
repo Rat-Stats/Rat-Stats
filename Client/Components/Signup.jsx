@@ -43,6 +43,7 @@ export default function Signup() {
               <div>
                 <input type="password" 
                 id="password" 
+                onChange={(e) => {setVerifyPassword(e.target.value)}}
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
                 placeholder="Password" 
                 required/>
@@ -51,15 +52,17 @@ export default function Signup() {
               <div>
                 <input type="password" 
                 id="verify-password" 
+                onChange={(e) => {setPassword(e.target.value)}}
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
                 placeholder="Re-Enter Password" 
                 required/>
               </div>
               <div className="flex flex-row justify-center p-4">
-                <a className="border shadow bg-green-500 justify-self-center" href={'/homepage'}>Create Account</a>
+                <a className="border shadow bg-green-500 justify-self-center" href={'/homepage'} onClick={handleSignupClick}>Create Account</a>
               </div>
             </div>
           </div>
         </div>
   );
 };
+//
