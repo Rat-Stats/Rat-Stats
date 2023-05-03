@@ -23,7 +23,14 @@ sqlController.getAllRats = (req, res, next) => {
 	const text = 'SELECT longitude, latitude FROM public.rat';
 	db.query(text)
 		.then((data) => {
-			res.locals.ratsArr = data;
+			const resArr = [];
+
+			data.rows.forEach((location) => {
+				resArr.push([location.longitude, location.latitude]);
+			});
+
+			res.locals.ratsArr = resArr;
+			console.log(resArr);
 			return next();
 		})
 		.catch((err) => {
