@@ -12,11 +12,12 @@ post -> /sql/user
  In response: res.locals.user -> the user object
 
  # get a user from the db
- get -> /sql/user
- * req body: {
+ get -> /sql/user?username=username
+ * req query: {
     username
  }
  res -> the unique user Object
+      if not found, null
 
  # delete a user from the db
  delete -> /sql/user
