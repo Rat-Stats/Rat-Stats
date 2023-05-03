@@ -6,33 +6,31 @@ import { useNavigate } from 'react-router-dom';
 export default function Signup() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [password, setPassword] = useState('');
   const [verifyPassword, setVerifyPassword] = useState('');
+  const username = useSelector((state) => state.user.username)
+  const password = useSelector((state) => state.user.password)
 
   const handleSignupClick = () => {
-    const username = useSelector((state) => state.user.userName)
-    const password = useSelector((state) => state.user.password)
+    console.log('username: ', username, 'pw: ', password)
+    fetch('/user/signup/', {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username, password }),
+    })
+    .then(
+      data => data.json()
+    )
+    .then( data => {
+      dispatch(updateSsid(data._id))
+      navigate('/homepage')
+    }
+    )
+    .catch(error => {
+      console.error('Error:', error);
+    });
 
-    if (password === verifyPassword) {
-      fetch('/user/signup/', {
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
-      })
-      .then(
-        data => data.json()
-      )
-      .then( data => {
-        dispatch(updateSsid(data._id))
-        navigate('/homepage')
-      }
-      )
-      .catch(error => {
-        console.error('Error:', error);
-      });
-    } 
   };
 
   return (
@@ -46,7 +44,7 @@ export default function Signup() {
                 <input type="text" 
                 id="Username" 
                 onChange={(e) => {dispatch(updateUser(e.target.value))}}
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
                 placeholder="Username" 
                 required/>
               </div>
@@ -56,7 +54,7 @@ export default function Signup() {
                 <input type="password" 
                 id="password" 
                 onChange={(e) => {dispatch(updatePassword(e.target.value))}}
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
                 placeholder="Password" 
                 required/>
               </div>
@@ -64,8 +62,7 @@ export default function Signup() {
               <div>
                 <input type="password" 
                 id="verify-password" 
-                onChange={(e) => {setPassword(e.target.value)}}
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
                 placeholder="Re-Enter Password" 
                 required/>
               </div>
