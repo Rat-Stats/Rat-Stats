@@ -10,7 +10,7 @@ const User = require('../server/models/userModels')
 // Doesn't test for redirecting page because the logics are done in the front end
 // all fetch request are async so we need to use await astnc
 
-describe('testing server routes', () => {
+describe('testing user routes', () => {
   describe('creating account for new users (signup)', () => {
     it("POST request to correct /user/signup route with proper body creates user in the database", async () => {
       const response = await request
@@ -35,26 +35,25 @@ describe('testing server routes', () => {
   });
   describe('verifying already existing users (login)', () => {
     it('Post request to /user/login with correct info and format returns a response', async () => {
-      try {
-        const response = await request
-          .post('/user/login')
-          .send({username:'user1', password:'any'})
-          .type('application/json')
-        expect(response).to.exist;
-      } catch (error) {
-        throw error;
-      }
+      const response = await request
+        .post('/user/login')
+        .send({username:'user1', password:'any'})
+        .type('application/json')
+      expect(response).to.exist;
     });
-    // it('Post request to /user/login with incorrect info and format returns error', async () => {
-    //   try {
-    //     const response = await request
-    //       .post('/user/login')
-    //       .send({username:'user1'})
-    //       .type('application/json')
-    //   } catch (error) {
-    //     expect(error).to.exist;
-    //     throw error;
-    //   }
-    // })
+    //a response will be sent regardless if the info sent in is good or not?
+  });
+  describe('cookies', () => {
+    it('response has cookie with name of rat', async() => {
+      const response = await request
+        .get('/user')
+        .expect('set-cookie',/rat=/);
+    });
+    it('response has cookie with value of cookie', async() => {
+      const response = await request  
+        .get('/user')
+        .expect('set-cookie',/cookie/)
+    })
+
   })
 });
