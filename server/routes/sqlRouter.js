@@ -4,7 +4,7 @@ const sqlController = require('../controllers/sqlController.js');
 
 router.post('/', (req, res) => {
 	console.log('req made', req.body);
-	res.status(200).send('your are reaching sql endpoint');
+	res.status(200).send({ msg: 'your are reaching sql endpoint' });
 });
 
 

@@ -72,7 +72,7 @@ function Homepage() {
     console.log('CLICKLLLED: ', location);
 
     try {
-      const response = await fetch('/sql', {
+      const response = await fetch('/sql/rats', {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
