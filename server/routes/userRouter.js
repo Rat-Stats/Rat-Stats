@@ -9,7 +9,6 @@ const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController.js');
 const cookieController = require('../controllers/cookieController.js');
-const sessionController = require('../controllers/sessionController.js');
 
 //set cookie
 router.get('/',cookieController.setCookie,(req,res)=> {

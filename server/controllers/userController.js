@@ -6,7 +6,6 @@ const userController = {};
 
 //createUser - create and save a new User into the database.
 userController.createUser = async (req, res, next) => {
-  console.log(req.body)
   try {
     const { username, password } = req.body;
     
@@ -27,7 +26,6 @@ userController.createUser = async (req, res, next) => {
 
 //Verify User
 userController.verifyUser = async (req, res, next) => {
-  console.log(req.body)
   try {
     const { username, password } = req.body;
   
@@ -36,14 +34,12 @@ userController.verifyUser = async (req, res, next) => {
     }
 
     const user = await User.findOne({ username });
-    console.log('user:',user)
     if(!user) {
       res.send('user not found!'); //need to comfirm with frontend
       return;
     }
 
     const passwordMatch = await bcrypt.compare(password,user.password);
-    console.log(passwordMatch)
 
     if(!passwordMatch) {
       res.send('password not match')

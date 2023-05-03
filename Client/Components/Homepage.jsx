@@ -9,14 +9,14 @@ import {
     UPDATE_USER
 } from '../Slices/sightingSlice';
 
-// import {
-//   updateUser,
-//   updatePassword,
-//   updateSightings,
-//   updateProfile_Picture,
-//   updateFavorite_Rat,
-//   updateCreated_At,
-// } from '../Slices/userSlice'
+import {
+  updateUser,
+  updatePassword,
+  updateSightings,
+  updateProfile_Picture,
+  updateFavorite_Rat,
+  updateCreated_At,
+} from '../Slices/userSlice'
 
 const center = {
   lat: 40.747749,
@@ -37,13 +37,15 @@ function Homepage() {
 
   // state for the markers
   const [markerList, setMarkerList] = useState([])
-  const [markerListInfo, setMarkerListInfo] = useState([]) // for testing until backend works
 
   // get password and username from redux state
   const dispatch = useDispatch();
   const password = useSelector((state) => state.user.password);
   const username = useSelector((state) => state.user.username);
 
+  /**
+   * Google Maps onload and onunmount functions
+   */
   // Functionality when map loads. Unique to maps api
   const onLoad = useCallback((map) => {
     // get and load map instance
@@ -59,6 +61,56 @@ function Homepage() {
     console.log('unMounted');
     setMap(null);
   }, [])
+
+  /**
+   * UseEffect to create a new user if the user doesn't already exist in the prisma
+   * db
+   */
+  useEffect(() => {
+    // get user, if user exists, store in state, otherwise create user before
+    // storing in state
+    (async() => {
+      try{
+        const getUser = await fetch('/sql/user?' + new URLSearchParams({
+          username:username
+        }), {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        const data = await getUser.json();
+        if (data === null) {
+          // create user
+          try {
+            const createUser = await fetch('/sql/user', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                username: username,
+                ssid: '1',     // authentication purposes, unsure how it works
+              })
+            })
+            // add create user info to redux
+            const data = await createUser.json();
+          }
+          catch (err) {
+            console.log(err);
+            console.log('error creating user in db')
+          }
+        }
+        dispatch(updateSightings(data.number_sightings))
+        dispatch(updateProfile_Picture(data.profile_picture))
+        dispatch(updateFavorite_Rat(data.favorite_rat))
+        dispatch(updateCreated_At(data.created_At));
+      }
+      catch (err) {
+        console.log(err);
+        console.log('error fetching user from db');
+      }
+    })();
+  },[])
 
   /**
    * 
