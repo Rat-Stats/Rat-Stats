@@ -31,7 +31,8 @@ function Homepage() {
   const [map, setMap] = useState(null);
   const [info, setInfo] = useState(false);
   const [infoLocation, setInfoLocation] = useState({ lat: 0, lng: 0 })
-
+  const [isMapLoaded, setIsMapLoaded] = useState(false);
+  const [isInfoWindowOpen, setIsInfoWindowOpen] = useState(false);
   // state for the markers
   const [markerList, setMarkerList] = useState([])
 
@@ -40,6 +41,8 @@ function Homepage() {
   const password = useSelector((state) => state.user.password);
   const username = useSelector((state) => state.user.username);
 
+  // info window state
+  const [selectedSighting, setSelectedSighting] = useState(null);
   /**
    * Google Maps onload and onunmount functions
    */
@@ -50,6 +53,7 @@ function Homepage() {
     const bounds = new window.google.maps.LatLngBounds(center);
     map.fitBounds(bounds);
     setMap(map)
+    setIsMapLoaded(true);
     //map.controls[google.maps.ControlPosition.TOP_CENTER].push(MapControl());
   }, [])
 
@@ -66,10 +70,10 @@ function Homepage() {
   useEffect(() => {
     // get user, if user exists, store in state, otherwise create user before
     // storing in state
-    (async() => {
-      try{
+    (async () => {
+      try {
         const getUser = await fetch('/sql/user?' + new URLSearchParams({
-          username:username
+          username: username
         }), {
           headers: {
             "Content-Type": "application/json",
@@ -107,7 +111,7 @@ function Homepage() {
         console.log('error fetching user from db');
       }
     })();
-  },[])
+  }, [])
 
   /**
    * 
@@ -120,17 +124,65 @@ function Homepage() {
     const location = e.latLng.toJSON(); // location of the mouse click
     setInfo(true);
     setInfoLocation(location);
-
     // update this information in redux
     dispatch(UPDATE_LOCATION(location));
   }
 
+  function handleMarkerListClick(e, map) {
+    fetch(`/sql/sighting/${e}`)
+      .then((response) => response.json())
+      .then((rat) => {
+        if (rat) {
+          console.log(rat);
+          console.log(rat.ratId)
+          setSelectedSighting(rat); // Set the selected sighting
+          setInfoLocation({ lat: rat.lat, lng: rat.lng });
+  
+          // Call getSightingInfo to get ratInfo
+          fetch(`/sighting/rat/${rat.id}`)
+            .then((response) => {
+            console.log(typeof response);
+            return response.json()}
+            )
+            .then((ratInfo) => {
+              console.log(ratInfo);
+  
+              setIsInfoWindowOpen(true);
+  
+              const infoWindow = new window.google.maps.InfoWindow({
+                content: `
+                  <div>
+                    <h3>${ratInfo.name}</h3>
+                    <p>${ratInfo.description}</p>
+                    <p>${ratInfo.times_sighted}</p>
+                  </div>
+                `,
+              });
+              if (map) {
+                // Open the info window at the marker's position
+                infoWindow.open(map, markerList.find((marker) => marker.key === e));
+              } else {
+                console.log('Map not loaded');
+              }
+            })
+            .catch((error) => {
+              console.error('Error fetching rat info:', error);
+            });
+        } else {
+          console.log('Rat not found');
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching rat:', error);
+      });
+  }
+  
 
   // use effect to update the user in sightings slice once homepage is reached
   useEffect(() => {
     // create markerList by fetching all the sightings from the database,
     // and populating them into marker objects
-    fetch('/sql/sighting/all') 
+    fetch('/sql/sighting/all')
       .then((response) => response.json())
       .then((data) => {
         // Create marker objects for fetched sightings
@@ -157,9 +209,9 @@ function Homepage() {
               position={{ lat: sighting.lat, lng: sighting.lng }}
               icon={{
                 url: 'https://i.ibb.co/TR1B5G5/My-project-2.png',
-                anchor: new window.google.maps.Point(16, 16), 
+                anchor: new window.google.maps.Point(16, 16),
                 origin: new window.google.maps.Point(0, 0),
-                scaledSize: new window.google.maps.Size(80, 48), 
+                scaledSize: new window.google.maps.Size(80, 48),
               }}
               onClick={() => handleMarkerListClick(sighting.id)}
             />
@@ -171,71 +223,70 @@ function Homepage() {
       });
   }, []);
 
-function handleMarkerListClick(e) {
-  console.log(e);
-  // TODO
-  // when it's clicked on, look in the database for a specific position
-}
 
-const addToMarkerList = (position) => {
-  const newMarker = <Marker
-    key={JSON.stringify(position)}
-    position={position}
-    icon={
-      {
-        url: 'https://i.ibb.co/TR1B5G5/My-project-2.png',
-        scaledSize: new window.google.maps.Size(200, 100)
+  const addToMarkerList = (position) => {
+    const newMarker = <Marker
+      key={JSON.stringify(position)}
+      position={position}
+      icon={
+        {
+          url: 'https://i.ibb.co/TR1B5G5/My-project-2.png',
+          scaledSize: new window.google.maps.Size(200, 100)
+        }
       }
-    }
-    onClick={handleMarkerListClick}
-  ></Marker>
-  setMarkerList(current => [...current, newMarker]); // adds a new marker to the list
-}
+      onClick={handleMarkerListClick}
+    ></Marker>
+    setMarkerList(current => [...current, newMarker]); // adds a new marker to the list
+  }
 
 
-return isLoaded ? (
-  <div className="flex flex-col justify-center items-center h-screen w-screen p-10 py-3">
-    {/*Header */}
-    <div className="flex flex-row w-screen h-1/6 justify-between items-end p-8 py-5">
-      <h1 className="text-4xl text-gray-600">Welcome to Rat Stats!</h1>
-      <div className="flex">
-        <Link to={'/profile'}>
-          <Avatar className="px-10" rounded={true} size="md" />
-        </Link>
+  return isLoaded ? (
+    <div className="flex flex-col justify-center items-center h-screen w-screen p-10 py-3">
+      {/*Header */}
+      <div className="flex flex-row w-screen h-1/6 justify-between items-end p-8 py-5">
+        <h1 className="text-4xl text-gray-600">Welcome to Rat Stats!</h1>
+        <div className="flex">
+          <Link to={'/profile'}>
+            <Avatar className="px-10" rounded={true} size="md" />
+          </Link>
+        </div>
       </div>
-    </div>
 
-    {/**Uncomment and comment out googlemap stuff in order to run without
+      {/**Uncomment and comment out googlemap stuff in order to run without
        * getting charged for api access
        */}
-    {/* <div className="container border border-gray-700 shadow h-full w-screen">
+      {/* <div className="container border border-gray-700 shadow h-full w-screen">
         <div>
           <SightingForm/>
         </div>
       </div> */}
-    {/** Box holding the google maps stuff */}
-    <div className="container border border-gray-700 shadow h-full w-screen">
-      <GoogleMap
-        mapContainerClassName="h-full w-full"
-        center={center}
-        zoom={5}
-        onLoad={onLoad}
-        onUnmount={onUnmount}
-        clickableIcons={false}
-        onClick={handleMouseClick}>
-        {markerList}
-        {info && <InfoWindow
-          key={`${infoLocation.lat}-${infoLocation.lng}`} // Add this line
-          position={infoLocation}>
-            <div>
-              <SightingForm username={username} addToMarkerList={addToMarkerList}/>
-            </div>
-          </InfoWindow>}
+      {/** Box holding the google maps stuff */}
+      <div className="container border border-gray-700 shadow h-full w-screen">
+        <GoogleMap
+          mapContainerClassName="h-full w-full"
+          center={center}
+          zoom={5}
+          onLoad={onLoad}
+          onUnmount={onUnmount}
+          clickableIcons={false}
+          onClick={handleMouseClick}>
+          {markerList}
+  {isInfoWindowOpen && selectedSighting && (
+    <InfoWindow
+    position={infoLocation}
+      onCloseClick={() => setIsInfoWindowOpen(false)}
+    >
+      <div>
+        <h3>{selectedSighting.name}</h3>
+        <p>{selectedSighting.description}</p>
+      </div>
+    </InfoWindow>
+  )}
         </GoogleMap>
       </div>
     </div>
-  ):
-  <></>
+  ) :
+    <></>
 }
 
 export default React.memo(Homepage);
