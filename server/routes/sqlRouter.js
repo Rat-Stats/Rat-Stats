@@ -7,6 +7,16 @@ router.post('/', (req, res) => {
 	res.status(200).send('your are reaching sql endpoint');
 });
 
+
+router.get('/rats', sqlController.getAllRats, (req, res)=> {
+	res.json(res.locals.ratsArr)
+})
+
+router.post('/rats', sqlController.addNewRat, (req, res) => {
+	res.status(200).json(res.locals.newRat)
+})
+
+
 //get user profile
 // router.get('/profile/:username', sqlController.getProfile, (req, res) => {
 // 	res.status(200).json(res.locals.profile);
