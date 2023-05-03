@@ -3,19 +3,17 @@ const router = express.Router();
 const sqlController = require('../controllers/sqlController.js');
 
 router.post('/', (req, res) => {
-	console.log('req made', req.body);
+	console.log('req made');
 	res.status(200).send({ msg: 'your are reaching sql endpoint' });
 });
 
-
-router.get('/rats', sqlController.getAllRats, (req, res)=> {
-	res.json(res.locals.ratsArr)
-})
+router.get('/rats', sqlController.getAllRats, (req, res) => {
+	res.json(res.locals.ratsArr);
+});
 
 router.post('/rats', sqlController.addNewRat, (req, res) => {
-	res.status(200).json(res.locals.newRat)
-})
-
+	res.status(200).json(res.locals.newRat);
+});
 
 //get user profile
 // router.get('/profile/:username', sqlController.getProfile, (req, res) => {

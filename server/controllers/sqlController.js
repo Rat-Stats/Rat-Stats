@@ -1,40 +1,36 @@
 const db = require('../../server/models/sqlModels.js');
 const sqlController = {};
 
-
 sqlController.addNewRat = (req, res, next) => {
-	const text = `INSERT INTO public.rat (latitude, longitude, time) VALUES($1, $2, $3)`
+	const text = `INSERT INTO public.rat (latitude, longitude, time) VALUES($1, $2, $3)`;
 
-	const values = [
-		req.body.longitude,
-		req.body.latitude,
-		'NOW()',
-	];
+	const values = [req.body.location.lat, req.body.location.lng, 'NOW()'];
+
+	console.log(req.body.location);
+
 	db.query(text, values)
 		.then((data) => {
 			console.log('data: ', data.rows);
-			res.locals.newRat = data.rows
+			res.locals.newRat = data.rows;
 			return next();
 		})
 		.catch((err) => {
 			console.log(err);
 			return next(err);
 		});
-}
+};
 sqlController.getAllRats = (req, res, next) => {
-
-	const text = 'SELECT longitude, latitude FROM public.rat'
+	const text = 'SELECT longitude, latitude FROM public.rat';
 	db.query(text)
 		.then((data) => {
-			res.locals.ratsArr = data
-			return next()
+			res.locals.ratsArr = data;
+			return next();
 		})
 		.catch((err) => {
-			console.log(err)
-			return next(err)
-		})
-	
-}
+			console.log(err);
+			return next(err);
+		});
+};
 //get user profile
 // sqlController.getProfile = (req, res, next) => {
 // 	const text = 'SELECT * FROM users WHERE "username" = $1';
