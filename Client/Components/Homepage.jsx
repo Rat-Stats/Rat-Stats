@@ -230,21 +230,6 @@ function handleMarkerListClick(e) {
   // when it's clicked on, look in the database for a specific position
 }
 
-const addToMarkerList = (position) => {
-  const newMarker = <Marker
-    key={JSON.stringify(position)}
-    position={position}
-    icon={
-      {
-        url: 'https://i.ibb.co/TR1B5G5/My-project-2.png',
-        scaledSize: new window.google.maps.Size(80, 48)
-      }
-    }
-    onClick={handleMarkerListClick}
-  ></Marker>
-  setMarkerList(current => [...current, newMarker]); // adds a new marker to the list
-}
-
   const addToMarkerList = (position) => {
     const newMarker = (
       <Marker
@@ -291,6 +276,7 @@ const addToMarkerList = (position) => {
           clickableIcons={false}
           onClick={handleMouseClick}
         >
+          {rat311List}
           {markerList}
           {info && (
             <InfoWindow
