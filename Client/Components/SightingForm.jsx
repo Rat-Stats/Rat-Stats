@@ -46,7 +46,7 @@ export default function SightingForm({ username, addToMarkerList}) {
         body: JSON.stringify(sightingData),
       });
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
   }
 

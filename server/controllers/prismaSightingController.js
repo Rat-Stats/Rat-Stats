@@ -6,6 +6,7 @@ const prismaSightingController = {};
 
 prismaSightingController.addSighting = async (req, res, next) => {
   // take everything from body
+  console.log('top')
   const { rat_name, user_name, lat, lng, description } = req.body;
   // make sure all the fields are there
   if (!rat_name || !user_name || !lat || !lng || !description) {
@@ -29,6 +30,7 @@ prismaSightingController.addSighting = async (req, res, next) => {
       }
       return next(errObj);
     }
+    console.log('mid')
     // this query 
     const createSighting = await prisma.sighting.create({
       data: {
@@ -54,6 +56,20 @@ prismaSightingController.addSighting = async (req, res, next) => {
         },
       },
     });
+    
+
+    // updatequery 
+    const updateSighting = await prisma.user.update({
+      where: {
+        username: user_name,
+      },
+      data: {
+        number_sightings: {
+          increment: 1
+        }
+      }
+    });
+    console.log('bot')
     res.locals.sighting = createSighting;
     return next();
   }
@@ -88,7 +104,7 @@ prismaSightingController.allSightings = async (req, res, next) => {
 
 // get all sightings in the db associated with a particular user
 prismaSightingController.findSighting = async (req, res, next) => {
-  const { username } = req.body;
+  const { username } = req.query;
   if (!username) {
     const errObj = {
       message: "Error, missing username in request body"
