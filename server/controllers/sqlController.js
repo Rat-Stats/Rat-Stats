@@ -19,6 +19,7 @@ sqlController.addNewRat = (req, res, next) => {
 			return next(err);
 		});
 };
+
 sqlController.getAllRats = (req, res, next) => {
 	const text = 'SELECT longitude, latitude FROM public.rat';
 	db.query(text)

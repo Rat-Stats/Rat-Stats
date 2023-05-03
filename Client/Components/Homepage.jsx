@@ -77,24 +77,15 @@ function Homepage() {
         },
         body: JSON.stringify({location: location}),
         }).then((data) => data.json()).then(data=> {
-          console.log('data', data)
 
-          // not very DRY, but needs a way to iterate thru each pair in arr
-          // and store in state.
+          const newArr = [];
 
-          // for (let i = 0; i < data.length; i++) {
-          //   const newMarker = <Marker 
-          //   // key={JSON.stringify(data[i])} 
-          //   draggable={true}
-          //   position={{lat: Number(data[i][0]), lng: Number(data[i][1])}}
-        
-          //   ></Marker>
-          //   setMarkerList(current => [...current, newMarker]); // adds a new marker to the list
-          // };
+          for (let i = 0; i < data.length; i++) {
+            newArr.push([Number(data[i][0]),Number(data[i][0])])
+          };
 
-
-
-
+          setMarkerList(newArr);
+          console.log('markerList', markerList);
         })
     } catch (error) {
         console.log(error)
