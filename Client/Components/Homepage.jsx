@@ -15,14 +15,14 @@ import { UPDATE_LOCATION, UPDATE_USER } from '../Slices/sightingSlice';
 //for fetch requests
 import { getRatSightingQuery } from '../ratApi.js';
 
-// import {
-//   updateUser,
-//   updatePassword,
-//   updateSightings,
-//   updateProfile_Picture,
-//   updateFavorite_Rat,
-//   updateCreated_At,
-// } from '../Slices/userSlice'
+import {
+  updateUser,
+  updatePassword,
+  updateSightings,
+  updateProfile_Picture,
+  updateFavorite_Rat,
+  updateCreated_At,
+} from '../Slices/userSlice';
 
 const center = {
   lat: 40.747749,
@@ -50,6 +50,9 @@ function Homepage() {
   const password = useSelector((state) => state.user.password);
   const username = useSelector((state) => state.user.username);
 
+  /**
+   * Google Maps onload and onunmount functions
+   */
   // Functionality when map loads. Unique to maps api
   const onLoad = useCallback((map) => {
     // get and load map instance
@@ -64,6 +67,58 @@ function Homepage() {
   const onUnmount = useCallback((map) => {
     console.log('unMounted');
     setMap(null);
+  }, []);
+
+  /**
+   * UseEffect to create a new user if the user doesn't already exist in the prisma
+   * db
+   */
+  useEffect(() => {
+    // get user, if user exists, store in state, otherwise create user before
+    // storing in state
+    (async () => {
+      try {
+        const getUser = await fetch(
+          '/sql/user?' +
+            new URLSearchParams({
+              username: username,
+            }),
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+        const data = await getUser.json();
+        if (data === null) {
+          // create user
+          try {
+            const createUser = await fetch('/sql/user', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                username: username,
+                ssid: '1', // authentication purposes, unsure how it works
+              }),
+            });
+            // add create user info to redux
+            const data = await createUser.json();
+          } catch (err) {
+            console.log(err);
+            console.log('error creating user in db');
+          }
+        }
+        dispatch(updateSightings(data.number_sightings));
+        dispatch(updateProfile_Picture(data.profile_picture));
+        dispatch(updateFavorite_Rat(data.favorite_rat));
+        dispatch(updateCreated_At(data.created_At));
+      } catch (err) {
+        console.log(err);
+        console.log('error fetching user from db');
+      }
+    })();
   }, []);
 
   /**
@@ -84,34 +139,30 @@ function Homepage() {
 
   // use effect to update the user in sightings slice once homepage is reached
   useEffect(() => {
-    // TODO: create markerList by fetching all the sightings from the database,
+    // create markerList by fetching all the sightings from the database,
     // and populating them into marker objects
-    // const userObj_testing = {
-    //   username: 'new',
-    //   password: '123',
-    //   number_sightings: 3,
-    //   favorite_rat: 'fat jody',
-    //   created_at: '2023-04-30'
-    // }
-    //   // Fetch the current user from state,
-    //   // fetch('/user/login/', {
-    //   //   method: 'POST',
-    //   //   headers: {
-    //   //     'Content-Type': 'application/json',
-    //   //   },
-    //   //   body: JSON.stringify({username, password})
-    //   // })
-    //   // .then((res) => res.json())
-    //   // .then((res)=>{
-    //   //   console.log(res);
-    //   // })
-    // populate state object with fetched request
-    // dispatch(updateUser(userObj_testing.username))
-    // dispatch(updatePassword(userObj_testing.password))
-    // dispatch(updateSightings(userObj_testing.number_sightings));
-    // dispatch(updateFavorite_Rat(userObj_testing.favorite_rat));
-    // dispatch(updateCreated_At(userObj_testing.created_at));
-    // dispatch(UPDATE_USER(userObj_testing.username))
+    fetch('/sql/sighting/all')
+      .then((response) => response.json())
+      .then((data) => {
+        // Create marker objects for fetched sightings
+        const markers = data.map((sighting) => (
+          <Marker
+            key={sighting.id}
+            position={{ lat: sighting.lat, lng: sighting.lng }}
+            icon={{
+              url: 'https://i.ibb.co/TR1B5G5/My-project-2.png',
+              scaledSize: new window.google.maps.Size(200, 100),
+            }}
+            onClick={() => handleMarkerListClick(sighting.id)}
+          />
+        ));
+
+        //update marker list state with the created markers
+        setMarkerList(markers);
+      })
+      .catch((error) => {
+        console.error('Error fetching sightings:', error);
+      });
   }, []);
 
   function handleMarkerListClick(e) {
@@ -123,7 +174,7 @@ function Homepage() {
   const addToMarkerList = (position) => {
     const newMarker = (
       <Marker
-        key={markerList.length}
+        key={JSON.stringify(position)}
         position={position}
         icon={{
           url: 'https://i.ibb.co/TR1B5G5/My-project-2.png',
@@ -146,7 +197,7 @@ function Homepage() {
           </Link>
         </div>
       </div>
-      n
+
       {/**Uncomment and comment out googlemap stuff in order to run without
        * getting charged for api access
        */}
@@ -176,7 +227,6 @@ function Homepage() {
                 <SightingForm
                   username={username}
                   addToMarkerList={addToMarkerList}
-                  marketListInfo={setMarkerListInfo}
                 />
               </div>
             </InfoWindow>

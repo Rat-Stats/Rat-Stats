@@ -48,7 +48,7 @@ prismaUserController.addUser = async (req, res, next) => {
  * }
  */
 prismaUserController.getUser = async (req, res, next) => {
-  const { username } = req.body;
+  const { username } = req.query;
   if (!username) {
     errObj = {
       message: "error, username not included in body"
@@ -65,9 +65,11 @@ prismaUserController.getUser = async (req, res, next) => {
     return next();
   }
   catch (error) {
+    console.log(error);
     errObj = {
       message: "error fetching user from database"
     }
+    return next(errObj);
   }
 };
 
