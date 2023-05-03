@@ -5,8 +5,6 @@ const prisma = new PrismaClient();
 const prismaSightingController = {};
 
 prismaSightingController.addSighting = async (req, res, next) => {
-  console.log('here');
-  console.log(req.body)
   // take everything from body
   const { rat_name, user_name, lat, lng, description } = req.body;
   // make sure all the fields are there

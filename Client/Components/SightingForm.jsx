@@ -8,7 +8,7 @@ import {
 
 // import axios from 'axios';
 
-export default function SightingForm({ username, addToMarkerList, marketListInfo }) {
+export default function SightingForm({ username, addToMarkerList}) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
 
