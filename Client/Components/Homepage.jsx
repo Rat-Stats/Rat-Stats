@@ -12,8 +12,8 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { UPDATE_LOCATION, UPDATE_USER } from '../Slices/sightingSlice';
 
-//for fetch requests
-import { getRatSightingQuery } from '../ratApi.js';
+// //for fetch requests
+// import { getRatSightingQuery } from '../ratApi.js';
 
 import {
   updateUser,
@@ -45,6 +45,9 @@ function Homepage() {
   const [markerList, setMarkerList] = useState([]);
   const [markerListInfo, setMarkerListInfo] = useState([]); // for testing until backend works
 
+  //state for rat sightings to pop up from 311 API
+  const [rat311List, setRat311List] = useState([]);
+
   // get password and username from redux state
   const dispatch = useDispatch();
   const password = useSelector((state) => state.user.password);
@@ -67,6 +70,44 @@ function Homepage() {
   const onUnmount = useCallback((map) => {
     console.log('unMounted');
     setMap(null);
+  }, []);
+
+  //functionality to fetch rat sightings from 311 API and populate
+  useEffect(() => {
+    console.log('im outside of async');
+    (async () => {
+      `i'm inside of async and outside of try`;
+      try {
+        console.log('im inside of try');
+        const getRat = await fetch(
+          'https://data.cityofnewyork.us/resource/3q43-55fe.json/',
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+        const ratDataTojson = await getRat.json();
+        const ratData = ratDataTojson.map((data, index) => {
+          return (
+            <Marker
+              key={index}
+              position={{
+                lat: Number(data.latitude),
+                lng: Number(data.longitude),
+              }}
+              icon={{
+                url: 'https://i.pinimg.com/originals/cb/b4/c0/cbb4c0a57ae3f09c6974f7ea08f966b6.png',
+                scaledSize: new window.google.maps.Size(50, 50),
+              }}
+            />
+          );
+        });
+        setRat311List(ratData);
+      } catch (error) {
+        console.log('unable to fetch rats:', error);
+      }
+    })();
   }, []);
 
   /**
@@ -218,6 +259,7 @@ function Homepage() {
           onClick={handleMouseClick}
         >
           {markerList}
+          {rat311List}
           {info && (
             <InfoWindow
               key={`${infoLocation.lat}-${infoLocation.lng}`} // Add this line
