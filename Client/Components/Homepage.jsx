@@ -1,11 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { GoogleMap, useJsApiLoader, InfoWindow, Marker } from '@react-google-maps/api';
-import { Avatar } from 'flowbite-react';
 import SightingForm from './SightingForm.jsx';
-import  { icon } from 'leaflet'
 import { useNavigate, Link } from 'react-router-dom';
-
-// for redux
 import { useDispatch, useSelector } from 'react-redux';
 import { updateLocation } from '../Slices/sightingSlice';
 
@@ -92,9 +88,7 @@ function Homepage() {
       <div className="flex flex-row w-screen h-1/6 justify-between items-end p-8 py-5">
         <h1 className="text-4xl text-gray-600">Welcome to Rat Stats!</h1>
         <div className="flex">
-          <Link to={'/profile'}>
-            <Avatar className="px-10" rounded={true} size="md"/>
-          </Link>
+        <Link to={'/'} className="flex border bg-col2 shadow rounded-xl p-2 w-10 justify-center"><p>Sign Out</p></Link>
         </div>
       </div>
       

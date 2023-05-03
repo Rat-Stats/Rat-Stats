@@ -12,7 +12,6 @@ import { updateUser, updatePassword } from '../Slices/userSlice';
  */
 export default function Login() {
   const dispatch = useDispatch();
-  // const [password, setPassword] = useState('')
   const userState = useSelector((state) => state.user.username);
   const password = useSelector((state) => state.user.password);
   const navigate = useNavigate();
