@@ -19,7 +19,6 @@ export default function Profile() {
   useEffect(() => {
     async function getAllUserSitings(username) {
       try {
-        username="user1"
         const response = await fetch('/sql/sighting?' + new URLSearchParams({
           username: username
         }));

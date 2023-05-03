@@ -77,6 +77,7 @@ function Homepage() {
           },
         })
         const data = await getUser.json();
+        console.log(data);
         if (data === null) {
           // create user
           try {
@@ -98,11 +99,11 @@ function Homepage() {
             console.log('error creating user in db')
           }
         }
-        console.log(data);
+        console.log(data.created_At);
         dispatch(updateSightings(data.number_sightings))
         dispatch(updateProfile_Picture(data.profile_picture))
         dispatch(updateFavorite_Rat(data.favorite_rat))
-        dispatch(updateCreated_At(data.created_At));
+        dispatch(updateCreated_At(data.created_at));
       }
       catch (err) {
         console.log(err);
@@ -143,7 +144,7 @@ function Homepage() {
             icon={
               {
                 url: 'https://i.ibb.co/TR1B5G5/My-project-2.png',
-                // scaledSize: new window.google.maps.Size(100, 100)
+                scaledSize: new window.google.maps.Size(80, 48)
               }
             }
             onClick={() => handleMarkerListClick(sighting.id)}

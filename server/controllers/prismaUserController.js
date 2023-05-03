@@ -61,6 +61,10 @@ prismaUserController.getUser = async (req, res, next) => {
         username: username
       }
     });
+    if (getUser === null) {
+      res.locals.user = null;
+      return next();
+    }
 
     const countSightings = await prisma.sighting.count({
       where: {
