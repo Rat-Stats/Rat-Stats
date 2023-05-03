@@ -7,7 +7,7 @@
     "test": "jest --verbose",
     "start": "NODE_ENV=production nodemon server/server.js",
     "build": "NODE_ENV=production webpack",
-    "dev": "NODE_ENV=development webpack serve --open & nodemon server/server.js"
+    "dev": "NODE_ENV=development webpack serve & nodemon server/server.js"
   },
   "nodemonConfig": {
     "ignore": [
@@ -15,7 +15,7 @@
       "client"
     ]
   },
-  "author": "jackson",
+  "author": "team",
   "license": "ISC",
   "dependencies": {
     "@babel/plugin-transform-async-to-generator": "^7.20.7",
@@ -23,14 +23,15 @@
     "@prisma/client": "^4.13.0",
     "@react-google-maps/api": "^2.18.1",
     "@reduxjs/toolkit": "^1.9.5",
+    "axios": "^1.4.0",
     "babel": "^6.23.0",
     "bcrypt": "^5.1.0",
+    "body-parser": "^1.20.2",
     "dotenv": "^16.0.3",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-jsx-a11y": "^6.7.1",
     "eslint-plugin-react": "^7.32.2",
     "express": "^4.18.2",
-    "jest": "^29.5.0",
     "leaflet": "^1.9.3",
     "mini-css-extract-plugin": "^2.7.5",
     "mongodb": "^5.3.0",
@@ -51,18 +52,22 @@
     "@types/jest": "^29.5.1",
     "autoprefixer": "^10.4.14",
     "babel-loader": "^9.1.2",
+    "chai": "^4.3.7",
     "cookie-parser": "^1.4.6",
     "dotenv-webpack": "^8.0.1",
     "eslint-config-airbnb": "^19.0.4",
     "flowbite": "^1.6.5",
     "flowbite-react": "^0.4.4",
     "html-webpack-plugin": "^5.5.1",
+    "jest": "^29.5.0",
     "js-sha3": "^0.8.0",
     "postcss": "^8.4.23",
     "prisma": "^4.13.0",
     "reactjs-popup": "^2.0.5",
+    "request": "^2.88.2",
     "sass": "^1.62.0",
     "sass-loader": "^13.2.2",
+    "supertest": "^6.3.3",
     "tailwindcss": "^3.3.1",
     "ts-jest": "^29.1.0",
     "webpack-cli": "^5.0.2",
