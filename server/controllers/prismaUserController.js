@@ -119,8 +119,9 @@ prismaUserController.deleteUser = async (req, res, next) => {
  * Route to update user info
  */
 prismaUserController.updateUser = async (req, res, next) => {
+  
   const { username, number_sightings, profile_picture, favorite_rat } = req.body;
-
+  console.log('here');
   try {
     const updateUser = await prisma.user.update({
       where: {
@@ -136,6 +137,7 @@ prismaUserController.updateUser = async (req, res, next) => {
     return next();
   }
   catch (err) {
+    console.log(err);
     const errObj = {
       message: "Error encountered updating user in db"
     }
