@@ -44,15 +44,43 @@ describe('testing user routes', () => {
     //a response will be sent regardless if the info sent in is good or not?
   });
   describe('cookies', () => {
-    it('response has cookie with name of rat', async() => {
+    it('visiting site lead to response has cookie with name of rat', async() => {
       const response = await request
         .get('/user')
         .expect('set-cookie',/rat=/);
     });
-    it('response has cookie with value of cookie', async() => {
+    it('visiting site lead to response has cookie with value of cookie', async() => {
       const response = await request  
         .get('/user')
         .expect('set-cookie',/cookie/)
+    });
+    it('successfully logging into site creates a cookie with ssid name', async () => {
+      const response = await request
+        .post('/user/login')
+        .type('application/json')
+        .send({username: 'user1', password: 'any'})
+        .expect('set-cookie',/ssid=/);
+    });
+    it('sucessfully logging into site creates a cookie name ssid with httpOnly on', async () => {
+      const response = await request
+      .post('/user/login')
+      .send({username: 'user1', password: 'any'})
+      .type('application/json')
+      .expect('set-cookie',/HttpOnly/);
+    })
+    it('successfully signing into site creates a cookie with ssid name', async () => {
+      const response = await request
+        .post('/user/signup')
+        .type('application/json')
+        .send({username: 'user1', password: 'any'})
+        .expect('set-cookie',/ssid=/);
+    });
+    it('sucessfully signing into site creates a cookie name ssid with httpOnly on', async () => {
+      const response = await request
+      .post('/user/signup')
+      .send({username: 'user1', password: 'any'})
+      .type('application/json')
+      .expect('set-cookie',/HttpOnly/);
     })
 
   })
