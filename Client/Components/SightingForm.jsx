@@ -6,17 +6,19 @@ import {
   UPDATE_USER
 } from '../Slices/sightingSlice';
 
-import axios from 'axios';
+// import axios from 'axios';
 
-export default function SightingForm({ username, addToMarkerList, marketListInfo }) {
+export default function SightingForm({ username, addToMarkerList}) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
 
   const sightingState = useSelector((state) => state.sighting);
   const { ratName, description } = sightingState;
   const { lat, lng } = sightingState.location;
+  // const { userId } = sightingState.userName
 
-  const userId = useSelector((state) => state.username); 
+  const userId = useSelector((state) => state.user.username);
+
 
   useEffect(() => {
     dispatch(UPDATE_USER(username));
@@ -25,17 +27,24 @@ export default function SightingForm({ username, addToMarkerList, marketListInfo
   async function onClick(e) {
     e.preventDefault();
     const sightingData = {
-      rat_name: ratName,
-      description: description,
       user_name: userId,
+      rat_name: ratName,
       lat: lat,
       lng: lng,
+      description: description,
     };
+    console.log('sightingData: ',sightingData)
 
     addToMarkerList({ lat, lng });
 
     try {
-      await axios.post('/sql/sighting', sightingData);
+      const temp = await fetch('/sql/sighting', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(sightingData),
+      });
     } catch (error) {
       console.error(error);
     }
