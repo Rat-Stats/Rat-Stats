@@ -9,22 +9,20 @@ import { Avatar } from 'flowbite-react';
 import SightingForm from './SightingForm.jsx';
 import { icon } from 'leaflet';
 import { useNavigate, Link } from 'react-router-dom';
-
-// for redux
 import { useDispatch, useSelector } from 'react-redux';
 import { UPDATE_LOCATION, UPDATE_USER } from '../Slices/sightingSlice';
 
 //for fetch requests
 import { createApi } from '@reduxjs/toolkit/query/react';
 
-import {
-  updateUser,
-  updatePassword,
-  updateSightings,
-  updateProfile_Picture,
-  updateFavorite_Rat,
-  updateCreated_At,
-} from '../Slices/userSlice';
+// import {
+//   updateUser,
+//   updatePassword,
+//   updateSightings,
+//   updateProfile_Picture,
+//   updateFavorite_Rat,
+//   updateCreated_At,
+// } from '../Slices/userSlice'
 
 const center = {
   lat: 40.747749,
@@ -129,7 +127,7 @@ function Homepage() {
         position={position}
         icon={{
           url: 'https://i.ibb.co/TR1B5G5/My-project-2.png',
-          scaledSize: new window.google.maps.Size(150, 100),
+          scaledSize: new window.google.maps.Size(200, 100),
         }}
         onClick={handleMarkerListClick}
       ></Marker>
