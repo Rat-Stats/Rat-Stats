@@ -39,6 +39,7 @@ function Homepage() {
   const dispatch = useDispatch();
   const password = useSelector((state) => state.user.password);
   const username = useSelector((state) => state.user.username);
+  const ssid = useSelector((state) => state.user.ssid);
 
   /**
    * Google Maps onload and onunmount functions
@@ -86,7 +87,7 @@ function Homepage() {
               },
               body: JSON.stringify({
                 username: username,
-                ssid: '1',     // authentication purposes, unsure how it works
+                ssid: ssid,     // authentication purposes, unsure how it works
               })
             })
             // add create user info to redux
