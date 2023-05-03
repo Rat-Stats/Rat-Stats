@@ -134,36 +134,6 @@ function Homepage() {
   // TODO: create markerList by fetching all the sightings from the database,
   // and populating them into marker objects
 
-
-  // const userObj_testing = {
-  //   username: 'new',
-  //   password: '123',
-  //   number_sightings: 3,
-  //   favorite_rat: 'fat jody',
-  //   created_at: '2023-04-30'
-  // }
-
-  //   // Fetch the current user from state, 
-  //   // fetch('/user/login/', {
-  //   //   method: 'POST',
-  //   //   headers: {
-  //   //     'Content-Type': 'application/json',
-  //   //   },
-  //   //   body: JSON.stringify({username, password})
-  //   // })
-  //   // .then((res) => res.json())
-  //   // .then((res)=>{
-  //   //   console.log(res);
-  //   // })
-
-    // populate state object with fetched request
-    // dispatch(updateUser(userObj_testing.username))
-    // dispatch(updatePassword(userObj_testing.password))
-    // dispatch(updateSightings(userObj_testing.number_sightings));
-    // dispatch(updateFavorite_Rat(userObj_testing.favorite_rat));
-    // dispatch(updateCreated_At(userObj_testing.created_at));
-
-    // dispatch(UPDATE_USER(userObj_testing.username))
   },[])
 
   function handleMarkerListClick(e) {
@@ -221,7 +191,7 @@ function Homepage() {
           key={`${infoLocation.lat}-${infoLocation.lng}`} // Add this line
           position={infoLocation}>
             <div>
-              <SightingForm username={username} addToMarkerList={addToMarkerList} marketListInfo={setMarkerListInfo}/>
+              <SightingForm username={username} addToMarkerList={addToMarkerList}/>
             </div>
           </InfoWindow>}
         </GoogleMap>
