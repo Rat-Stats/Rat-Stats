@@ -56,19 +56,7 @@ prismaSightingController.addSighting = async (req, res, next) => {
         },
       },
     });
-    
 
-    // updatequery 
-    const updateSighting = await prisma.user.update({
-      where: {
-        username: user_name,
-      },
-      data: {
-        number_sightings: {
-          increment: 1
-        }
-      }
-    });
     console.log('bot')
     res.locals.sighting = createSighting;
     return next();
