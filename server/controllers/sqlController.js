@@ -6,11 +6,11 @@ sqlController.addNewRat = (req, res, next) => {
 
 	const values = [req.body.location.lat, req.body.location.lng, 'NOW()'];
 
-	console.log(req.body.location);
+	// console.log(req.body.location);
 
 	db.query(text, values)
 		.then((data) => {
-			console.log('data: ', data.rows);
+			// console.log('data: ', data.rows);
 			res.locals.newRat = data.rows;
 			return next();
 		})
@@ -30,7 +30,7 @@ sqlController.getAllRats = (req, res, next) => {
 			});
 
 			res.locals.ratsArr = resArr;
-			console.log(resArr);
+			// console.log(resArr);
 			return next();
 		})
 		.catch((err) => {

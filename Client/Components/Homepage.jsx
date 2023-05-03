@@ -69,8 +69,6 @@ function Homepage() {
     setPostReqMade(true);
     setInfoLocation(location);
     dispatch(updateLocation(location));
-    console.log('CLICKLLLED: ', location);
-
     try {
       const response = await fetch('/sql/rats', {
         method: "POST",
@@ -78,9 +76,28 @@ function Homepage() {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({location: location}),
-        }).then(data => data.json());
+        }).then((data) => data.json()).then(data=> {
+          console.log('data', data)
+
+          // not very DRY, but needs a way to iterate thru each pair in arr
+          // and store in state.
+
+          // for (let i = 0; i < data.length; i++) {
+          //   const newMarker = <Marker 
+          //   // key={JSON.stringify(data[i])} 
+          //   draggable={true}
+          //   position={{lat: Number(data[i][0]), lng: Number(data[i][1])}}
+        
+          //   ></Marker>
+          //   setMarkerList(current => [...current, newMarker]); // adds a new marker to the list
+          // };
+
+
+
+
+        })
     } catch (error) {
-          console.log(error)
+        console.log(error)
     }
   }
 
@@ -112,7 +129,7 @@ function Homepage() {
 
     ></Marker>
     setMarkerList(current => [...current, newMarker]); // adds a new marker to the list
-    console.log('markerList', markerList)
+    // console.log('markerList', markerList)
   };
 
   // TODO: create markerList by fetching all the sightings from the database,
