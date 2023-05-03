@@ -88,7 +88,7 @@ prismaSightingController.allSightings = async (req, res, next) => {
 
 // get all sightings in the db associated with a particular user
 prismaSightingController.findSighting = async (req, res, next) => {
-  const { username } = req.body;
+  const { username } = req.query;
   if (!username) {
     const errObj = {
       message: "Error, missing username in request body"
