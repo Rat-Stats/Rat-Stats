@@ -187,7 +187,7 @@ const addToMarkerList = (position) => {
     icon={
       {
         url: 'https://i.ibb.co/TR1B5G5/My-project-2.png',
-        scaledSize: new window.google.maps.Size(200, 100)
+        scaledSize: new window.google.maps.Size(80, 48)
       }
     }
     onClick={handleMarkerListClick}
