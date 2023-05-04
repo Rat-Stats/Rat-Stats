@@ -45,7 +45,12 @@ function Homepage() {
   //state for rat sightings to pop up from 311 API
   const [rat311List, setRat311List] = useState([]);
   const [markersArray, setMarkersArray] = useState([]);
-
+  const [ratPics, setRatPics] = useState([
+    "https://www.treehugger.com/thmb/Se5V44Wpt4NMz3w2pIR6TCJhLhI=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/__opt__aboutcom__coeus__resources__content_migration__mnn__images__2014__01__Blue-blanket-JF_0-5e09e9b9268f483fbd3f2da2d25418d3.jpg",
+    "https://unsplash.com/photos/rNDjtoR_VRM",
+    "https://mystart.com/blog/wp-content/uploads/capture04-1280x800-1.png",
+    "https://images.unsplash.com/photo-1614090332617-e7dd5bd107e3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y3V0ZSUyMHJhdHxlbnwwfHwwfHw%3D&w=1000&q=80",
+    "https://cdn1.tedsby.com/storage/3/4/8/348550/cute-mouse-realistic-soft-plush-toy-teddy-stuffed-baby-rat.jpg"])
   // get password and username from redux state
   const dispatch = useDispatch();
   const password = useSelector((state) => state.user.password);
