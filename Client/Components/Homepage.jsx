@@ -51,6 +51,11 @@ function Homepage() {
     "https://mystart.com/blog/wp-content/uploads/capture04-1280x800-1.png",
     "https://images.unsplash.com/photo-1614090332617-e7dd5bd107e3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y3V0ZSUyMHJhdHxlbnwwfHwwfHw%3D&w=1000&q=80",
     "https://cdn1.tedsby.com/storage/3/4/8/348550/cute-mouse-realistic-soft-plush-toy-teddy-stuffed-baby-rat.jpg"])
+  
+  const getRandomRatPic = (ratPics) => {
+    const ind = Math.floor(Math.random() * ratPics.length);
+    return ratPics[ind];
+  }
   // get password and username from redux state
   const dispatch = useDispatch();
   const password = useSelector((state) => state.user.password);
@@ -271,31 +276,33 @@ function Homepage() {
                 .then((response) => response.json())
                 .then((ratInfo) => {
                   console.log('ratInfo: ', ratInfo);
-
+                  const ratPic = getRandomRatPic(ratPics)
+                  console.log(ratPic)
                   const infoWindow = new window.google.maps.InfoWindow({
                     position: { lat: sighting.lat, lng: sighting.lng },
                     anchor: markersArray.find((marker) => marker.key === id),
                     content: `
-                        <div class="max-w-sm rounded overflow-hidden shadow-lg bg-white">
-                          <div class="p-4">
-                            <div class="flex items-center mb-4 ">
-                              <div class="space-y-2">
-                                <p class="text-l font-bold uppercase">My name is: ${ratInfo.name
-                      }</p>
-                                <p class=" text-m text-black">Here are some facts about me: </p>
-                                <div class="border-2 rounded-sm"> 
-                                  <p class="text-sm text-black">${ratInfo.description
-                      }</p>
-                                  </div>
-                                <p class="text-s italic text-gray-500">I was reported on: ${new Date(
-                        sighting.time
-                      ).toLocaleString()} by user${sighting.userId}</p
+                      <div class="max-w-sm rounded overflow-hidden shadow-lg bg-white">
+                        <div class="p-4">
+                          <div class="flex items-center mb-4">
+                            
+                            <div class="space-y-2">
+                            <img src="${ratPic}" alt="Cute Rat" style="max-width: 50%"></img>
+                              <p class="text-l font-bold uppercase">My name is: ${ratInfo.name}</p>
+                              <p class="text-m text-black">Here are some facts about me:</p>
+                              <div class="border-2 rounded-sm">
+                                <p class="text-sm text-black">${ratInfo.description}</p>
                               </div>
+                              <p class="text-s italic text-gray-500">I was reported on: ${new Date(
+                                sighting.time
+                              ).toLocaleString()} by user${sighting.userId}</p>
                             </div>
                           </div>
                         </div>
-                      `,
+                      </div>
+                    `,
                   });
+                  
 
                   if (map && map instanceof window.google.maps.Map) {
                     // Check if map object is available

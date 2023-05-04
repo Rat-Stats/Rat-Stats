@@ -58,13 +58,13 @@ router.delete('/sighting', prismaSightingController.deleteSighting, (req, res) =
   res.status(200).json(res.locals.deletedSighting);
 });
 
-// router.get('/sighting/:id', prismaSightingController.getSighting, (req, res) => {
-//   // res.status(200).json(res.locals.sightingInfo); 
-// });
-// router.get('/sighting/rat/:ratId', prismaSightingController.getRatInfo, (req, res) => {
-//   // console.log('yikes!')
-//   // res.status(200).json(res.locals.ratInfo); 
-// });
+router.get('/sighting/:id', prismaSightingController.getSighting, (req, res) => {
+  // res.status(200).json(res.locals.sightingInfo); 
+});
+router.get('/sighting/rat/:ratId', prismaSightingController.getRatInfo, (req, res) => {
+  // console.log('yikes!')
+  // res.status(200).json(res.locals.ratInfo); 
+});
 
 router.get('/rat', prismaRatController.allRatsSorted, (req, res) => {
   return res.status(200).json(res.locals.rats)
