@@ -26,7 +26,6 @@ model Rat {
   image             String?       
   description       String          
   alive             Boolean?
-  times_sighted     Int             @default(1)
   sightings         Sighting[] 
 }
 
