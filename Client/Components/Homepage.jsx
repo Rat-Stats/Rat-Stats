@@ -73,6 +73,8 @@ function Homepage() {
   const dispatch = useDispatch();
   const password = useSelector((state) => state.user.password);
   const username = useSelector((state) => state.user.username);
+  const picture = useSelector((state) => state.user.profile_picture)
+
   // info window state
   const [selectedSighting, setSelectedSighting] = useState(null);
   const [isInfoWindowOpen, setIsInfoWindowOpen] = useState(false);
@@ -383,7 +385,7 @@ function Homepage() {
           </button>
 
           <Link to={'/profile'}>
-            <Avatar className="px-10" rounded={true} size="md" />
+            <Avatar img={picture} className="px-10" rounded={true} size="md" />
           </Link>
         </div>
       </div>
