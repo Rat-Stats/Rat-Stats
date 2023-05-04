@@ -10,10 +10,7 @@ import SightingForm from './SightingForm.jsx';
 import { icon } from 'leaflet';
 import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  UPDATE_LOCATION,
-  UPDATE_USER
-} from '../Slices/sightingSlice';
+import { UPDATE_LOCATION, UPDATE_USER } from '../Slices/sightingSlice';
 
 import {
   updateUser,
@@ -47,7 +44,7 @@ function Homepage() {
 
   //state for rat sightings to pop up from 311 API
   const [rat311List, setRat311List] = useState([]);
-  const [markersArray, setMarkersArray] = useState([])
+  const [markersArray, setMarkersArray] = useState([]);
 
   // get password and username from redux state
   const dispatch = useDispatch();
@@ -122,7 +119,6 @@ function Homepage() {
   useEffect(() => {
     // get user, if user exists, store in state, otherwise create user before
     // storing in state
-
   }, []);
 
   /**
@@ -135,11 +131,14 @@ function Homepage() {
   const handleMouseClick = (e) => {
     const location = e.latLng.toJSON(); // location of the mouse click
 
-    setInfoLocation(location)
+    setInfoLocation(location);
     // Check if the click is on a rat sighting marker
     const clickedMarker = markerList.find((marker) => {
       const markerPosition = marker.props.position;
-      return markerPosition.lat === location.lat && markerPosition.lng === location.lng;
+      return (
+        markerPosition.lat === location.lat &&
+        markerPosition.lng === location.lng
+      );
     });
 
     if (clickedMarker) {
@@ -194,12 +193,11 @@ function Homepage() {
           }
         }
         console.log(data.created_At);
-        dispatch(updateSightings(data.number_sightings))
-        dispatch(updateProfile_Picture(data.profile_picture))
-        dispatch(updateFavorite_Rat(data.favorite_rat))
+        dispatch(updateSightings(data.number_sightings));
+        dispatch(updateProfile_Picture(data.profile_picture));
+        dispatch(updateFavorite_Rat(data.favorite_rat));
         dispatch(updateCreated_At(data.created_at));
-      }
-      catch (err) {
+      } catch (err) {
         console.log(err);
         console.log('error fetching user from db');
       }
@@ -226,7 +224,14 @@ function Homepage() {
               origin: new window.google.maps.Point(0, 0),
               scaledSize: new window.google.maps.Size(70, 40),
             }}
-            onClick={(e) => handleMarkerListClick(sighting.id, map, markersArray, infoLocation)}
+            onClick={(e) =>
+              handleMarkerListClick(
+                sighting.id,
+                map,
+                markersArray,
+                infoLocation
+              )
+            }
           />
         ));
 
@@ -237,7 +242,6 @@ function Homepage() {
       .catch((error) => {
         console.error('Error fetching sightings:', error);
       });
-
 
     function handleMarkerListClick(id, map, markersArray, infoLocation) {
       // console.log(markerList)
@@ -252,18 +256,17 @@ function Homepage() {
           .then((response) => response.json())
           .then((sighting) => {
             if (sighting) {
-              console.log("sighting id: ", sighting.id);
-              console.log("sighting info: ", sighting);
+              console.log('sighting id: ', sighting.id);
+              console.log('sighting info: ', sighting);
               // setSelectedSighting(id);
               // console.log('selected sighting: ', selectedSighting)
               // setIsInfoWindowOpen(true);
-              const ratId = parseInt(sighting.ratId)
-              console.log("ratId: ", sighting.ratId);
+              const ratId = parseInt(sighting.ratId);
+              console.log('ratId: ', sighting.ratId);
               fetch(`/sql/sighting/rat/${ratId}`)
                 .then((response) => response.json())
                 .then((ratInfo) => {
-
-                  console.log("ratInfo: ", ratInfo)
+                  console.log('ratInfo: ', ratInfo);
 
                   const infoWindow = new window.google.maps.InfoWindow({
                     position: { lat: sighting.lat, lng: sighting.lng },
@@ -273,12 +276,18 @@ function Homepage() {
                           <div class="p-4">
                             <div class="flex items-center mb-4 ">
                               <div class="space-y-2">
-                                <p class="text-l font-bold uppercase">My name is: ${ratInfo.name}</p>
+                                <p class="text-l font-bold uppercase">My name is: ${
+                                  ratInfo.name
+                                }</p>
                                 <p class=" text-m text-black">Here are some facts about me: </p>
                                 <div class="border-2 rounded-sm"> 
-                                  <p class="text-sm text-black">${ratInfo.description}</p>
+                                  <p class="text-sm text-black">${
+                                    ratInfo.description
+                                  }</p>
                                   </div>
-                                <p class="text-s italic text-gray-500">I was reported on: ${new Date(sighting.time).toLocaleString()} by user${sighting.userId}</p
+                                <p class="text-s italic text-gray-500">I was reported on: ${new Date(
+                                  sighting.time
+                                ).toLocaleString()} by user${sighting.userId}</p
                               </div>
                             </div>
                           </div>
@@ -286,9 +295,13 @@ function Homepage() {
                       `,
                   });
 
-                  if (map && map instanceof window.google.maps.Map) { // Check if map object is available
+                  if (map && map instanceof window.google.maps.Map) {
+                    // Check if map object is available
                     // Open the info window at the marker's position
-                    infoWindow.open(map, markerList.find((marker) => marker.key === id));
+                    infoWindow.open(
+                      map,
+                      markerList.find((marker) => marker.key === id)
+                    );
                   } else {
                     console.log('Map not loaded');
                   }
@@ -307,9 +320,8 @@ function Homepage() {
     }
   }, [map]);
 
-
-
   const addToMarkerList = (position) => {
+
     const newMarker = <Marker
     key={JSON.stringify(position)}
     position={position}
@@ -329,13 +341,21 @@ function Homepage() {
   }
 
   return isLoaded ? (
-    <div className="flex flex-col justify-center items-center h-screen w-screen p-10 py-3">
+    <div className="flex flex-col justify-center items-center h-screen w-screen p-10 py-3 bg-mirispink">
       {/*Header */}
       <div className="flex flex-row w-screen h-1/6 justify-between items-end p-8 py-5">
-        <h1 className="text-4xl text-gray-600">Welcome to Rat Stats!</h1>
 
+        <h1 className="text-4xl text-gray-600 text-center font-mono font-extrabold">
+          Welcome to Rat Stats Premium
+        </h1>
         <div className="flex">
-          <button className="text-2xl shadow rounded-xl p-2 text-gray-600 bg-pink-300" onClick={goToHomepage} >Rat Leaderboard</button>
+          <button
+            className="text-1xl shadow rounded-xl p-2 text-gray-600 bg-mirisyellow hover:bg-mirisblue font-mono"
+            onClick={goToHomepage}
+          >
+            Rat Leaderboard
+          </button>
+
           <Link to={'/profile'}>
             <Avatar className="px-10" rounded={true} size="md" />
           </Link>
@@ -359,16 +379,22 @@ function Homepage() {
           onLoad={onLoad}
           onUnmount={onUnmount}
           clickableIcons={false}
-          onClick={handleMouseClick}>
+          onClick={handleMouseClick}
+        >
           {markerList}
           {rat311List}
           {info && (
             <InfoWindow
               position={infoLocation}
-              anchor={markerList.find((marker) => marker.key === selectedSighting)}
+              anchor={markerList.find(
+                (marker) => marker.key === selectedSighting
+              )}
             >
               <div>
-                <SightingForm username={username} addToMarkerList={addToMarkerList} />
+                <SightingForm
+                  username={username}
+                  addToMarkerList={addToMarkerList}
+                />
               </div>
             </InfoWindow>
           )}
