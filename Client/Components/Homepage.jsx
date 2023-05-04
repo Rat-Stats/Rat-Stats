@@ -101,7 +101,9 @@ function Homepage() {
               }}
               icon={{
                 url: 'https://i.pinimg.com/originals/cb/b4/c0/cbb4c0a57ae3f09c6974f7ea08f966b6.png',
-                scaledSize: new window.google.maps.Size(50, 50),
+                anchor: new window.google.maps.Point(16, 16),
+              origin: new window.google.maps.Point(0, 0),
+              scaledSize: new window.google.maps.Size(35, 35),
               }}
             />
           );
@@ -120,7 +122,7 @@ function Homepage() {
   useEffect(() => {
     // get user, if user exists, store in state, otherwise create user before
     // storing in state
-    
+
   }, []);
 
   /**
@@ -160,9 +162,9 @@ function Homepage() {
       try {
         const getUser = await fetch(
           '/sql/user?' +
-            new URLSearchParams({
-              username: username,
-            }),
+          new URLSearchParams({
+            username: username,
+          }),
           {
             headers: {
               'Content-Type': 'application/json',
@@ -222,7 +224,7 @@ function Homepage() {
               url: 'https://i.ibb.co/TR1B5G5/My-project-2.png',
               anchor: new window.google.maps.Point(16, 16),
               origin: new window.google.maps.Point(0, 0),
-              scaledSize: new window.google.maps.Size(80, 48),
+              scaledSize: new window.google.maps.Size(70, 40),
             }}
             onClick={(e) => handleMarkerListClick(sighting.id, map, markersArray, infoLocation)}
           />
@@ -235,7 +237,7 @@ function Homepage() {
       .catch((error) => {
         console.error('Error fetching sightings:', error);
       });
-      
+
 
     function handleMarkerListClick(id, map, markersArray, infoLocation) {
       // console.log(markerList)
@@ -309,32 +311,31 @@ function Homepage() {
 
   const addToMarkerList = (position) => {
     const newMarker = <Marker
-
-      key={JSON.stringify(position)}
-      position={position}
-      icon={
-        {
-          url: 'https://i.ibb.co/TR1B5G5/My-project-2.png',
-          scaledSize: new window.google.maps.Size(200, 100)
-        }
-      }
-      onClick={(e) => handleMarkerListClick(sighting.id, map)}
-    ></Marker>
+    key={JSON.stringify(position)}
+    position={position}
+      icon={{
+        url: 'https://i.ibb.co/TR1B5G5/My-project-2.png',
+        anchor: new window.google.maps.Point(16, 16),
+        origin: new window.google.maps.Point(0, 0),
+        scaledSize: new window.google.maps.Size(80, 48),
+      }}
+      onClick={(e) => handleMarkerListClick(sighting.id, map, markersArray, infoLocation)}
+    />
     setMarkerList(current => [...current, newMarker]); // adds a new marker to the list
   }
 
   const goToHomepage = (e) => {
     Navigate('/leaderboard');
   }
-  
+
   return isLoaded ? (
     <div className="flex flex-col justify-center items-center h-screen w-screen p-10 py-3">
       {/*Header */}
       <div className="flex flex-row w-screen h-1/6 justify-between items-end p-8 py-5">
         <h1 className="text-4xl text-gray-600">Welcome to Rat Stats!</h1>
-        
+
         <div className="flex">
-        <button className="text-2xl shadow rounded-xl p-2 text-gray-600 bg-pink-300" onClick={goToHomepage} >Rat Leaderboard</button>
+          <button className="text-2xl shadow rounded-xl p-2 text-gray-600 bg-pink-300" onClick={goToHomepage} >Rat Leaderboard</button>
           <Link to={'/profile'}>
             <Avatar className="px-10" rounded={true} size="md" />
           </Link>
