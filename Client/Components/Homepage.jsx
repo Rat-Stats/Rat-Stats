@@ -120,6 +120,42 @@ function Homepage() {
   useEffect(() => {
     // get user, if user exists, store in state, otherwise create user before
     // storing in state
+    
+  }, []);
+
+  /**
+   *
+   * @param {*} e the event info of the mouse click
+   * https://developers.google.com/maps/documentation/javascript/examples/event-click-latlng
+   * Will return different events based on if the user clicked on a random point,
+   * or if they clicked on one of our markers
+   */
+  const handleMouseClick = (e) => {
+    const location = e.latLng.toJSON(); // location of the mouse click
+
+    setInfoLocation(location)
+    // Check if the click is on a rat sighting marker
+    const clickedMarker = markerList.find((marker) => {
+      const markerPosition = marker.props.position;
+      return markerPosition.lat === location.lat && markerPosition.lng === location.lng;
+    });
+
+    if (clickedMarker) {
+      // Clicked on a rat sighting marker
+      setIsInfoWindowOpen(true);
+      setSelectedSighting(clickedMarker.key);
+      setInfoLocation(clickedMarker.props.position); // Update infoLocation with marker position
+    } else {
+      // Clicked on an empty space, open the sighting form
+      setInfo(true);
+    }
+
+    // Update this information in redux
+    dispatch(UPDATE_LOCATION(location));
+  };
+
+  // use effect to update the user in sightings slice once homepage is reached
+  useEffect(() => {
     (async () => {
       try {
         const getUser = await fetch(
@@ -166,41 +202,6 @@ function Homepage() {
         console.log('error fetching user from db');
       }
     })();
-  }, []);
-
-  /**
-   *
-   * @param {*} e the event info of the mouse click
-   * https://developers.google.com/maps/documentation/javascript/examples/event-click-latlng
-   * Will return different events based on if the user clicked on a random point,
-   * or if they clicked on one of our markers
-   */
-  const handleMouseClick = (e) => {
-    const location = e.latLng.toJSON(); // location of the mouse click
-
-    setInfoLocation(location)
-    // Check if the click is on a rat sighting marker
-    const clickedMarker = markerList.find((marker) => {
-      const markerPosition = marker.props.position;
-      return markerPosition.lat === location.lat && markerPosition.lng === location.lng;
-    });
-
-    if (clickedMarker) {
-      // Clicked on a rat sighting marker
-      setIsInfoWindowOpen(true);
-      setSelectedSighting(clickedMarker.key);
-      setInfoLocation(clickedMarker.props.position); // Update infoLocation with marker position
-    } else {
-      // Clicked on an empty space, open the sighting form
-      setInfo(true);
-    }
-
-    // Update this information in redux
-    dispatch(UPDATE_LOCATION(location));
-  };
-
-  // use effect to update the user in sightings slice once homepage is reached
-  useEffect(() => {
     // create markerList by fetching all the sightings from the database,
     // and populating them into marker objects
     fetch('/sql/sighting/all')
@@ -359,6 +360,7 @@ function Homepage() {
           clickableIcons={false}
           onClick={handleMouseClick}>
           {markerList}
+          {rat311List}
           {info && (
             <InfoWindow
               position={infoLocation}
