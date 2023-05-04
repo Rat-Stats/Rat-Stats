@@ -110,7 +110,7 @@ export default function Profile() {
   }
 
   return (
-    <div className="flex flex-col p-8 bg-mirispink shadow  font-mono py-20 items-center h-screen w-screen">
+    <div className="flex flex-col p-8 bg-mirispink  font-mono py-20 items-center h-100% w-screen">
       <h1 className="text-5xl text-gray-600">Profile</h1>
       <Avatar img={imageUrl} className="p-5" rounded={true} size="xl" />
       {displayImage && (
@@ -141,7 +141,7 @@ export default function Profile() {
         Created At: {currentState.created_at}
       </h1>
       <h1 className="text-2xl text-gray-600">All User Sightings</h1>
-      <div className="grid grid-flow-row-dense grid-cols-4 content-center justify-center items-center">
+      <div className="grid grid-cols-4 content-center justify-center items-center h-full">
         {sightingsComponents}
       </div>
       <Link

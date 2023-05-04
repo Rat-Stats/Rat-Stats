@@ -423,6 +423,7 @@ function Homepage() {
                   username={username}
                   addToMarkerList={addToMarkerList}
                   onSubmit={handleFormSubmit}
+                  setInfo={setInfo}
                 />
               </div>
             </InfoWindow>
