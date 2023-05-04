@@ -26,6 +26,7 @@ export default function SightingForm({ username, addToMarkerList}) {
 
   async function onClick(e) {
     e.preventDefault();
+    
     const sightingData = {
       user_name: userId,
       rat_name: ratName,
@@ -46,7 +47,7 @@ export default function SightingForm({ username, addToMarkerList}) {
         body: JSON.stringify(sightingData),
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 

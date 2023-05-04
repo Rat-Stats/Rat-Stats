@@ -62,8 +62,8 @@ router.get('/sighting/:id', prismaSightingController.getSighting, (req, res) => 
   // res.status(200).json(res.locals.sightingInfo); 
 });
 router.get('/sighting/rat/:ratId', prismaSightingController.getRatInfo, (req, res) => {
-  console.log('yikes!')
-  res.status(200).json(res.locals.ratInfo); 
+  // console.log('yikes!')
+  // res.status(200).json(res.locals.ratInfo); 
 });
 
 module.exports = router;

@@ -177,11 +177,11 @@ prismaSightingController.getSighting = async (req, res, next) => {
 
 prismaSightingController.getRatInfo = async (req, res, next) => {
   const ratId = req.params.ratId;
-  console.log('oopsie getRatInfo middleware', req.params.ratId)
+  // console.log('oopsie getRatInfo middleware', req.params.ratId)
   try {
     const ratInfo = await prisma.rat.findUnique({
       where: {
-        id: Number(ratId),
+        id: parseInt(ratId),
       },
     });
     if (ratInfo) {

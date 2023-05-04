@@ -4,7 +4,10 @@ import { Avatar } from 'flowbite-react';
 import SightingForm from './SightingForm.jsx';
 import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { UPDATE_LOCATION, UPDATE_USER } from '../Slices/sightingSlice';
+import {
+  UPDATE_LOCATION,
+  UPDATE_USER
+} from '../Slices/sightingSlice';
 
 import {
   updateUser,
@@ -14,6 +17,7 @@ import {
   updateFavorite_Rat,
   updateCreated_At,
 } from '../Slices/userSlice'
+import { marker } from 'leaflet';
 
 const center = {
   lat: 40.747749,
@@ -31,11 +35,11 @@ function Homepage() {
   const [map, setMap] = useState(null);
   const [info, setInfo] = useState(false);
   const [infoLocation, setInfoLocation] = useState({ lat: 0, lng: 0 })
-  const [isMapLoaded, setIsMapLoaded] = useState(false);
-  const [isInfoWindowOpen, setIsInfoWindowOpen] = useState(false);
+
   // state for the markers
   const [markerList, setMarkerList] = useState([])
-
+  const [markersArray,setMarkersArray] = useState([])
+  
   // get password and username from redux state
   const dispatch = useDispatch();
   const password = useSelector((state) => state.user.password);
@@ -43,6 +47,8 @@ function Homepage() {
 
   // info window state
   const [selectedSighting, setSelectedSighting] = useState(null);
+  // const [isInfoWindowOpen, setIsInfoWindowOpen] = useState(false);
+
   /**
    * Google Maps onload and onunmount functions
    */
@@ -53,7 +59,6 @@ function Homepage() {
     const bounds = new window.google.maps.LatLngBounds(center);
     map.fitBounds(bounds);
     setMap(map)
-    setIsMapLoaded(true);
     //map.controls[google.maps.ControlPosition.TOP_CENTER].push(MapControl());
   }, [])
 
@@ -101,7 +106,6 @@ function Homepage() {
             console.log('error creating user in db')
           }
         }
-        console.log(data);
         dispatch(updateSightings(data.number_sightings))
         dispatch(updateProfile_Picture(data.profile_picture))
         dispatch(updateFavorite_Rat(data.favorite_rat))
@@ -123,61 +127,28 @@ function Homepage() {
    */
   const handleMouseClick = (e) => {
     const location = e.latLng.toJSON(); // location of the mouse click
-    setInfo(true);
-    setInfoLocation(location);
-    // update this information in redux
+  
+    // Check if the click is on a rat sighting marker
+    const clickedMarker = markerList.find((marker) => {
+      const markerPosition = marker.props.position;
+      return markerPosition.lat === location.lat && markerPosition.lng === location.lng;
+    });
+  
+    if (clickedMarker) {
+      // Clicked on a rat sighting marker
+      setIsInfoWindowOpen(true);
+      setSelectedSighting(clickedMarker.key);
+      setInfoLocation(clickedMarker.props.position); // Update infoLocation with marker position
+    } else {
+      // Clicked on an empty space, open the sighting form
+      setInfo(true);
+    }
+  
+    // Update this information in redux
     dispatch(UPDATE_LOCATION(location));
-  }
+  };
+  
 
-  function handleMarkerListClick(e, map) {
-    fetch(`/sql/sighting/${e}`)
-      .then((response) => response.json())
-      .then((rat) => {
-        if (rat) {
-          console.log(rat);
-          console.log(rat.ratId)
-          setSelectedSighting(rat); // Set the selected sighting
-          setInfoLocation({ lat: rat.lat, lng: rat.lng });
-  
-          // Call getSightingInfo to get ratInfo
-          fetch(`/sighting/rat/${rat.id}`)
-            .then((response) => {
-            console.log(typeof response);
-            return response.json()}
-            )
-            .then((ratInfo) => {
-              console.log(ratInfo);
-  
-              setIsInfoWindowOpen(true);
-  
-              const infoWindow = new window.google.maps.InfoWindow({
-                content: `
-                  <div>
-                    <h3>${ratInfo.name}</h3>
-                    <p>${ratInfo.description}</p>
-                    <p>${ratInfo.times_sighted}</p>
-                  </div>
-                `,
-              });
-              if (map) {
-                // Open the info window at the marker's position
-                infoWindow.open(map, markerList.find((marker) => marker.key === e));
-              } else {
-                console.log('Map not loaded');
-              }
-            })
-            .catch((error) => {
-              console.error('Error fetching rat info:', error);
-            });
-        } else {
-          console.log('Rat not found');
-        }
-      })
-      .catch((error) => {
-        console.error('Error fetching rat:', error);
-      });
-  }
-  
 
   // use effect to update the user in sightings slice once homepage is reached
   useEffect(() => {
@@ -187,46 +158,96 @@ function Homepage() {
       .then((response) => response.json())
       .then((data) => {
         // Create marker objects for fetched sightings
+        // const zoomLevel = map?.getZoom();
+        // const scaledSize = new window.google.maps.Size(2000 / zoomLevel, 100 / zoomLevel);
+        const markersArr = data.map((sighting) => ({
+          id: sighting.id,
+          position: { lat: sighting.lat, lng: sighting.lng },
+        }));
         const markers = data.map((sighting) => (
           <Marker
             key={sighting.id}
             position={{ lat: sighting.lat, lng: sighting.lng }}
-            icon={
-              {
-                url: 'https://i.ibb.co/TR1B5G5/My-project-2.png',
-                // scaledSize: new window.google.maps.Size(100, 100)
-              }
-            }
-            onClick={() => handleMarkerListClick(sighting.id)}
+            icon={{
+              url: 'https://i.ibb.co/TR1B5G5/My-project-2.png',
+              anchor: new window.google.maps.Point(16, 16),
+              origin: new window.google.maps.Point(0, 0),
+              scaledSize: new window.google.maps.Size(80, 48),
+            }}
+            onClick={(e) => handleMarkerListClick(sighting.id, map, markersArray, infoLocation)}
           />
         ));
 
-        //update marker list state with the created markers
-        // setMarkerList(markers);
-        setMarkerList(
-          data.map((sighting) => (
-            <Marker
-              key={sighting.id}
-              position={{ lat: sighting.lat, lng: sighting.lng }}
-              icon={{
-                url: 'https://i.ibb.co/TR1B5G5/My-project-2.png',
-                anchor: new window.google.maps.Point(16, 16),
-                origin: new window.google.maps.Point(0, 0),
-                scaledSize: new window.google.maps.Size(80, 48),
-              }}
-              onClick={() => handleMarkerListClick(sighting.id)}
-            />
-          ))
-        );
+        // update marker list state with the created markers
+        setMarkerList(markers);
+        setMarkersArray(markersArr);
       })
       .catch((error) => {
         console.error('Error fetching sightings:', error);
       });
-  }, []);
 
+      function handleMarkerListClick(id, map, markersArray, infoLocation) {
+        console.log(markerList)
+        console.log("infoLocation: ", infoLocation)
+        if (id === selectedSighting) {
+          // Clicked on the same marker again, close the info window
+          setIsInfoWindowOpen(false);
+          setSelectedSighting(null);
+        } else {
+          // Clicked on a different marker, fetch the rat info and open the info window
+          fetch(`/sql/sighting/${id}`)
+            .then((response) => response.json())
+            .then((sighting) => {
+              if (sighting) {
+                console.log("sighting id: ", sighting.id);
+                console.log("sighting info: ", sighting);
+                // setSelectedSighting(id);
+                // console.log('selected sighting: ', selectedSighting)
+                // setIsInfoWindowOpen(true);
+                const ratId = parseInt(sighting.ratId)
+                console.log("ratId: ", sighting.ratId);
+                fetch(`/sql/sighting/rat/${ratId}`)
+                  .then((response) => response.json())
+                  .then((ratInfo) => {
+                    
+                    console.log("ratInfo: ", ratInfo)
+                    
+                    const infoWindow = new window.google.maps.InfoWindow({
+                      position: { lat: sighting.lat, lng: sighting.lng },
+                      anchor: markersArray.find((marker) => marker.key === id),
+                      content: `
+                        <div>
+                           <h3>${ratInfo.name}</h3>
+                          <p>${ratInfo.description}</p>
+                        </div>
+                      `,
+                    });
+                    if (map && map instanceof window.google.maps.Map) { // Check if map object is available
+                      // Open the info window at the marker's position
+                      infoWindow.open(map, markerList.find((marker) => marker.key === id));
+                    } else {
+                      console.log('Map not loaded');
+                    }
+                  })
+                  .catch((error) => {
+                    console.error('Error fetching rat info:', error);
+                  });
+              } else {
+                console.log('Rat not found');
+              }
+            })
+            .catch((error) => {
+              console.error('Error fetching rat:', error);
+            });
+        }
+      }
+  }, [map]);
+
+  
 
   const addToMarkerList = (position) => {
     const newMarker = <Marker
+
       key={JSON.stringify(position)}
       position={position}
       icon={
@@ -235,7 +256,7 @@ function Homepage() {
           scaledSize: new window.google.maps.Size(200, 100)
         }
       }
-      onClick={handleMarkerListClick}
+      onClick={(e) => handleMarkerListClick(sighting.id, map)}
     ></Marker>
     setMarkerList(current => [...current, newMarker]); // adds a new marker to the list
   }
@@ -266,23 +287,32 @@ function Homepage() {
         <GoogleMap
           mapContainerClassName="h-full w-full"
           center={center}
-          zoom={5}
+          zoom={10}
           onLoad={onLoad}
           onUnmount={onUnmount}
           clickableIcons={false}
           onClick={handleMouseClick}>
           {markerList}
-  {isInfoWindowOpen && selectedSighting && (
-    <InfoWindow
-    position={infoLocation}
-      onCloseClick={() => setIsInfoWindowOpen(false)}
-    >
-      <div>
-        <h3>{selectedSighting.name}</h3>
-        <p>{selectedSighting.description}</p>
-      </div>
-    </InfoWindow>
-  )}
+          {info && (
+            <InfoWindow
+              position={infoLocation}
+              anchor={markerList.find((marker) => marker.key === selectedSighting)}
+            >
+              <div>
+                <SightingForm username={username} addToMarkerList={addToMarkerList} />
+              </div>
+            </InfoWindow>
+          )}
+          {/* {info && (
+            <InfoWindow
+              position={infoLocation}
+              anchor={markerList.find((marker) => marker.key === selectedSighting)}
+            >
+              <div>
+                <SightingForm username={username} addToMarkerList={addToMarkerList} />
+              </div>
+            </InfoWindow>
+          )} */}
         </GoogleMap>
       </div>
     </div>
