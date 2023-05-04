@@ -102,7 +102,9 @@ function Homepage() {
               }}
               icon={{
                 url: 'https://i.pinimg.com/originals/cb/b4/c0/cbb4c0a57ae3f09c6974f7ea08f966b6.png',
-                scaledSize: new window.google.maps.Size(50, 50),
+                anchor: new window.google.maps.Point(16, 16),
+              origin: new window.google.maps.Point(0, 0),
+              scaledSize: new window.google.maps.Size(35, 35),
               }}
             />
           );
@@ -159,6 +161,9 @@ function Homepage() {
           new URLSearchParams({
             username: username,
           }),
+          new URLSearchParams({
+            username: username,
+          }),
           {
             headers: {
               'Content-Type': 'application/json',
@@ -169,6 +174,7 @@ function Homepage() {
         console.log(data);
         if (data === null) {
           // create user
+          console.log('here')
           try {
             const createUser = await fetch('/sql/user', {
               method: 'POST',
@@ -217,7 +223,7 @@ function Homepage() {
               url: 'https://i.ibb.co/TR1B5G5/My-project-2.png',
               anchor: new window.google.maps.Point(16, 16),
               origin: new window.google.maps.Point(0, 0),
-              scaledSize: new window.google.maps.Size(80, 48),
+              scaledSize: new window.google.maps.Size(70, 40),
             }}
             onClick={(e) =>
               handleMarkerListClick(
@@ -337,12 +343,13 @@ function Homepage() {
 
   const goToHomepage = (e) => {
     Navigate('/leaderboard');
-  };
+  }
 
   return isLoaded ? (
     <div className="flex flex-col justify-center items-center h-screen w-screen p-10 py-3 bg-mirispink">
       {/*Header */}
       <div className="flex flex-row w-screen h-1/6 justify-between items-end p-8 py-5">
+
         <h1 className="text-4xl text-gray-600 text-center font-mono font-extrabold">
           Welcome to Rat Stats Premium
         </h1>
@@ -353,6 +360,7 @@ function Homepage() {
           >
             Rat Leaderboard
           </button>
+
           <Link to={'/profile'}>
             <Avatar className="px-10" rounded={true} size="md" />
           </Link>

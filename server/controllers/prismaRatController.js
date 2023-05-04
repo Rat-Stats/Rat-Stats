@@ -1,4 +1,5 @@
 const { PrismaClient } = require('@prisma/client');
+// const errors = require('eslint-plugin-import/config/errors');
 
 const prisma = new PrismaClient();
 
@@ -6,15 +7,35 @@ const prismaRatController = {};
 
 prismaRatController.allRatsSorted = async (req, res, next) => {
   try{
-    let allRats = await prisma.rat.findMany({})
-    allRats = await allRats.json();
-
-    for (let i = 0; i < allRats.length; i++) {
-      
-    }
     
+    // const ratsOrderedBySightings = await prisma.$queryRaw`
+    // SELECT "Rat"."id", "Rat"."name", "Rat"."image", "Rat"."description", "Rat"."alive", COUNT("Sighting"."id") as "sightingsCount"
+    // FROM "Rat"
+    // LEFT JOIN "Sighting" ON "Rat"."id" = "Sighting"."ratId"
+    // GROUP BY "Rat"."id"
+    // ORDER BY "sightingsCount" DESC;
+    // `;
+    const ratsOrderedBySightings = await prisma.rat.findMany({
+      include: {
+        sightings: {
+          select: {
+            id: true,
+          }
+        }
+      },
+      orderBy: {
+        sightings: {
+          _count: 'desc',
+        }
+      }
+    });
+    prisma.$disconnect()
+    const formatted = ratsOrderedBySightings.map((rat) => ({
+      ...rat,
+      sightings: rat.sightings.length
+    }));
 
-    res.locals.rats = allRats;
+    res.locals.rats = formatted;
     return next();
   }
   catch (err) {
@@ -24,7 +45,6 @@ prismaRatController.allRatsSorted = async (req, res, next) => {
     }
     return next(errObj);
   }
-
 }
 
 module.exports = prismaRatController;

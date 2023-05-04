@@ -28,6 +28,7 @@ prismaUserController.addUser = async (req, res, next) => {
     const createUser = await prisma.user.create({
       data: req.body
     })
+    prisma.$disconnect()
     res.locals.posted = 'success'
     res.locals.user = createUser;
     return next();
@@ -61,6 +62,7 @@ prismaUserController.getUser = async (req, res, next) => {
         username: username
       }
     });
+    prisma.$disconnect()
     if (getUser === null) {
       res.locals.user = null;
       return next();
@@ -71,12 +73,11 @@ prismaUserController.getUser = async (req, res, next) => {
         userId: getUser.id
       }
     })
-
+    prisma.$disconnect()
     const userWithSightings = {
       ...getUser,
       number_sightings: countSightings,
     }
-
     res.locals.user = userWithSightings;
     return next();
   }
@@ -108,7 +109,8 @@ prismaUserController.deleteUser = async (req, res, next) => {
       where: {
         username: username
       },
-    })
+    });
+    prisma.$disconnect()
     res.locals.user = user;
     return next();
   }
@@ -136,7 +138,8 @@ prismaUserController.updateUser = async (req, res, next) => {
         profile_picture: profile_picture,
         favorite_rat: favorite_rat,
       }
-    })
+    });
+    prisma.$disconnect()
     res.locals.user = updateUser;
     return next();
   }
