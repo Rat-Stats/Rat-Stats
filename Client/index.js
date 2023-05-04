@@ -9,6 +9,7 @@ import Homepage from './Components/Homepage';
 import Signup from './Components/Signup';
 import Profile from './Components/Profile';
 import ErrorPage from './Components/Error';
+import Leaderboard from './Components/Leaderboard';
 
 import store from './store.js';
 import { Provider } from 'react-redux';
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
     path: '/profile',
     element: <Profile />
   },
+  {
+    path: '/leaderboard',
+    element: <Leaderboard />
+  }
 ])
 
 const root = createRoot(document.getElementById("root"));

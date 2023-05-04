@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const prismaUserController = require('../controllers/prismaUserController.js');
-const prismaSightingController = require('../controllers/prismaSightingController.js')
+const prismaSightingController = require('../controllers/prismaSightingController.js');
+const prismaRatController = require('../controllers/prismaRatController.js');
 
 router.get('/', (req, res) => {
   res.status(200).send("your are reaching sql endpoint")  
@@ -20,6 +21,11 @@ router.post('/user', prismaUserController.addUser,(req, res) => {
 
 // gets a user from the prisma database given the username
 router.get('/user', prismaUserController.getUser, (req, res) => {
+  res.status(200).json(res.locals.user);
+})
+
+// updates a user in the db
+router.patch('/user', prismaUserController.updateUser, (req, res) => {
   res.status(200).json(res.locals.user);
 })
 
@@ -50,6 +56,14 @@ router.get('/sighting', prismaSightingController.findSighting, (req, res) => {
 // delete a sighting in prisma
 router.delete('/sighting', prismaSightingController.deleteSighting, (req, res) => {
   res.status(200).json(res.locals.deletedSighting);
+});
+
+/**
+ * rat routes
+ */
+// creates a sighting in the prisma db
+router.get('/rat', prismaRatController.allRatsSorted, (req, res) => {
+  res.status(200).json(res.locals.rats);
 });
 
 module.exports = router;

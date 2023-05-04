@@ -14,7 +14,6 @@ model User {
   id                Int             @id @default(autoincrement())
   username          String          @unique
   ssid              String
-  number_sightings  Int             @default(0)
   profile_picture   String?
   favorite_rat      String?
   created_at        DateTime?        @default(now())
@@ -27,7 +26,6 @@ model Rat {
   image             String?       
   description       String          
   alive             Boolean?
-  times_sighted     Int             @default(1)
   sightings         Sighting[] 
 }
 
