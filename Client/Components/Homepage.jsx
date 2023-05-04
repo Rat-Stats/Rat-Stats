@@ -40,7 +40,7 @@ function Homepage() {
 
   // state for the markers to show up after you click
   const [markerList, setMarkerList] = useState([]);
-  const [markerListInfo, setMarkerListInfo] = useState([]); // for testing until backend works
+  // const [markerListInfo, setMarkerListInfo] = useState([]); // for testing until backend works
 
   //state for rat sightings to pop up from 311 API
   const [rat311List, setRat311List] = useState([]);
@@ -50,10 +50,9 @@ function Homepage() {
   const dispatch = useDispatch();
   const password = useSelector((state) => state.user.password);
   const username = useSelector((state) => state.user.username);
-
   // info window state
   const [selectedSighting, setSelectedSighting] = useState(null);
-  // const [isInfoWindowOpen, setIsInfoWindowOpen] = useState(false);
+  const [isInfoWindowOpen, setIsInfoWindowOpen] = useState(false);
   const ssid = useSelector((state) => state.user.ssid);
 
   /**
@@ -74,6 +73,11 @@ function Homepage() {
     console.log('unMounted');
     setMap(null);
   }, []);
+
+  const handleFormSubmit = () => {
+    // setIsInfoWindowOpen(false); // Reset the info state to false after form submission
+    setInfo(false);
+  };
 
   //functionality to fetch rat sightings from 311 API and populate
   useEffect(() => {
@@ -112,14 +116,7 @@ function Homepage() {
     })();
   }, []);
 
-  /**
-   * UseEffect to create a new user if the user doesn't already exist in the prisma
-   * db
-   */
-  useEffect(() => {
-    // get user, if user exists, store in state, otherwise create user before
-    // storing in state
-  }, []);
+
 
   /**
    *
@@ -143,7 +140,7 @@ function Homepage() {
 
     if (clickedMarker) {
       // Clicked on a rat sighting marker
-      setIsInfoWindowOpen(true);
+      // setIsInfoWindowOpen(true);
       setSelectedSighting(clickedMarker.key);
       setInfoLocation(clickedMarker.props.position); // Update infoLocation with marker position
     } else {
@@ -161,6 +158,9 @@ function Homepage() {
       try {
         const getUser = await fetch(
           '/sql/user?' +
+          new URLSearchParams({
+            username: username,
+          }),
           new URLSearchParams({
             username: username,
           }),
@@ -249,7 +249,7 @@ function Homepage() {
       // console.log("infoLocation: ", infoLocation)
       if (id === selectedSighting) {
         // Clicked on the same marker again, close the info window
-        setIsInfoWindowOpen(false);
+        // setIsInfoWindowOpen(false);
         setSelectedSighting(null);
       } else {
         // Clicked on a different marker, fetch the rat info and open the info window
@@ -259,9 +259,7 @@ function Homepage() {
             if (sighting) {
               console.log('sighting id: ', sighting.id);
               console.log('sighting info: ', sighting);
-              // setSelectedSighting(id);
-              // console.log('selected sighting: ', selectedSighting)
-              // setIsInfoWindowOpen(true);
+
               const ratId = parseInt(sighting.ratId);
               console.log('ratId: ', sighting.ratId);
               fetch(`/sql/sighting/rat/${ratId}`)
@@ -277,18 +275,16 @@ function Homepage() {
                           <div class="p-4">
                             <div class="flex items-center mb-4 ">
                               <div class="space-y-2">
-                                <p class="text-l font-bold uppercase">My name is: ${
-                                  ratInfo.name
-                                }</p>
+                                <p class="text-l font-bold uppercase">My name is: ${ratInfo.name
+                      }</p>
                                 <p class=" text-m text-black">Here are some facts about me: </p>
                                 <div class="border-2 rounded-sm"> 
-                                  <p class="text-sm text-black">${
-                                    ratInfo.description
-                                  }</p>
+                                  <p class="text-sm text-black">${ratInfo.description
+                      }</p>
                                   </div>
                                 <p class="text-s italic text-gray-500">I was reported on: ${new Date(
-                                  sighting.time
-                                ).toLocaleString()} by user${sighting.userId}</p
+                        sighting.time
+                      ).toLocaleString()} by user${sighting.userId}</p
                               </div>
                             </div>
                           </div>
@@ -322,20 +318,28 @@ function Homepage() {
   }, [map]);
 
   const addToMarkerList = (position) => {
-
-    const newMarker = <Marker
-    key={JSON.stringify(position)}
-    position={position}
-      icon={{
-        url: 'https://i.ibb.co/TR1B5G5/My-project-2.png',
-        anchor: new window.google.maps.Point(16, 16),
-        origin: new window.google.maps.Point(0, 0),
-        scaledSize: new window.google.maps.Size(80, 48),
-      }}
-      onClick={(e) => handleMarkerListClick(sighting.id, map, markersArray, infoLocation)}
-    />
-    setMarkerList(current => [...current, newMarker]); // adds a new marker to the list
-  }
+    const newMarker = (
+      <Marker
+        key={JSON.stringify(position)}
+        position={position}
+        icon={{
+          url: 'https://i.ibb.co/TR1B5G5/My-project-2.png',
+          anchor: new window.google.maps.Point(16, 16),
+          origin: new window.google.maps.Point(0, 0),
+          scaledSize: new window.google.maps.Size(80, 48),
+        }}
+        onClick={(e) =>
+          handleMarkerListClick(
+            sighting.id,
+            map,
+            markersArray,
+            infoLocation
+          )
+        }
+      />
+    );
+    setMarkerList((current) => [...current, newMarker]); // adds a new marker to the list
+  };
 
   const goToHomepage = (e) => {
     Navigate('/leaderboard');
@@ -395,20 +399,11 @@ function Homepage() {
                 <SightingForm
                   username={username}
                   addToMarkerList={addToMarkerList}
+                  onSubmit={handleFormSubmit}
                 />
               </div>
             </InfoWindow>
           )}
-          {/* {info && (
-            <InfoWindow
-              position={infoLocation}
-              anchor={markerList.find((marker) => marker.key === selectedSighting)}
-            >
-              <div>
-                <SightingForm username={username} addToMarkerList={addToMarkerList} />
-              </div>
-            </InfoWindow>
-          )} */}
         </GoogleMap>
       </div>
     </div>

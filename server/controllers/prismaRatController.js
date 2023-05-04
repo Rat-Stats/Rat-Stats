@@ -1,7 +1,4 @@
-const { PrismaClient } = require('@prisma/client');
-// const errors = require('eslint-plugin-import/config/errors');
-
-const prisma = new PrismaClient();
+const prisma = require('../prismaInstance');
 
 const prismaRatController = {};
 
