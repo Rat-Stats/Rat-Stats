@@ -26,6 +26,7 @@
     "axios": "^1.4.0",
     "babel": "^6.23.0",
     "bcrypt": "^5.1.0",
+    "daisyui": "^2.51.6",
     "dotenv": "^16.0.3",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-jsx-a11y": "^6.7.1",

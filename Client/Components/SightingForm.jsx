@@ -16,9 +16,7 @@ export default function SightingForm ({addToMarkerList}) {
     // TODO: Post sighting to database
     const locationString = JSON.stringify({lat: lat, lng: lng})
     console.log('location', locationString)
-
     addToMarkerList({lat: lat, lng: lng})
-
   }
 
   const sendEmail = async (data) => {
@@ -32,8 +30,8 @@ export default function SightingForm ({addToMarkerList}) {
   };
   
   return (
-      <div className="flex flex-row justify-around w-full ">You found a RAT
-      <button onClick={()=>{
+      <a>congRATS, you found a rat Here is your rat.
+      {/* <button     className={'invisible'} onClick={()=>{
         
         console.log("TEST SEND")
         
@@ -41,7 +39,7 @@ export default function SightingForm ({addToMarkerList}) {
     to: 'henrymcgill@gmail.com',
     subject: 'Test email',
     message: 'This is a test email from my React app!'
-  })}}>click to send</button>
-      </div>
+  })}}>click to send</button> */}
+      </a>
   )
 }

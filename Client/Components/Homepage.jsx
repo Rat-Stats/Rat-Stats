@@ -30,24 +30,6 @@ function Homepage() {
   const password = useSelector((state) => state.user.password);
   const username = useSelector((state) => state.user.username);
 
-  // const newArr = [];
-  // const response = fetch('/sql/rats')
-  //   .then((data) => data.json())
-  //   .then(data=> {
-  //     for (let i = 0; i < data.length; i++) {
-  //       newArr.push([Number(data[i][1]),Number(data[i][0])])
-  //     };
-  //     return newArr
-  //   })
-    // console.log("THIS IS RESPONSE:", response)
-    // const promiseExtractor = async (response) => {
-    //   const res = await response
-    //   return res
-    // }
-    // let newRes = promiseExtractor(response)
-    // console.log("NEWARR", newArr)
-
-
   // Functionality when map loads. Unique to maps api
   const onLoad = useCallback((map) => {
     // get and load map instance
@@ -57,60 +39,13 @@ function Homepage() {
     //map.controls[google.maps.ControlPosition.TOP_CENTER].push(MapControl());
 
   }, [])
-    // use GET request to populate screen with rats
 
-  // functionality when map dismounts. Unique to maps api
   const onUnmount = useCallback((map) => {
     setMap(null);
   }, [])
 
 
 
-
-  // useEffect(() => {
-  //   // create markerList by fetching all the sightings from the database,
-  //   // and populating them into marker objects
-  //   fetch('/sql/rats')
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       // Create marker objects for fetched sightings
-  //       // const zoomLevel = map?.getZoom();
-  //       // const scaledSize = new window.google.maps.Size(2000 / zoomLevel, 100 / zoomLevel);
-  //       const markers = data.map((sighting) => (
-  //         <Marker
-  //           key={sighting[0]}
-  //           position={{ lat: sighting[0], lng: sighting[1] }}
-  //           icon={{
-  //             url: 'https://i.ibb.co/TR1B5G5/My-project-2.png',
-  //             anchor: new window.google.maps.Point(16, 16),
-  //             origin: new window.google.maps.Point(0, 0),
-  //             scaledSize: new window.google.maps.Size(80, 48),
-  //           }}
-  //           // onClick={(e) => handleMarkerListClick(sighting.id, map)}
-  //         />
-  //       ));
-  //       // update marker list state with the created markers
-  //       setMarkerList(markers);
-  //     })
-  //     .catch((error) => {
-  //       console.error('Error fetching sightings:', error);
-  //     });
-  // }, [map]);
-
-
-
-
-
-
-
-
-  /**
-   * 
-   * @param {*} e the event info of the mouse click
-   * https://developers.google.com/maps/documentation/javascript/examples/event-click-latlng
-   * Will return different events based on if the user clicked on a random point,
-   * or if they clicked on one of our markers
-   */
   const handleMouseClick = async function (e) {
     const location = e.latLng.toJSON(); // location of the mouse click
     setPostReqMade(true);
@@ -140,47 +75,88 @@ function Homepage() {
     }
   }
 
-  // const addToMarkerList = (position) => {
-  //   const newMarker = <Marker 
-  //   key={JSON.stringify(position)} 
-  //   position={position}
-  //   icon={
-  //     {url: 'https://i.ibb.co/TR1B5G5/My-project-2.png',
-  //     scaledSize: new window.google.maps.Size(150, 100)}
-  //   }
-  //   // onClick={handleMarkerListClick}
-  //   ></Marker>
-  //   setMarkerList(current => [...current, newMarker]); // adds a new marker to the list
-  // }
-
-//   // use effect to update the user in sightings slice once homepage is reached
-//   useEffect(() => {
-//     // const latestCoord = markerList[markerList.length-1]
-//     // //for (let i = 0; i < markerList.length; i++) {
-//     // const newMarker = <Marker 
-//     // key={JSON.stringify(latestCoord[0])} 
-//     // draggable={true}
-//     // icon='https://i.ibb.co/TR1B5G5/My-project-2.png'
-//     //   //scaledSize: new window.google.maps.Size(150, 100)
-//     // position={{lat: latestCoord[0], lng: latestCoord[1]}}
-
-
-
-
-//     // // add drag and drop functionality to rats
-//     // // drag resets location
-//     // // double-click deletes it
-
-//     // ></Marker>
-    
-//     //setMarkerList(current => [...current, newMarker]); // adds a new marker to the list
-//     // console.log('markerList', markerList)
-
-
-//   // TODO: create markerList by fetching all the sightings from the database,
-//   // and populating them into marker object
-// },[markerList])
-
+  const mapOptions = {
+    styles: [
+      { elementType: "geometry", stylers: [{ color: "#242f3e" }] },
+      { elementType: "labels.text.stroke", stylers: [{ color: "#242f3e" }] },
+      { elementType: "labels.text.fill", stylers: [{ color: "#746855" }] },
+      {
+        featureType: "administrative.locality",
+        elementType: "labels.text.fill",
+        stylers: [{ color: "#d59563" }],
+      },
+      {
+        featureType: "poi",
+        elementType: "labels.text.fill",
+        stylers: [{ color: "#d59563" }],
+      },
+      {
+        featureType: "poi.park",
+        elementType: "geometry",
+        stylers: [{ color: "#263c3f" }],
+      },
+      {
+        featureType: "poi.park",
+        elementType: "labels.text.fill",
+        stylers: [{ color: "#6b9a76" }],
+      },
+      {
+        featureType: "road",
+        elementType: "geometry",
+        stylers: [{ color: "#38414e" }],
+      },
+      {
+        featureType: "road",
+        elementType: "geometry.stroke",
+        stylers: [{ color: "#212a37" }],
+      },
+      {
+        featureType: "road",
+        elementType: "labels.text.fill",
+        stylers: [{ color: "#9ca5b3" }],
+      },
+      {
+        featureType: "road.highway",
+        elementType: "geometry",
+        stylers: [{ color: "#746855" }],
+      },
+      {
+        featureType: "road.highway",
+        elementType: "geometry.stroke",
+        stylers: [{ color: "#1f2835" }],
+      },
+      {
+        featureType: "road.highway",
+        elementType: "labels.text.fill",
+        stylers: [{ color: "#f3d19c" }],
+      },
+      {
+        featureType: "transit",
+        elementType: "geometry",
+        stylers: [{ color: "#2f3948" }],
+      },
+      {
+        featureType: "transit.station",
+        elementType: "labels.text.fill",
+        stylers: [{ color: "#d59563" }],
+      },
+      {
+        featureType: "water",
+        elementType: "geometry",
+        stylers: [{ color: "#17263c" }],
+      },
+      {
+        featureType: "water",
+        elementType: "labels.text.fill",
+        stylers: [{ color: "#515c6d" }],
+      },
+      {
+        featureType: "water",
+        elementType: "labels.text.stroke",
+        stylers: [{ color: "#17263c" }],
+      },
+    ],
+  };
 
 const addToMarkerList = (position) => {
   const newMarker = <Marker
@@ -199,25 +175,16 @@ const addToMarkerList = (position) => {
 
   return isLoaded ? (
     <div className="flex flex-col justify-center items-center h-screen w-screen p-10 py-3">
-      {/*Header */}
       <div className="flex flex-row w-screen h-1/6 justify-between items-end p-8 py-5">
-        <h1 className="text-4xl text-gray-600">Welcome to Rat Stats!</h1>
+        <h1 className="text-4xl primary">There are over 2 million rats in New York City.  These are but a few of them...</h1>
         <div className="flex">
-        <Link to={'/'} className="flex border bg-col2 shadow rounded-xl p-2 w-10 justify-center"><p>Sign Out</p></Link>
+        <Link to={'/'} className="btn btn-primary"><p>Sign Out</p></Link>
         </div>
       </div>
       
-      {/**Uncomment and comment out googlemap stuff in order to run without
-       * getting charged for api access
-       */}
-      {/* <div className="container border border-gray-700 shadow h-full w-screen">
-        <div>
-          <SightingForm/>
-        </div>
-      </div> */}
-      {/** Box holding the google maps stuff */}
       <div className="container border border-gray-700 shadow h-full w-screen">
         <GoogleMap
+        options={mapOptions}
         mapContainerClassName="h-full w-full"
         center={center}
         zoom={10}
@@ -227,9 +194,6 @@ const addToMarkerList = (position) => {
         onClick={handleMouseClick}>
 
         {markerList}
-
-        {/* {console.log('markerList:', markerList)} */}
-        {/* {console.log('markerList:', markerList)} */}
 
           {markerList.map(elem => {
           
@@ -250,16 +214,9 @@ const addToMarkerList = (position) => {
               
               }) }
 
-          {/* <Marker key={"dasfadsfdafadsfdas"} 
-                position= {{lat: 40.74, lng: -74}}
-                icon={
-                  {url: 'https://i.ibb.co/TR1B5G5/My-project-2.png',
-                  scaledSize: new window.google.maps.Size(150, 100)}
-              }></Marker> */}
           {postReqMade && <InfoWindow
           key={`${infoLocation.lat}-${infoLocation.lng}`} // Add this line
           position={infoLocation}
-          className='hello'
           >
             <div>
               <SightingForm addToMarkerList={addToMarkerList}/>

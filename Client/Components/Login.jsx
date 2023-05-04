@@ -41,11 +41,10 @@ export default function Login() {
   };
 
   return (
-    <div className="grid bg-blue-200 shadow w-screen h-screen">
-      <div className="self-center justify-self-center border shadow bg-blue-500 p-8 rounded-xl w-1/2 h-1/2">
+    <div>
+      <div>
         <div className="grid gap-2 justify-center content-center h-full w-full">
-          <h1 className="text-5xl font-bold text-gray-700 justify-self-center">Rat Stats</h1>
-          {/*username input*/}
+          <h1 className="text-5xl font-bold primary justify-self-center">Rat Stats</h1>
           <div>
             <input type="text" 
             id="username" 
@@ -64,13 +63,14 @@ export default function Login() {
             onChange={(e) => dispatch(updatePassword(e.target.value))}
             required/>
           </div>
-          <div className="flex flex-row justify-between p-4">
-            <a className="border shadow bg-red-500 justify-self-center" href={'/signup'}>Signup</a>
+          <div>
 
-            {/* <button className="border shadow bg-green-500 justify-self-center"  onClick={handleLoginClick} >Login</button> */}
-            <button className="border shadow bg-green-500 justify-self-center" onClick={handleLoginClick} >Login</button>
+          <a href={'/signup'} className="btn btn-primary">Signup</a>
 
-            <a className="border shadow bg-green-500 justify-self-center" href={'/oauth/login'}>Login with Tinder</a>
+
+          <button onClick={handleLoginClick} className="btn btn-primary">Login</button>
+
+          <a href={'/oauth/login'} className="btn btn-accent">Login with Tinder</a>
           </div>
         </div>
       </div>
