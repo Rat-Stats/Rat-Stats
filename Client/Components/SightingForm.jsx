@@ -26,7 +26,6 @@ export default function SightingForm({ username, addToMarkerList}) {
 
   async function onClick(e) {
     e.preventDefault();
-    
     const sightingData = {
       user_name: userId,
       rat_name: ratName,

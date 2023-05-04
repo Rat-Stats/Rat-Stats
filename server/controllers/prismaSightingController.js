@@ -50,7 +50,6 @@ prismaSightingController.addSighting = async (req, res, next) => {
             create: {
               name: rat_name,
               description: description,
-              times_sighted: 1
             },
           },
         },

@@ -127,7 +127,8 @@ function Homepage() {
    */
   const handleMouseClick = (e) => {
     const location = e.latLng.toJSON(); // location of the mouse click
-  
+    
+    setInfoLocation(location)
     // Check if the click is on a rat sighting marker
     const clickedMarker = markerList.find((marker) => {
       const markerPosition = marker.props.position;
