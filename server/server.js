@@ -1,7 +1,7 @@
 const path = require('path');
 require('dotenv').config();
 const express = require('express');
-const mongoose = require ('mongoose');
+const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const app = express();
 
@@ -38,40 +38,39 @@ app.use('/user', userRouter);
   for ALL routes, including React Router routes. Express server and React Router endpoints
   must not overlap, or the former will break the latter.
 */
-app.use('/bundle.js', (req, res) => {
-  console.log('Serving bundle.js');
-  res.status(200).sendFile(path.join(__dirname, '../build/bundle.js'));
-})
+// app.use('/bundle.js', (req, res) => {
+// 	console.log('Serving bundle.js');
+// 	res.status(200).sendFile(path.join(__dirname, '../build/bundle.js'));
+// });
 
-app.use('/styles.css', (req, res) => {
-  console.log('Serving styles.css');
-  res.status(200).sendFile(path.join(__dirname, '../build/styles.css'));
-})
+// app.use('/styles.css', (req, res) => {
+// 	console.log('Serving styles.css');
+// 	res.status(200).sendFile(path.join(__dirname, '../build/styles.css'));
+// });
 
-app.use('/', (req, res) => {
-  console.log('Serving index.html');
-  res.status(200).sendFile(path.join(__dirname, '../build/index.html'));
-})
-
+// app.use('/', (req, res) => {
+// 	console.log('Serving index.html');
+// 	res.status(200).sendFile(path.join(__dirname, '../build/index.html'));
+// });
 
 // Global error handling
 ////// Create default error object
 const defaultErr = {
-  log: 'A middleware error occured.',
-  status: 400,
-  message: 'Invalid client request.'
-}
+	log: 'A middleware error occured.',
+	status: 400,
+	message: 'Invalid client request.',
+};
 ////// Global error handler
 app.use((err, req, res, next) => {
-  // Create error object based on err
-  const errorObj = Object.assign({}, defaultErr, err);
-  // Log error to terminal
-  console.log(errorObj.log);
-  // Send error message to client
-  res.status(errorObj.status).json(errorObj.message);
+	// Create error object based on err
+	const errorObj = Object.assign({}, defaultErr, err);
+	// Log error to terminal
+	console.log(errorObj.log);
+	// Send error message to client
+	res.status(errorObj.status).json(errorObj.message);
 });
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`Listening on port ${PORT}...`);
-})
+	console.log(`Listening on port ${PORT}...`);
+});

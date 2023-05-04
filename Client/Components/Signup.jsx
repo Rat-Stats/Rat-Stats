@@ -1,22 +1,22 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-// import { updateUser } from '../Slices/userSlice';
+import { updateUser, updatePassword } from '../Slices/userSlice';
 
 export default function Signup() {
   const dispatch = useDispatch();
-  const [password, setPassword] = useState('');
-  const [verifyPassword, setVerifyPassword] = useState('');
+  const [userProvidedPw, setUserProvidedPw] = useState('');
+  const [userProvidedPwConfirm, setUserProvidedPwConfirm] = useState('');
 
   const handleSignupClick = () => {
     const username = document.getElementById('Username').value;
 
-    if (password === verifyPassword) {
+    if (userProvidedPw === userProvidedPwConfirm) {
       fetch('/user/signup/', {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ username, userProvidedPw }),
       })
       .catch(error => {
         console.error('Error:', error);
@@ -39,18 +39,18 @@ export default function Signup() {
                 required/>
               </div>
 
-              {/*password input*/}
+              {/*userProvidedPw input*/}
               <div>
                 <input type="password" 
-                id="password" 
+                id="userProvidedPw" 
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
                 placeholder="Password" 
                 required/>
               </div>
-              {/*re-enter password*/}
+              {/*re-enter userProvidedPw*/}
               <div>
                 <input type="password" 
-                id="verify-password" 
+                id="verify-userProvidedPw" 
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
                 placeholder="Re-Enter Password" 
                 required/>
