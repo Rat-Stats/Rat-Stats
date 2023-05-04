@@ -29,7 +29,7 @@ prismaRatController.allRatsSorted = async (req, res, next) => {
         }
       }
     });
-
+    prisma.$disconnect()
     const formatted = ratsOrderedBySightings.map((rat) => ({
       ...rat,
       sightings: rat.sightings.length

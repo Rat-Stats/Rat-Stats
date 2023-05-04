@@ -23,6 +23,7 @@ prismaSightingController.addSighting = async (req, res, next) => {
         username: user_name,
       }
     });
+    prisma.$disconnect()
     if (!user){
       const errObj = {
         message: "Error, user not found"
@@ -53,6 +54,7 @@ prismaSightingController.addSighting = async (req, res, next) => {
         },
       },
     });
+    prisma.$disconnect()
     res.locals.sighting = createSighting;
     return next();
   }
@@ -74,7 +76,7 @@ prismaSightingController.allSightings = async (req, res, next) => {
         rat: true
       }
     });
-
+    prisma.$disconnect()
     res.locals.allSightings = allSightings;
     return next();
   }
@@ -109,6 +111,7 @@ prismaSightingController.findSighting = async (req, res, next) => {
         rat: true
       }
     });
+    prisma.$disconnect()
     res.locals.userSightings = userSightings;
     return next();
   }
@@ -138,6 +141,7 @@ prismaSightingController.deleteSighting = async (req, res, next) => {
         id: id
       }
     })
+    prisma.$disconnect()
     res.locals.deletedSighting = deletedSighting;
     return next();
   }
@@ -158,6 +162,7 @@ prismaSightingController.getSighting = async (req, res, next) => {
         id: Number(id),
       },
     });
+    prisma.$disconnect()
     if (rat) {
       res.json(rat);
       next();
@@ -179,6 +184,7 @@ prismaSightingController.getRatInfo = async (req, res, next) => {
         id: parseInt(ratId),
       },
     });
+    prisma.$disconnect()
     if (ratInfo) {
       res.json(ratInfo);
       next();
