@@ -1,5 +1,5 @@
-const config = {
-  roots: ['<rootDir>/Client'],
-};
+// const config = {
+//   roots: ['<rootDir>/Client'],
+// };
 
-module.exports = config;
+// module.exports = config;
