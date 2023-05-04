@@ -47,11 +47,24 @@ function Homepage() {
   const [markersArray, setMarkersArray] = useState([]);
   const [ratPics, setRatPics] = useState([
     "https://www.treehugger.com/thmb/Se5V44Wpt4NMz3w2pIR6TCJhLhI=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/__opt__aboutcom__coeus__resources__content_migration__mnn__images__2014__01__Blue-blanket-JF_0-5e09e9b9268f483fbd3f2da2d25418d3.jpg",
-    "https://unsplash.com/photos/rNDjtoR_VRM",
+    "https://cdn.pixabay.com/photo/2023/01/12/07/19/rat-7713508_1280.jpg",
     "https://mystart.com/blog/wp-content/uploads/capture04-1280x800-1.png",
     "https://images.unsplash.com/photo-1614090332617-e7dd5bd107e3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y3V0ZSUyMHJhdHxlbnwwfHwwfHw%3D&w=1000&q=80",
-    "https://cdn1.tedsby.com/storage/3/4/8/348550/cute-mouse-realistic-soft-plush-toy-teddy-stuffed-baby-rat.jpg"])
-  
+    "https://cdn1.tedsby.com/storage/3/4/8/348550/cute-mouse-realistic-soft-plush-toy-teddy-stuffed-baby-rat.jpg",
+    "https://cdn.pixabay.com/photo/2023/01/23/15/02/beaver-rat-7738914_1280.jpg", 
+    "https://pixabay.com/photos/mouse-rodent-rat-mice-pest-3194768/",
+    "https://pixabay.com/photos/cute-rodent-mouse-small-animal-3284412/",
+    "https://cdn.pixabay.com/photo/2019/03/23/11/00/rat-4075129_1280.jpg",
+    "https://cdn.pixabay.com/photo/2016/03/05/22/19/animal-1239250_1280.jpg",
+    "https://cdn.pixabay.com/photo/2017/07/19/13/36/rat-2519097_1280.jpg",
+    "https://cdn.pixabay.com/photo/2017/07/19/13/36/rat-2519097_1280.jpg",
+    "https://cdn.pixabay.com/photo/2018/07/12/20/24/rat-3534317_1280.jpg",
+    "https://cdn.pixabay.com/photo/2016/02/03/17/07/cat-1177483_1280.jpg",
+    "https://cdn.pixabay.com/photo/2016/03/05/22/20/animal-1239256_1280.jpg",
+    "https://cdn.pixabay.com/photo/2015/09/28/00/50/roof-rat-961499_1280.jpg",
+    "https://cdn.pixabay.com/photo/2016/05/12/22/19/rats-small-rats-1388830_1280.jpg",
+  ])
+
   const getRandomRatPic = (ratPics) => {
     const ind = Math.floor(Math.random() * ratPics.length);
     return ratPics[ind];
@@ -113,8 +126,8 @@ function Homepage() {
               icon={{
                 url: 'https://i.pinimg.com/originals/cb/b4/c0/cbb4c0a57ae3f09c6974f7ea08f966b6.png',
                 anchor: new window.google.maps.Point(16, 16),
-              origin: new window.google.maps.Point(0, 0),
-              scaledSize: new window.google.maps.Size(35, 35),
+                origin: new window.google.maps.Point(0, 0),
+                scaledSize: new window.google.maps.Size(35, 35),
               }}
             />
           );
@@ -282,26 +295,22 @@ function Homepage() {
                     position: { lat: sighting.lat, lng: sighting.lng },
                     anchor: markersArray.find((marker) => marker.key === id),
                     content: `
-                      <div class="max-w-sm rounded overflow-hidden shadow-lg bg-white">
-                        <div class="p-4">
-                          <div class="flex items-center mb-4">
-                            
-                            <div class="space-y-2">
-                            <img src="${ratPic}" alt="Cute Rat" style="max-width: 50%"></img>
-                              <p class="text-l font-bold uppercase">My name is: ${ratInfo.name}</p>
-                              <p class="text-m text-black">Here are some facts about me:</p>
-                              <div class="border-2 rounded-sm">
-                                <p class="text-sm text-black">${ratInfo.description}</p>
-                              </div>
-                              <p class="text-s italic text-gray-500">I was reported on: ${new Date(
-                                sighting.time
-                              ).toLocaleString()} by user${sighting.userId}</p>
+                      <div class="max-w-sm rounded overflow-hidden shadow-lg bg-white flex justify-center items-center" style="height: 100%;">
+                        <div class="p-4 text-center">
+                          <div class="space-y-2">
+                            <img src="${ratPic}" alt="Cute Rat" style="max-width: 50%; border: 1px solid #ccc; border-radius: 5px; display: block; margin: 0 auto;"></img>
+                            <p class="text-l font-bold uppercase">My name is: ${ratInfo.name}</p>
+                            <p class="text-m text-black">Here are some facts about me:</p>
+                            <div class="border-2 rounded-sm">
+                              <p class="text-sm text-black">${ratInfo.description}</p>
                             </div>
+                            <p class="text-s italic text-gray-500">I was reported on: ${new Date(sighting.time).toLocaleString()} by user${sighting.userId}</p>
                           </div>
                         </div>
                       </div>
                     `,
                   });
+                  
                   
 
                   if (map && map instanceof window.google.maps.Map) {
