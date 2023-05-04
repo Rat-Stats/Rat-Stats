@@ -16,19 +16,33 @@ function Homepage() {
     googleMapsApiKey: process.env.MAPS_API,
   })
   const Navigate = useNavigate();
-  
+  const newArr = [];
+  const response = fetch('/sql/rats')
+    .then((data) => data.json())
+    .then(data=> {
+
+
+      for (let i = 0; i < data.length; i++) {
+        newArr.push([Number(data[i][1]),Number(data[i][0])])
+      };
+      return newArr
+    })
+    // console.log("THIS IS RESPONSE:", response)
+    // const promiseExtractor = async (response) => {
+    //   const res = await response
+    //   return res
+    // }
+    // let newRes = promiseExtractor(response)
+    // console.log("NEWARR", newArr)
+
+
   // state for the google map
   const [map, setMap] = useState(null);
   const [postReqMade, setPostReqMade] = useState(false);
   const [infoLocation, setInfoLocation] = useState({lat: 0, lng: 0})
 
   // state for the markers to show up after you click
-  const [markerList, setMarkerList] = useState([
-    [40.741, -73.99563563563456],
-    [40.739, -73.97452654653465],
-    [40.73, -73.92562463563564],
-    [40.742, -73.93456563565346],
-  ])
+  const [markerList, setMarkerList] = useState(newArr)
 
   // get password and username from redux state
   const dispatch = useDispatch();
@@ -76,17 +90,18 @@ function Homepage() {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({location: location}),
-        }).then((data) => data.json()).then(data=> {
-
-          const newArr = [];
-
-          for (let i = 0; i < data.length; i++) {
-            newArr.push([Number(data[i][0]),Number(data[i][0])])
-          };
-
-          setMarkerList(newArr);
-          console.log('markerList', markerList);
         })
+        // .then((data) => data.json()).then(data=> {
+
+        //   const newArr = [];
+
+        //   for (let i = 0; i < data.length; i++) {
+        //     newArr.push([Number(data[i][0]),Number(data[i][0])])
+        //   };
+
+        //   setMarkerList(newArr);
+        //   console.log('markerList', markerList);
+        // })
     } catch (error) {
         console.log(error)
     }
@@ -105,27 +120,33 @@ function Homepage() {
     setMarkerList(current => [...current, newMarker]); // adds a new marker to the list
   }
 
-  // use effect to update the user in sightings slice once homepage is reached
-  useEffect(() => {
+//   // use effect to update the user in sightings slice once homepage is reached
+//   useEffect(() => {
+//     // const latestCoord = markerList[markerList.length-1]
+//     // //for (let i = 0; i < markerList.length; i++) {
+//     // const newMarker = <Marker 
+//     // key={JSON.stringify(latestCoord[0])} 
+//     // draggable={true}
+//     // icon='https://i.ibb.co/TR1B5G5/My-project-2.png'
+//     //   //scaledSize: new window.google.maps.Size(150, 100)
+//     // position={{lat: latestCoord[0], lng: latestCoord[1]}}
 
-    for (let i = 0; i < markerList.length; i++) {
-    const newMarker = <Marker 
-    key={JSON.stringify(markerList[i])} 
-    draggable={true}
-    position={{lat: markerList[i][0], lng: markerList[i][1]}}
 
-    // add drag and drop functionality to rats
-    // drag resets location
-    // double-click deletes it
 
-    ></Marker>
-    setMarkerList(current => [...current, newMarker]); // adds a new marker to the list
-    // console.log('markerList', markerList)
-  };
 
-  // TODO: create markerList by fetching all the sightings from the database,
-  // and populating them into marker object
-},[])
+//     // // add drag and drop functionality to rats
+//     // // drag resets location
+//     // // double-click deletes it
+
+//     // ></Marker>
+    
+//     //setMarkerList(current => [...current, newMarker]); // adds a new marker to the list
+//     // console.log('markerList', markerList)
+
+
+//   // TODO: create markerList by fetching all the sightings from the database,
+//   // and populating them into marker object
+// },[markerList])
 
   return isLoaded ? (
     <div className="flex flex-col justify-center items-center h-screen w-screen p-10 py-3">
@@ -155,7 +176,26 @@ function Homepage() {
         onUnmount={onUnmount}
         clickableIcons={false}
         onClick={handleMouseClick}>
-          {markerList}
+
+        {/* {console.log('markerList:', markerList)} */}
+        {console.log('markerList:', markerList)}
+        
+          {/* {markerList.map(elem =>{<Marker 
+          
+                key={elem[0]} 
+                position= {{lat: elem[0], lng: elem[1]}}
+                icon={
+                  {url: 'https://i.ibb.co/TR1B5G5/My-project-2.png',
+                  scaledSize: new window.google.maps.Size(150, 100)}
+
+              }></Marker>}) } */}
+
+          <Marker key={"dasfadsfdafadsfdas"} 
+                position= {{lat: 40.74, lng: -74}}
+                icon={
+                  {url: 'https://i.ibb.co/TR1B5G5/My-project-2.png',
+                  scaledSize: new window.google.maps.Size(150, 100)}
+              }></Marker>
           {postReqMade && <InfoWindow
           key={`${infoLocation.lat}-${infoLocation.lng}`} // Add this line
           position={infoLocation}>
