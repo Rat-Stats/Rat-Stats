@@ -72,11 +72,8 @@ function Homepage() {
 
   //functionality to fetch rat sightings from 311 API and populate
   useEffect(() => {
-    console.log('im outside of async');
     (async () => {
-      `i'm inside of async and outside of try`;
       try {
-        console.log('im inside of try');
         const getRat = await fetch(
           'https://data.cityofnewyork.us/resource/3q43-55fe.json/',
           {
@@ -129,6 +126,7 @@ function Homepage() {
           }
         );
         const data = await getUser.json();
+        console.log(data);
         if (data === null) {
           // create user
           try {
@@ -149,11 +147,11 @@ function Homepage() {
             console.log('error creating user in db');
           }
         }
-        console.log(data);
+        console.log(data.created_At);
         dispatch(updateSightings(data.number_sightings));
         dispatch(updateProfile_Picture(data.profile_picture));
         dispatch(updateFavorite_Rat(data.favorite_rat));
-        dispatch(updateCreated_At(data.created_At));
+        dispatch(updateCreated_At(data.created_at));
       } catch (err) {
         console.log(err);
         console.log('error fetching user from db');
@@ -191,7 +189,7 @@ function Homepage() {
             position={{ lat: sighting.lat, lng: sighting.lng }}
             icon={{
               url: 'https://i.ibb.co/TR1B5G5/My-project-2.png',
-              // scaledSize: new window.google.maps.Size(100, 100)
+              scaledSize: new window.google.maps.Size(80, 48),
             }}
             onClick={() => handleMarkerListClick(sighting.id)}
           />
@@ -241,6 +239,10 @@ function Homepage() {
     setMarkerList((current) => [...current, newMarker]); // adds a new marker to the list
   };
 
+  const goToHomepage = (e) => {
+    Navigate('/leaderboard');
+  };
+
   return isLoaded ? (
     <div className="flex flex-col justify-center items-center h-screen w-screen p-10 py-3 bg-mirispink">
       {/*Header */}
@@ -249,6 +251,12 @@ function Homepage() {
           Welcome to Rat Stats Premium
         </h1>
         <div className="flex">
+          <button
+            className="text-2xl shadow rounded-xl p-2 text-gray-600 bg-pink-300"
+            onClick={goToHomepage}
+          >
+            Rat Leaderboard
+          </button>
           <Link to={'/profile'}>
             <Avatar className="px-10" rounded={true} size="md" />
           </Link>
@@ -274,6 +282,7 @@ function Homepage() {
           clickableIcons={false}
           onClick={handleMouseClick}
         >
+          {rat311List}
           {markerList}
           {info && (
             <InfoWindow

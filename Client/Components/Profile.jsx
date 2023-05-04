@@ -19,7 +19,6 @@ export default function Profile() {
   useEffect(() => {
     async function getAllUserSitings(username) {
       try {
-        username="user1"
         const response = await fetch('/sql/sighting?' + new URLSearchParams({
           username: username
         }));
@@ -32,11 +31,37 @@ export default function Profile() {
     getAllUserSitings(currentState.username);
   }, []);
 
+  const deleteButton = async (e) => {
+    // stores the id of the sighting in the database
+    const id = e.target.attributes.sightingid.value;
+    try{
+      const deletedSighting = await fetch('/sql/sighting', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          id: Number(id)
+        })
+      })
+      const data = await deletedSighting.json();
+      //how do we change state?
+      const temp = sightings.filter((obj) => obj.id !== data.id);
+      setSightings(temp);
+    }
+    catch (err) {
+      console.log(err);
+    }
+  }
+
   useEffect(() => {
     setDisplayUrl(currentState.profile_picture)
 
     const temp = sightings.map((sighting, index) => (
-      <div key={index} className="border shadow w-full flex flex-col items-center">
+      <div key={index} className="border shadow w-full flex flex-col items-center h-full">
+        <div className="self-end p-2">
+          <button sightingid={sighting.id} className="border shadow rounded-xl bg-gray-300 px-1" onClick={deleteButton}>X</button>
+        </div>
         <p>Rat Name: {sighting.rat.name}</p>
         <div className ="flex flex-row justify-between px-10">
         <p className="px-2">Lat: {sighting.lat.toFixed(2)}</p><p className="px-2">Lng: {sighting.lng.toFixed(2)}</p>
