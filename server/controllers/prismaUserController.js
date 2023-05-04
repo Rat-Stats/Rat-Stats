@@ -61,7 +61,23 @@ prismaUserController.getUser = async (req, res, next) => {
         username: username
       }
     });
-    res.locals.user = getUser;
+    if (getUser === null) {
+      res.locals.user = null;
+      return next();
+    }
+
+    const countSightings = await prisma.sighting.count({
+      where: {
+        userId: getUser.id
+      }
+    })
+
+    const userWithSightings = {
+      ...getUser,
+      number_sightings: countSightings,
+    }
+
+    res.locals.user = userWithSightings;
     return next();
   }
   catch (error) {
@@ -100,6 +116,36 @@ prismaUserController.deleteUser = async (req, res, next) => {
     errObj = {
       message: 'error accessing the database'
     }
+  }
+}
+
+/**
+ * Route to update user info
+ */
+prismaUserController.updateUser = async (req, res, next) => {
+  
+  const { username, number_sightings, profile_picture, favorite_rat } = req.body;
+  console.log('here');
+  try {
+    const updateUser = await prisma.user.update({
+      where: {
+        username: username,
+      },
+      data: {
+        number_sightings: number_sightings,
+        profile_picture: profile_picture,
+        favorite_rat: favorite_rat,
+      }
+    })
+    res.locals.user = updateUser;
+    return next();
+  }
+  catch (err) {
+    console.log(err);
+    const errObj = {
+      message: "Error encountered updating user in db"
+    }
+    return next(err);
   }
 }
 
