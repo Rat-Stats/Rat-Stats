@@ -252,7 +252,7 @@ function Homepage() {
         </h1>
         <div className="flex">
           <button
-            className="text-2xl shadow rounded-xl p-2 text-gray-600 bg-pink-300"
+            className="text-1xl shadow rounded-xl p-2 text-gray-600 bg-mirisyellow hover:bg-mirisblue font-mono"
             onClick={goToHomepage}
           >
             Rat Leaderboard
