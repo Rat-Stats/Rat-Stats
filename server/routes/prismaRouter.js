@@ -45,7 +45,6 @@ router.post('/sighting', prismaSightingController.addSighting, (req, res) => {
 
 // get all the sightings in the db
 router.get('/sighting/all', prismaSightingController.allSightings, (req, res) => {
-  console.log("HELPPPPP")
   res.status(200).json(res.locals.allSightings);
 });
 
