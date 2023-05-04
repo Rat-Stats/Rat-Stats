@@ -6,7 +6,7 @@ const prismaSightingController = {};
 
 prismaSightingController.addSighting = async (req, res, next) => {
   // take everything from body
-  console.log('top')
+  // console.log('top')
   const { rat_name, user_name, lat, lng, description } = req.body;
   // make sure all the fields are there
   if (!rat_name || !user_name || !lat || !lng || !description) {
@@ -30,7 +30,7 @@ prismaSightingController.addSighting = async (req, res, next) => {
       }
       return next(errObj);
     }
-    console.log('mid')
+    // console.log('mid')
     // this query 
     const createSighting = await prisma.sighting.create({
       data: {
@@ -56,7 +56,7 @@ prismaSightingController.addSighting = async (req, res, next) => {
       },
     });
 
-    console.log('bot')
+    // console.log('bot')
     res.locals.sighting = createSighting;
     return next();
   }
@@ -70,7 +70,7 @@ prismaSightingController.addSighting = async (req, res, next) => {
 
 // returns all the sightings
 prismaSightingController.allSightings = async (req, res, next) => {
-  console.log('inside allSightings middleware')
+  // console.log('inside allSightings middleware')
   try {
     const allSightings = await prisma.sighting.findMany({
       include: {

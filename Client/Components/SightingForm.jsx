@@ -33,7 +33,6 @@ export default function SightingForm({ username, addToMarkerList}) {
       lng: lng,
       description: description,
     };
-    console.log('sightingData: ',sightingData)
 
     addToMarkerList({ lat, lng });
 
