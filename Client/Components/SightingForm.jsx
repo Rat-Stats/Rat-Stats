@@ -8,7 +8,7 @@ import {
 
 // import axios from 'axios';
 
-export default function SightingForm({ username, addToMarkerList}) {
+export default function SightingForm({ username, addToMarkerList, setInfo}) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
 
@@ -45,6 +45,7 @@ export default function SightingForm({ username, addToMarkerList}) {
         },
         body: JSON.stringify(sightingData),
       });
+      setInfo(false);
     } catch (error) {
       console.error(error);
     }

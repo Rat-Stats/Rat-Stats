@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function Leaderboard() {
   const [ratLeaderboard, setRatLeaderboard] = useState([]);
@@ -39,12 +40,22 @@ export default function Leaderboard() {
     }
   }, [ratLeaderboard]);
 
+  function goBackButton(e) {
+
+  }
+
   return (
     <div className="flex flex-col items-center gap-3 bg-mirisbeige">
       <h1 className="text-4xl text-gray-600 font-mono font-bold">
         LEADERBOARD:
       </h1>
       {ratLeaderboardComponents}
+      <Link
+        to="/homepage"
+        className="flex border bg-mirisblue shadow rounded-xl p-2 w-1/12 justify-center"
+      >
+        <p>Back</p>
+      </Link>
     </div>
   );
 }
