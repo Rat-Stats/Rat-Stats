@@ -22,12 +22,12 @@ export default function Leaderboard() {
       const temp = ratLeaderboard.map((rat, index) => (
         <div
           key={index}
-          className="flex flex-row justify-center items-center w-full font-mono bg-mirispink"
+          className="flex flex-row justify-center items-center w-full font-mono bg-mirisbeige"
         >
           <h1>{index + 1}.</h1>
           <div
             key={index}
-            className="border rounded-xl shadow bg-mirisbeige w-1/4 flexflex-col font-mono text-gray-600 items-center"
+            className="border rounded-xl shadow bg-mirispink w-1/4 flexflex-col font-mono text-gray-600 items-center text-center"
           >
             <p>Name: {rat.name}</p>
             <p>Sightings: {rat.sightings}</p>

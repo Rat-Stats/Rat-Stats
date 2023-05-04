@@ -69,7 +69,7 @@ export default function Profile() {
         <div className="self-end p-2">
           <button
             sightingid={sighting.id}
-            className="border shadow rounded-xl bg-gray-300 px-1"
+            className="border shadow rounded-xl bg-mirisblue px-1"
             onClick={deleteButton}
           >
             X
@@ -146,7 +146,7 @@ export default function Profile() {
       </div>
       <Link
         to="/homepage"
-        className="flex border bg-col2 shadow rounded-xl p-2 w-1/12 justify-center"
+        className="flex border bg-mirisblue shadow rounded-xl p-2 w-1/12 justify-center"
       >
         <p>Back</p>
       </Link>
