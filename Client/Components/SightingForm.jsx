@@ -20,9 +20,7 @@ export default function SightingForm ({addToMarkerList}) {
   }
 
   return (
-      <div className="flex flex-row justify-around w-full">
-        <p className="text-gray-600 font-bold">Lat: <span className="font-normal">{lat.toFixed(2)}</span></p>
-        <p className="text-gray-600 font-bold">Lng: <span className="font-normal">{lng.toFixed(2)}</span></p>
+      <div className="flex flex-row justify-around w-full ">You found a RAT
       </div>
   )
 }

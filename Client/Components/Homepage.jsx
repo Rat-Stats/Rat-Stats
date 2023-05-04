@@ -15,18 +15,30 @@ function Homepage() {
     id: 'google-map-script', 
     googleMapsApiKey: process.env.MAPS_API,
   })
+
   const Navigate = useNavigate();
-  const newArr = [];
-  const response = fetch('/sql/rats')
-    .then((data) => data.json())
-    .then(data=> {
+  // state for the google map
+  const [map, setMap] = useState(null);
+  const [postReqMade, setPostReqMade] = useState(false);
+  const [infoLocation, setInfoLocation] = useState({lat: 0, lng: 0})
+  // state for the markers to show up after you click
+  // const [markerList, setMarkerList] = useState(newArr)
+  const [markerList, setMarkerList] = useState([])
 
+  // get password and username from redux state
+  const dispatch = useDispatch();
+  const password = useSelector((state) => state.user.password);
+  const username = useSelector((state) => state.user.username);
 
-      for (let i = 0; i < data.length; i++) {
-        newArr.push([Number(data[i][1]),Number(data[i][0])])
-      };
-      return newArr
-    })
+  // const newArr = [];
+  // const response = fetch('/sql/rats')
+  //   .then((data) => data.json())
+  //   .then(data=> {
+  //     for (let i = 0; i < data.length; i++) {
+  //       newArr.push([Number(data[i][1]),Number(data[i][0])])
+  //     };
+  //     return newArr
+  //   })
     // console.log("THIS IS RESPONSE:", response)
     // const promiseExtractor = async (response) => {
     //   const res = await response
@@ -36,19 +48,6 @@ function Homepage() {
     // console.log("NEWARR", newArr)
 
 
-  // state for the google map
-  const [map, setMap] = useState(null);
-  const [postReqMade, setPostReqMade] = useState(false);
-  const [infoLocation, setInfoLocation] = useState({lat: 0, lng: 0})
-
-  // state for the markers to show up after you click
-  const [markerList, setMarkerList] = useState(newArr)
-
-  // get password and username from redux state
-  const dispatch = useDispatch();
-  const password = useSelector((state) => state.user.password);
-  const username = useSelector((state) => state.user.username);
-
   // Functionality when map loads. Unique to maps api
   const onLoad = useCallback((map) => {
     // get and load map instance
@@ -57,19 +56,53 @@ function Homepage() {
     setMap(map)
     //map.controls[google.maps.ControlPosition.TOP_CENTER].push(MapControl());
 
-
-    // use GET request to populate screen with rats
-
-
-
-
-
   }, [])
+    // use GET request to populate screen with rats
 
   // functionality when map dismounts. Unique to maps api
   const onUnmount = useCallback((map) => {
     setMap(null);
   }, [])
+
+
+
+
+  // useEffect(() => {
+  //   // create markerList by fetching all the sightings from the database,
+  //   // and populating them into marker objects
+  //   fetch('/sql/rats')
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       // Create marker objects for fetched sightings
+  //       // const zoomLevel = map?.getZoom();
+  //       // const scaledSize = new window.google.maps.Size(2000 / zoomLevel, 100 / zoomLevel);
+  //       const markers = data.map((sighting) => (
+  //         <Marker
+  //           key={sighting[0]}
+  //           position={{ lat: sighting[0], lng: sighting[1] }}
+  //           icon={{
+  //             url: 'https://i.ibb.co/TR1B5G5/My-project-2.png',
+  //             anchor: new window.google.maps.Point(16, 16),
+  //             origin: new window.google.maps.Point(0, 0),
+  //             scaledSize: new window.google.maps.Size(80, 48),
+  //           }}
+  //           // onClick={(e) => handleMarkerListClick(sighting.id, map)}
+  //         />
+  //       ));
+  //       // update marker list state with the created markers
+  //       setMarkerList(markers);
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error fetching sightings:', error);
+  //     });
+  // }, [map]);
+
+
+
+
+
+
+
 
   /**
    * 
@@ -91,34 +124,34 @@ function Homepage() {
         },
         body: JSON.stringify({location: location}),
         })
-        // .then((data) => data.json()).then(data=> {
+        .then((data) => data.json()).then(data=> {
 
-        //   const newArr = [];
+          const newArr = [];
 
-        //   for (let i = 0; i < data.length; i++) {
-        //     newArr.push([Number(data[i][0]),Number(data[i][0])])
-        //   };
+          for (let i = 0; i < data.length; i++) {
+            newArr.push([Number(data[i][1]),Number(data[i][0])])
+          };
 
-        //   setMarkerList(newArr);
-        //   console.log('markerList', markerList);
-        // })
+          setMarkerList(newArr);
+          console.log('markerList', markerList);
+        })
     } catch (error) {
         console.log(error)
     }
   }
 
-  const addToMarkerList = (position) => {
-    const newMarker = <Marker 
-    key={JSON.stringify(position)} 
-    position={position}
-    icon={
-      {url: 'https://i.ibb.co/TR1B5G5/My-project-2.png',
-      scaledSize: new window.google.maps.Size(150, 100)}
-    }
-    // onClick={handleMarkerListClick}
-    ></Marker>
-    setMarkerList(current => [...current, newMarker]); // adds a new marker to the list
-  }
+  // const addToMarkerList = (position) => {
+  //   const newMarker = <Marker 
+  //   key={JSON.stringify(position)} 
+  //   position={position}
+  //   icon={
+  //     {url: 'https://i.ibb.co/TR1B5G5/My-project-2.png',
+  //     scaledSize: new window.google.maps.Size(150, 100)}
+  //   }
+  //   // onClick={handleMarkerListClick}
+  //   ></Marker>
+  //   setMarkerList(current => [...current, newMarker]); // adds a new marker to the list
+  // }
 
 //   // use effect to update the user in sightings slice once homepage is reached
 //   useEffect(() => {
@@ -147,6 +180,22 @@ function Homepage() {
 //   // TODO: create markerList by fetching all the sightings from the database,
 //   // and populating them into marker object
 // },[markerList])
+
+
+const addToMarkerList = (position) => {
+  const newMarker = <Marker
+    key={JSON.stringify(position)}
+    position={position}
+    icon={
+      {
+        url: 'https://i.ibb.co/TR1B5G5/My-project-2.png',
+        scaledSize: new window.google.maps.Size(200, 100)
+      }
+    }
+    onClick={(e) => handleMarkerListClick(sighting.id, map)}
+  ></Marker>
+  setMarkerList(current => [...current, newMarker]); // adds a new marker to the list
+}
 
   return isLoaded ? (
     <div className="flex flex-col justify-center items-center h-screen w-screen p-10 py-3">
@@ -177,28 +226,41 @@ function Homepage() {
         clickableIcons={false}
         onClick={handleMouseClick}>
 
+        {markerList}
+
         {/* {console.log('markerList:', markerList)} */}
-        {console.log('markerList:', markerList)}
-        
-          {/* {markerList.map(elem =>{<Marker 
+        {/* {console.log('markerList:', markerList)} */}
+
+          {markerList.map(elem => {
           
-                key={elem[0]} 
+          return (
+            // console.log(typeof elem[0], typeof elem[1]);
+
+          <Marker 
+          
+                key={elem[0]+elem[1]} 
                 position= {{lat: elem[0], lng: elem[1]}}
                 icon={
                   {url: 'https://i.ibb.co/TR1B5G5/My-project-2.png',
                   scaledSize: new window.google.maps.Size(150, 100)}
 
-              }></Marker>}) } */}
+              }></Marker>
+              
+          )
+              
+              }) }
 
-          <Marker key={"dasfadsfdafadsfdas"} 
+          {/* <Marker key={"dasfadsfdafadsfdas"} 
                 position= {{lat: 40.74, lng: -74}}
                 icon={
                   {url: 'https://i.ibb.co/TR1B5G5/My-project-2.png',
                   scaledSize: new window.google.maps.Size(150, 100)}
-              }></Marker>
+              }></Marker> */}
           {postReqMade && <InfoWindow
           key={`${infoLocation.lat}-${infoLocation.lng}`} // Add this line
-          position={infoLocation}>
+          position={infoLocation}
+          className='hello'
+          >
             <div>
               <SightingForm addToMarkerList={addToMarkerList}/>
             </div>
