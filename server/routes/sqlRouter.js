@@ -9,7 +9,7 @@ router.get('/', (req, res) => {
 
 //create sighting
 router.post('/sighting',sqlController.addSighting,(req, res) => {
-  console.log('entering sqlRouter to handle post req (add new sighting)')
+  // console.log('entering sqlRouter to handle post req (add new sighting)')
   res.status(200).json('sighting added')
   }
 );
@@ -17,7 +17,7 @@ router.post('/sighting',sqlController.addSighting,(req, res) => {
 
 //create rats
 router.post('/rat',sqlController.addRat,(req, res) => {
-  console.log('entering sqlRouter to handle post req (add new rat when new sighting happens)')
+  // console.log('entering sqlRouter to handle post req (add new rat when new sighting happens)')
   res.status(200).json('rat added')
   }
 );
@@ -51,7 +51,7 @@ router.get('/getsinglesighting',sqlController.getSingleSighting,(req, res) => {
 
 //get all sightings by current user
 router.post('/getallsightings', sqlController.getAllSightings, (req, res) => {
-  console.log('Hit /getsightings anon callback, sightings: ', res.locals.sightings);
+  // console.log('Hit /getsightings anon callback, sightings: ', res.locals.sightings);
   res.status(200).json(res.locals.sightings);
 });
 

@@ -16,7 +16,7 @@ const prismaUserController = {};
  * }
  */
 prismaUserController.addUser = async (req, res, next) => {
-  const { username, ssid, number_sightings, profile_picture, favorite_rat } = req.body;
+  const { username, ssid, profile_picture, favorite_rat } = req.body;
   // check if the required information is therer
   if (!username || !ssid) {
     errObj = {
