@@ -63,6 +63,14 @@ function Homepage() {
     'https://cdn.pixabay.com/photo/2016/03/05/22/20/animal-1239256_1280.jpg',
     'https://cdn.pixabay.com/photo/2015/09/28/00/50/roof-rat-961499_1280.jpg',
     'https://cdn.pixabay.com/photo/2016/05/12/22/19/rats-small-rats-1388830_1280.jpg',
+    'https://www.thesprucepets.com/thmb/MwwLBmk3vAewAbrH0JOC2OVjPEc=/4256x0/filters:no_upscale():strip_icc()/cute-white-rat-120691475-58a5f3ea5f9b58a3c9067915.jpg',
+    'https://laughingsquid.com/wp-content/uploads/2017/07/herjan-flower-e1500646741507.jpg',
+    'https://wallpapers.com/images/high/cute-rat-pictures-zkryt32mqddn2n1r.webp',
+    'https://wallpapers.com/images/high/cute-rat-pictures-zkryt32mqddn2n1r.webp',
+    'https://rlv.zcache.ca/cute_dumbo_rat_stickers-r841151d3194445e5a8330cb28f16deb1_0ugmc_8byvr_630.jpg?view_padding=%5B285%2C0%2C285%2C0%5D',
+    'https://media.istockphoto.com/id/1052049312/photo/cute-white-pet-rat-portrait-with-black-background.jpg?s=612x612&w=0&k=20&c=ra-sBFEKY-MRuSEC3vMFc3sWwjYM3JQl1Bq6lNvjBc4=',
+    'https://images.saymedia-content.com/.image/c_limit%2Ccs_srgb%2Cq_auto:eco%2Cw_1400/MTk3MDY1NDMyNTM5MDc5OTk5/fancy_rat_types.webp',
+    'https://t4.ftcdn.net/jpg/02/98/83/83/360_F_298838382_eIUHV1oJGgejdgYVhMklu9p3Gax2lSqF.jpg',
   ]);
 
   const getRandomRatPic = (ratPics) => {
