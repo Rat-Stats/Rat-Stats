@@ -63,7 +63,7 @@ router.delete('/sighting', prismaSightingController.deleteSighting, (req, res) =
  */
 // creates a sighting in the prisma db
 router.get('/rat', prismaRatController.allRatsSorted, (req, res) => {
-  res.status(200).json(res.locals.rats);
+  return res.status(200).json(res.locals.rats)
 });
 
 module.exports = router;
