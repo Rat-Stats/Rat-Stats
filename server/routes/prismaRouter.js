@@ -45,6 +45,7 @@ router.post('/sighting', prismaSightingController.addSighting, (req, res) => {
 
 // get all the sightings in the db
 router.get('/sighting/all', prismaSightingController.allSightings, (req, res) => {
+  console.log("HELPPPPP")
   res.status(200).json(res.locals.allSightings);
 });
 
@@ -58,12 +59,12 @@ router.delete('/sighting', prismaSightingController.deleteSighting, (req, res) =
   res.status(200).json(res.locals.deletedSighting);
 });
 
-/**
- * rat routes
- */
-// creates a sighting in the prisma db
-router.get('/rat', prismaRatController.allRatsSorted, (req, res) => {
-  res.status(200).json(res.locals.rats);
+router.get('/sighting/:id', prismaSightingController.getSighting, (req, res) => {
+  // res.status(200).json(res.locals.sightingInfo); 
+});
+router.get('/sighting/rat/:ratId', prismaSightingController.getRatInfo, (req, res) => {
+  // console.log('yikes!')
+  // res.status(200).json(res.locals.ratInfo); 
 });
 
 module.exports = router;

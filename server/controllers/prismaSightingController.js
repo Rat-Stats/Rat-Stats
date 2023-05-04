@@ -48,7 +48,6 @@ prismaSightingController.addSighting = async (req, res, next) => {
             create: {
               name: rat_name,
               description: description,
-              times_sighted: 1
             },
           },
         },
@@ -67,6 +66,7 @@ prismaSightingController.addSighting = async (req, res, next) => {
 
 // returns all the sightings
 prismaSightingController.allSightings = async (req, res, next) => {
+  // console.log('inside allSightings middleware')
   try {
     const allSightings = await prisma.sighting.findMany({
       include: {
@@ -149,5 +149,48 @@ prismaSightingController.deleteSighting = async (req, res, next) => {
     return next(errObj)
   }
 }
+
+prismaSightingController.getSighting = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const rat = await prisma.sighting.findUnique({
+      where: {
+        id: Number(id),
+      },
+    });
+    if (rat) {
+      res.json(rat);
+      next();
+    } else {
+      next({ message: 'Rat not found' });
+    }
+  } catch (error) {
+    console.error('Error checking rat in the database:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+prismaSightingController.getRatInfo = async (req, res, next) => {
+  const ratId = req.params.ratId;
+  // console.log('oopsie getRatInfo middleware', req.params.ratId)
+  try {
+    const ratInfo = await prisma.rat.findUnique({
+      where: {
+        id: parseInt(ratId),
+      },
+    });
+    if (ratInfo) {
+      res.json(ratInfo);
+      next();
+    } else {
+      next({ message: 'Rat info not found' });
+    }
+  } catch (error) {
+    console.error('Error checking rat info in the database:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+
 
 module.exports = prismaSightingController;
