@@ -110,7 +110,7 @@ export default function Profile() {
   }
 
   return (
-    <div className="flex flex-col p-8 bg-mirispink shadow  font-mono py-20 items-center h-screen w-screen">
+    <div className="flex flex-col p-8 bg-mirispink  font-mono py-20 items-center h-100% w-screen">
       <h1 className="text-5xl text-gray-600">Profile</h1>
       <Avatar img={imageUrl} className="p-5" rounded={true} size="xl" />
       {displayImage && (
