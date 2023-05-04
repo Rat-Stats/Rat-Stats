@@ -172,6 +172,7 @@ function Homepage() {
         console.log(data);
         if (data === null) {
           // create user
+          console.log('here')
           try {
             const createUser = await fetch('/sql/user', {
               method: 'POST',
