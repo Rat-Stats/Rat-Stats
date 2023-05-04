@@ -40,7 +40,10 @@ export default function Leaderboard() {
   }, [ratLeaderboard]);
 
   return (
-    <div className="flex flex-col items-center gap-3">
+    <div className="flex flex-col items-center gap-3 bg-mirisbeige">
+      <h1 className="text-4xl text-gray-600 font-mono font-bold">
+        LEADERBOARD:
+      </h1>
       {ratLeaderboardComponents}
     </div>
   );
