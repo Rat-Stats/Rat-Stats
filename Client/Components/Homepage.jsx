@@ -242,10 +242,12 @@ function Homepage() {
   };
 
   return isLoaded ? (
-    <div className="flex flex-col justify-center items-center h-screen w-screen p-10 py-3">
+    <div className="flex flex-col justify-center items-center h-screen w-screen p-10 py-3 bg-mirispink">
       {/*Header */}
       <div className="flex flex-row w-screen h-1/6 justify-between items-end p-8 py-5">
-        <h1 className="text-4xl text-gray-600">Welcome to Rat Stats!</h1>
+        <h1 className="text-4xl text-gray-600 text-center font-mono font-extrabold">
+          Welcome to Rat Stats Premium
+        </h1>
         <div className="flex">
           <Link to={'/profile'}>
             <Avatar className="px-10" rounded={true} size="md" />
