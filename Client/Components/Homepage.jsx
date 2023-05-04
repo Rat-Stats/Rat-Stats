@@ -72,11 +72,8 @@ function Homepage() {
 
   //functionality to fetch rat sightings from 311 API and populate
   useEffect(() => {
-    console.log('im outside of async');
     (async () => {
-      `i'm inside of async and outside of try`;
       try {
-        console.log('im inside of try');
         const getRat = await fetch(
           'https://data.cityofnewyork.us/resource/3q43-55fe.json/',
           {
