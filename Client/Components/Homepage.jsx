@@ -38,8 +38,8 @@ function Homepage() {
 
   // state for the markers
   const [markerList, setMarkerList] = useState([])
-  const [markersArray,setMarkersArray] = useState([])
-  
+  const [markersArray, setMarkersArray] = useState([])
+
   // get password and username from redux state
   const dispatch = useDispatch();
   const password = useSelector((state) => state.user.password);
@@ -127,14 +127,14 @@ function Homepage() {
    */
   const handleMouseClick = (e) => {
     const location = e.latLng.toJSON(); // location of the mouse click
-    
+
     setInfoLocation(location)
     // Check if the click is on a rat sighting marker
     const clickedMarker = markerList.find((marker) => {
       const markerPosition = marker.props.position;
       return markerPosition.lat === location.lat && markerPosition.lng === location.lng;
     });
-  
+
     if (clickedMarker) {
       // Clicked on a rat sighting marker
       setIsInfoWindowOpen(true);
@@ -144,11 +144,11 @@ function Homepage() {
       // Clicked on an empty space, open the sighting form
       setInfo(true);
     }
-  
+
     // Update this information in redux
     dispatch(UPDATE_LOCATION(location));
   };
-  
+
 
 
   // use effect to update the user in sightings slice once homepage is reached
@@ -187,64 +187,75 @@ function Homepage() {
         console.error('Error fetching sightings:', error);
       });
 
-      function handleMarkerListClick(id, map, markersArray, infoLocation) {
-        console.log(markerList)
-        console.log("infoLocation: ", infoLocation)
-        if (id === selectedSighting) {
-          // Clicked on the same marker again, close the info window
-          setIsInfoWindowOpen(false);
-          setSelectedSighting(null);
-        } else {
-          // Clicked on a different marker, fetch the rat info and open the info window
-          fetch(`/sql/sighting/${id}`)
-            .then((response) => response.json())
-            .then((sighting) => {
-              if (sighting) {
-                console.log("sighting id: ", sighting.id);
-                console.log("sighting info: ", sighting);
-                // setSelectedSighting(id);
-                // console.log('selected sighting: ', selectedSighting)
-                // setIsInfoWindowOpen(true);
-                const ratId = parseInt(sighting.ratId)
-                console.log("ratId: ", sighting.ratId);
-                fetch(`/sql/sighting/rat/${ratId}`)
-                  .then((response) => response.json())
-                  .then((ratInfo) => {
-                    
-                    console.log("ratInfo: ", ratInfo)
-                    
-                    const infoWindow = new window.google.maps.InfoWindow({
-                      position: { lat: sighting.lat, lng: sighting.lng },
-                      anchor: markersArray.find((marker) => marker.key === id),
-                      content: `
-                        <div>
-                           <h3>${ratInfo.name}</h3>
-                          <p>${ratInfo.description}</p>
+    function handleMarkerListClick(id, map, markersArray, infoLocation) {
+      // console.log(markerList)
+      // console.log("infoLocation: ", infoLocation)
+      if (id === selectedSighting) {
+        // Clicked on the same marker again, close the info window
+        setIsInfoWindowOpen(false);
+        setSelectedSighting(null);
+      } else {
+        // Clicked on a different marker, fetch the rat info and open the info window
+        fetch(`/sql/sighting/${id}`)
+          .then((response) => response.json())
+          .then((sighting) => {
+            if (sighting) {
+              console.log("sighting id: ", sighting.id);
+              console.log("sighting info: ", sighting);
+              // setSelectedSighting(id);
+              // console.log('selected sighting: ', selectedSighting)
+              // setIsInfoWindowOpen(true);
+              const ratId = parseInt(sighting.ratId)
+              console.log("ratId: ", sighting.ratId);
+              fetch(`/sql/sighting/rat/${ratId}`)
+                .then((response) => response.json())
+                .then((ratInfo) => {
+
+                  console.log("ratInfo: ", ratInfo)
+
+                  const infoWindow = new window.google.maps.InfoWindow({
+                    position: { lat: sighting.lat, lng: sighting.lng },
+                    anchor: markersArray.find((marker) => marker.key === id),
+                    content: `
+                        <div class="max-w-sm rounded overflow-hidden shadow-lg bg-white">
+                          <div class="p-4">
+                            <div class="flex items-center mb-4 ">
+                              <div class="space-y-2">
+                                <p class="text-l font-bold uppercase">My name is: ${ratInfo.name}</p>
+                                <p class=" text-m text-black">Here are some facts about me: </p>
+                                <div class="border-2 rounded-sm"> 
+                                  <p class="text-sm text-black">${ratInfo.description}</p>
+                                  </div>
+                                <p class="text-s italic text-gray-500">I was reported on: ${new Date(sighting.time).toLocaleString()} by user${sighting.userId}</p
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       `,
-                    });
-                    if (map && map instanceof window.google.maps.Map) { // Check if map object is available
-                      // Open the info window at the marker's position
-                      infoWindow.open(map, markerList.find((marker) => marker.key === id));
-                    } else {
-                      console.log('Map not loaded');
-                    }
-                  })
-                  .catch((error) => {
-                    console.error('Error fetching rat info:', error);
                   });
-              } else {
-                console.log('Rat not found');
-              }
-            })
-            .catch((error) => {
-              console.error('Error fetching rat:', error);
-            });
-        }
+
+                  if (map && map instanceof window.google.maps.Map) { // Check if map object is available
+                    // Open the info window at the marker's position
+                    infoWindow.open(map, markerList.find((marker) => marker.key === id));
+                  } else {
+                    console.log('Map not loaded');
+                  }
+                })
+                .catch((error) => {
+                  console.error('Error fetching rat info:', error);
+                });
+            } else {
+              console.log('Rat not found');
+            }
+          })
+          .catch((error) => {
+            console.error('Error fetching rat:', error);
+          });
       }
+    }
   }, [map]);
 
-  
+
 
   const addToMarkerList = (position) => {
     const newMarker = <Marker
