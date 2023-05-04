@@ -34,21 +34,21 @@ module.exports = {
     // and our authorization code (i.e. that 'temp 2FA code').
     const githubUrl = `https://github.com/login/oauth/access_token?client_id=${client_id}&client_secret=${client_secret}&code=${code}`;
     fetch(githubUrl, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        Accept: "application/json"
+        Accept: 'application/json'
       }
     })
     // If our request is successful, we receive an access token from GH.
     // This allows us to access the user's GH information on behalf of the user.
-    .then((data) => data.json())
-    .then((parsed) => {
+      .then((data) => data.json())
+      .then((parsed) => {
       // console.log('Access token: ', parsed.access_token);
       // We save the received access token to res.locals for use by other middleware
-      res.locals.accessToken = parsed.access_token;
-      return next();
-    })
-    .catch((err) => next({ log: err, message: 'OAuth error.'}))
+        res.locals.accessToken = parsed.access_token;
+        return next();
+      })
+      .catch((err) => next({ log: err, message: 'OAuth error.'}))
   },
 
   oaGetUserData: (req, res, next) => {
@@ -58,20 +58,20 @@ module.exports = {
     // Create a fetch request to GH for our user's GH account data, passing in
     // the access token we received from GH in our previous step.
     fetch('https://api.github.com/user', {
-      method: "GET",
+      method: 'GET',
       headers: {
-        "Authorization": authString
+        'Authorization': authString
       }
     })
-    .then((data) => data.json())
-    .then((parsed) => {
+      .then((data) => data.json())
+      .then((parsed) => {
       // Deconstruct the properties we want from the GH user data we received back
-      const { login, id, avatar_url } = parsed;
-      // Store the GH user data in res.locals
-      res.locals.userData = { login, id, avatar_url };
-      return next();
-    })
-    .catch((err) => next({ log: err, message: 'OAuth error.' }))
+        const { login, id, avatar_url } = parsed;
+        // Store the GH user data in res.locals
+        res.locals.userData = { login, id, avatar_url };
+        return next();
+      })
+      .catch((err) => next({ log: err, message: 'OAuth error.' }))
   },
 
   oaSaveUserData: (req, res, next) => {
@@ -80,31 +80,31 @@ module.exports = {
     const { login, id, avatar_url } = res.locals.userData;
     // Before we create a new user document in our database, check if the user already exists
     OAUser.findOne({ id })
-    .then((data) => {
+      .then((data) => {
       // console.log('Found user: ', data);
       // If the user already exists, don't create a new user document in our database.
       // Just look in the document we found for the existing user's ssid, and store it
       // in res.locals for use in later parts of the login process.
-      if (data !== null) {
-        res.locals.cookies = { ssid: data._id.toString() };
-        console.log('User not null, current SSID: ', res.locals.ssid)
-        return next();
-      };
-      // console.log('User not found, creating user.')
-      // If the user doesn't already exist, create a new user document.
-      OAUser.create({ login, id, avatar_url })
-      .then((data) => {
-        // console.log('Created user: ', data);
-        // Store new user's ssid in res.locals for use in later parts of the login process.
-        res.locals.cookies = { ssid: data._id.toString() };
-        return next();
+        if (data !== null) {
+          res.locals.cookies = { ssid: data._id.toString() };
+          console.log('User not null, current SSID: ', res.locals.ssid)
+          return next();
+        }
+        // console.log('User not found, creating user.')
+        // If the user doesn't already exist, create a new user document.
+        OAUser.create({ login, id, avatar_url })
+          .then((data) => {
+            // console.log('Created user: ', data);
+            // Store new user's ssid in res.locals for use in later parts of the login process.
+            res.locals.cookies = { ssid: data._id.toString() };
+            return next();
+          })
+          .catch((err) => next({ log: err, message: 'OAuth error.'}));
       })
-      .catch((err) => next({ log: err, message: 'OAuth error.'}));
-    })
-    .catch((err) => {
-      console.log(err);
-      return next();
-    });
+      .catch((err) => {
+        console.log(err);
+        return next();
+      });
   },
 
   oaSetCookie: (req, res, next) => {
@@ -127,11 +127,11 @@ module.exports = {
     // Create a new user session if one does not exist; otherwise, refresh the 
     // expiration timer on the current session.
     OASession.findOneAndUpdate({ cookieId: res.locals.cookies.ssid }, { cookieId: res.locals.cookies.ssid }, { new: true, upsert: true })
-    .then((data) => {
+      .then((data) => {
       // console.log('Session started: ', data);
-      return next();
-    })
-    .catch((err) => next({ log: err, message: 'OAuth error.'}));
+        return next();
+      })
+      .catch((err) => next({ log: err, message: 'OAuth error.'}));
   },
 
   oaCheckSession: (req, res, next) => {
@@ -143,13 +143,13 @@ module.exports = {
     }
     // If user has an ssid cookie set, check if a valid session exists for that ssid.
     OASession.findOne({ cookieId: req.cookies.ssid })
-    .then((data) => {
+      .then((data) => {
       // If a session does exist, set activeSession flag to true, else set flag to false.
-      if (data !== null) res.locals.activeSession = true;
-      else res.locals.activeSession = false;
-      return next();
-    })
-    .catch((err) => next({ log: err, message: "OAuth error." }))
+        if (data !== null) res.locals.activeSession = true;
+        else res.locals.activeSession = false;
+        return next();
+      })
+      .catch((err) => next({ log: err, message: 'OAuth error.' }))
   }
 
 }

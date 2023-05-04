@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const prismaUserController = require('../controllers/prismaUserController.js');
-const prismaSightingController = require('../controllers/prismaSightingController.js')
+const prismaSightingController = require('../controllers/prismaSightingController.js');
+const prismaRatController = require('../controllers/prismaRatController.js');
 
 router.get('/', (req, res) => {
   res.status(200).send("your are reaching sql endpoint")  
