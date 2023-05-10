@@ -1,82 +1,85 @@
-import React, { useState } from 'react';
-
-// redux
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { updateUser, updatePassword } from '../Slices/userSlice';
+import { updateUser, updatePassword, updateSsid } from '../Slices/userSlice';
 
-/**
- * 
- * @returns hosts the login page
- *  Has buttons to route user to the signup and the homepage.
- */
 export default function Login() {
   const dispatch = useDispatch();
-  // const [password, setPassword] = useState('')
-  const userState = useSelector((state) => state.user.username);
-  const password = useSelector((state) => state.user.password);
   const navigate = useNavigate();
-  // user12
-  // pw: password123
+  const username = useSelector((state) => state.user.username);
+  const password = useSelector((state) => state.user.password);
 
-  const handleLoginClick = () => {
-    const username = userState;
-    // navigate('/homepage');
+  const handleLoginClick = (e) => {
     fetch('/user/login/', {
       method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({ username, password }),
     })
-    .then((data) => data.json())
-    .then((parsed) => {
-      console.log(parsed);
-      if(parsed.username) {
-        console.log('Found')
-        // redirect here
-        navigate('/homepage');
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-    }); 
+      .then((data) => data.json())
+      .then((parsed) => {
+        console.log(parsed);
+        dispatch(updateSsid(parsed._id));
+        if (parsed.username) {
+          console.log('Found');
+          navigate('/homepage');
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
   };
 
   return (
-    <div className="grid bg-blue-200 shadow w-screen h-screen">
-      <div className="self-center justify-self-center border shadow bg-blue-500 p-8 rounded-xl w-1/2 h-1/2">
+    <div className="grid bg-mirispink shadow w-screen h-screen">
+      <div className="self-center justify-self-center border shadow bg-mirisbeige p-8 rounded-xl w-1/2 h-1/2">
         <div className="grid gap-2 justify-center content-center h-full w-full">
-          <h1 className="text-5xl font-bold text-gray-700 justify-self-center">Rat Stats</h1>
-          {/*username input*/}
+          <h1 className="text-5xl font-extrabold text-gray-700 justify-self-center content-center font-mono text-center">
+            Rat Stats Premium
+          </h1>
           <div>
-            <input type="text" 
-            id="username" 
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
-            placeholder="username" 
-            onChange={(e) => dispatch(updateUser(e.target.value))}
-            required/>
+            <input
+              type="text"
+              id="username"
+              className="font-mono bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="username"
+              onChange={(e) => dispatch(updateUser(e.target.value))}
+              required
+            />
           </div>
-
-          {/*password input*/}
           <div>
-            <input type="password" 
-            id="password" 
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
-            placeholder="Password" 
-            onChange={(e) => dispatch(updatePassword(e.target.value))}
-            required/>
+            <input
+              type="password"
+              id="password"
+              className="font-mono bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="Password"
+              onChange={(e) => dispatch(updatePassword(e.target.value))}
+              required
+            />
           </div>
           <div className="flex flex-row justify-between p-4">
-            <a className="border shadow bg-red-500 justify-self-center" href={'/signup'}>Signup</a>
-
-            {/* <button className="border shadow bg-green-500 justify-self-center"  onClick={handleLoginClick} >Login</button> */}
-            <button className="border shadow bg-green-500 justify-self-center" onClick={handleLoginClick} >Login</button>
-
-            <a className="border shadow bg-green-500 justify-self-center" href={'/oauth/login'}>Login with Tinder</a>
+            <a
+              className="border shadow bg-mirisblue font-mono rounded-full justify-self-center hover:bg-mirispink"
+              href={'/signup'}
+            >
+              Signup
+            </a>
+            <button
+              className="border shadow bg-mirisblue font-mono rounded-full justify-self-center hover:bg-mirispink"
+              onClick={handleLoginClick}
+            >
+              Login
+            </button>
+            <a
+              className="border shadow bg-mirisyellow font-mono rounded-full justify-self-center hover:bg-mirispink"
+              href={'/oauth/login'}
+            >
+              Login with Tinder
+            </a>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }

@@ -3,11 +3,12 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require ('mongoose');
 const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 const app = express();
 
-const sqlRouter = require('./routes/sqlRouter.js');
 const oaRouter = require('./routes/oaRouter.js');
 const userRouter = require('./routes/userRouter.js');
+const prismaRouter = require('./routes/prismaRouter.js');
 mongoose.connect(process.env.MDB_URI);
 
 const PORT = 3000;
@@ -15,13 +16,16 @@ const PORT = 3000;
 // Parse incoming data in request body or cookies
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // “extended” allows for rich objects and arrays to be encoded into the URL-encoded format
+app.use(bodyParser.json({ type: '*/*' }));
 app.use(cookieParser());
 
 // Routing for oauth endpoint
-app.use('/oauth', oaRouter);
+app.use('/oauth', oaRouter, (req,res) => {
+  console.log(req.body)
+});
 
-// Routing for sql endpoint to query users, rats,sighting tables
-app.use('/sql', sqlRouter);
+// Routing for sql endpoint to query users,rats,sighting tables
+app.use('/sql', prismaRouter);
 
 // Routing for user login and register
 app.use('/user', userRouter);
@@ -38,6 +42,9 @@ app.use('/user', userRouter);
   for ALL routes, including React Router routes. Express server and React Router endpoints
   must not overlap, or the former will break the latter.
 */
+
+
+
 app.use('/bundle.js', (req, res) => {
   console.log('Serving bundle.js');
   res.status(200).sendFile(path.join(__dirname, '../build/bundle.js'));

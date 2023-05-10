@@ -7,7 +7,7 @@
     "test": "jest --verbose",
     "start": "NODE_ENV=production nodemon server/server.js",
     "build": "NODE_ENV=production webpack",
-    "dev": "NODE_ENV=development webpack serve --open & nodemon server/server.js"
+    "dev": "NODE_ENV=development webpack serve & nodemon server/server.js"
   },
   "nodemonConfig": {
     "ignore": [
@@ -15,7 +15,7 @@
       "client"
     ]
   },
-  "author": "jackson",
+  "author": "team",
   "license": "ISC",
   "dependencies": {
     "@babel/plugin-transform-async-to-generator": "^7.20.7",
@@ -23,8 +23,10 @@
     "@prisma/client": "^4.13.0",
     "@react-google-maps/api": "^2.18.1",
     "@reduxjs/toolkit": "^1.9.5",
+    "axios": "^1.4.0",
     "babel": "^6.23.0",
     "bcrypt": "^5.1.0",
+    "body-parser": "^1.20.2",
     "dotenv": "^16.0.3",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-jsx-a11y": "^6.7.1",
@@ -41,7 +43,8 @@
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.10.0",
-    "react-scripts": "^5.0.1"
+    "react-scripts": "^5.0.1",
+    "tailwind": "^4.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.21.4",
